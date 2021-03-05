@@ -123,4 +123,9 @@ import { update_slot } from "svelte/internal";
       flex-direction: row;
     }
   }
+
+  table {
+    margin-left: auto;
+    margin-right: auto;
+  }
 </style>
