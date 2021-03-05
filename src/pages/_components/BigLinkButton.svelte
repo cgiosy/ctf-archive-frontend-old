@@ -6,6 +6,7 @@
 
 <style>
   a {
+    display: inline-flex;
     color: rgb(var(--link-color));
     padding: 1.25em 3em;
     margin: 0.25em 0.5em;
