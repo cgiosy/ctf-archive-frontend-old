@@ -67,26 +67,28 @@
 
 <style>
   * {
-    text-align: center;
     word-break: keep-all;
   }
 
-  header {
+  main, header, section, ul, li {
     display: flex;
     flex-direction: column;
+  }
+  main, header {
     align-items: center;
+  }
+  header, section, ul, li {
     justify-content: center;
+  }
+  header {
     width: 100%;
     padding: 3rem;
     background: url("/assets/images/banner-background.jpg") center center / cover;
     color: #212121;
   }
-  section, ul, li {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
   section {
+    text-align: center;
+    max-width: var(--content-max-width);
     padding: 3rem 1rem;
   }
   ul {
