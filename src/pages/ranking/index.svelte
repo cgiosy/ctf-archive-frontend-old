@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Logo from "./_components/Logo.svelte";
-    import BigLinkButton from './_components/BigLinkButton.svelte';
+    import Logo from "../_components/Logo.svelte";
+    import BigLinkButton from '../_components/BigLinkButton.svelte';
     import { metatags } from '@roxi/routify'
     metatags.title = 'CTF Archive'
     metatags.description = 'CTF Archive'
