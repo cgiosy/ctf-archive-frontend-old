@@ -126,6 +126,7 @@ import { update_slot } from "svelte/internal";
 
   table {
     width: 100%;
+    border: 0px solid;
     margin-left: auto;
     margin-right: auto;
   }
@@ -138,6 +139,10 @@ import { update_slot } from "svelte/internal";
   }
   .score{
     width: 30%;
+  }
+  table th,td{
+    border: 0px solid;
+    color: black;
   }
   thead tr {
     background-color: #ffffff;
