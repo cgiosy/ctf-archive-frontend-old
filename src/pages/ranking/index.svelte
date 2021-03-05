@@ -44,9 +44,9 @@ import { update_slot } from "svelte/internal";
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th scope="col" width="10px"><b>Place</b></th>
-						<th scope="col"><b>User</b></th>
-						<th scope="col"><b>Score</b></th>
+						<th class ="place" scope="col" width="10px"><b>Place</b></th>
+						<th class ="user" scope="col"><b>User</b></th>
+						<th class ="score" scope="col"><b>Score</b></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -125,9 +125,18 @@ import { update_slot } from "svelte/internal";
   }
 
   table {
-    width: 1200px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .place{
+    width: 10%;
+  }
+  .user{
+    width: 30%;
+  }
+  .score{
+    width: 30%;
   }
   thead tr {
     background-color: #ffffff;
