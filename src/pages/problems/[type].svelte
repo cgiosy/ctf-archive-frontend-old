@@ -20,6 +20,12 @@
   </header>
 </main>
 
+<div class="jumbotron">
+	<div class="container">
+		<h1>Scoreboard</h1>
+	</div>
+</div>
+
 <style>
   * {
     text-align: center;
