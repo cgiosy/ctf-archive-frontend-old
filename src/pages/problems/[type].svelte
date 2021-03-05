@@ -38,9 +38,9 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<td scope="col" width="10px"><b>Place</b></td>
-						<td scope="col"><b>User</b></td>
-						<td scope="col"><b>Score</b></td>
+						<th scope="col" width="10px"><b>Place</b></th>
+						<th scope="col"><b>User</b></th>
+						<th scope="col"><b>Score</b></th>
 					</tr>
 				</thead>
 				<tbody>
