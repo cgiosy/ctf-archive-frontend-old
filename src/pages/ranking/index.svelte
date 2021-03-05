@@ -129,7 +129,9 @@ import { update_slot } from "svelte/internal";
     margin-left: auto;
     margin-right: auto;
   }
-
+  th{
+    height: 20px;
+  }
   .place{
     width: 10%;
   }
