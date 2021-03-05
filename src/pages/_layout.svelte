@@ -38,6 +38,7 @@
     box-sizing: border-box;
   }
   body {
+    font-family: 'Open Sans', 'arial', 'Apple SD Gothic Neo', 'Noto Sans CJK KR', '본고딕', 'Noto Sans KR', 'KoPubDotum', '나눔바른고딕', '나눔고딕', 'NanumGothic', sans-serif;
     color: rgb(var(--text-color));
     background: rgb(var(--background-color));
     margin: 0;
