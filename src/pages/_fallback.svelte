@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import BigLinkButton from './_components/BigLinkButton.svelte';
 </script>
 
