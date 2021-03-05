@@ -129,4 +129,14 @@ import { update_slot } from "svelte/internal";
     margin-left: auto;
     margin-right: auto;
   }
+  thead tr {
+    background-color: #0d47a1;
+    color: #ffffff;
+  }
+  tbody tr:nth-child(2n) {
+    background-color: #bbdefb;
+  }
+  tbody tr:nth-child(2n+1) {
+    background-color: #e3f2fd;
+  }
 </style>
