@@ -1,122 +1,131 @@
 <script lang="ts">
-    import Logo from "../_components/Logo.svelte";
-    import BigLinkButton from '../_components/BigLinkButton.svelte';
-    import { metatags } from '@roxi/routify'
-    metatags.title = 'CTF Archive'
-    metatags.description = 'CTF Archive'
-  </script>
-  
-  <main>
-    <header>
-      <div class="banner-logo">
-        <Logo />
-      </div>
+  import Logo from "../_components/Logo.svelte";
+  import BigLinkButton from '../_components/BigLinkButton.svelte';
+  import { metatags } from '@roxi/routify'
+import { update_slot } from "svelte/internal";
+  metatags.title = 'CTF Archive'
+  metatags.description = 'CTF Archive'
+  let standings = [
+    { score: 69, name: 'ryute' },
+    { score: 74, name: 'cgiosy' },
+    { score: 420, name: 'l0tus' }
+  ];
+</script>
+
+<main>
+  <header>
+    <div class="banner-logo">
+      <Logo />
+    </div>
+    <section>
+      <h1>시간에 구애받지 않고 즐기는<br />CTF 문제풀이 사이트</h1>
       <section>
-        <h1>시간에 구애받지 않고 즐기는<br />CTF 문제풀이 사이트</h1>
-        <p>
-          대회가 끝나면 더이상 볼 수 없었던 문제들, 모두 안녕!<br />기존에 출제된 문제들을 재현하여 사이트에서 채점받고, 랭킹을 보며 실력을 증진할 수 있습니다.
-        </p>
+        모두 안녕!<br />기존에 출제된 문제들을 재현하여 사이트에서 채점받고, 랭킹을 보며 실력을 증진할 수 있습니다.
       </section>
-    </header>
-  
-    <section>
-      <h2>지금 바로 문제를 풀어보세요</h2>
-      <p>
-        포너블, 리버싱, 크립토, 웹 등 다양한 분야의 문제들이 준비되어 있어요.
-      </p>
-      <ul>
-        <li><BigLinkButton href="/problems">문제 풀러 가기</BigLinkButton></li>
-        <li><BigLinkButton href="/tags">태그 목록 보기</BigLinkButton></li>
-      </ul>
     </section>
+  </header>
+</main>
+
+<div class="jumbotron">
+	<div class="container">
+		<h1>Scoreboard</h1>
+	</div>
+</div>
+
+<div class="container">
+  <div id="score-graph" class="row d-flex align-items-center">
+		<div class="col-md-12 text-center">
+			<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+		</div>
+	</div>
   
-    <section>
-      <h2>얼마나 잘하고 있는지 궁금하다면</h2>
-      <p>
-        문제를 풀면 경험치와 레벨이 올라가며 실시간으로 랭킹을 볼 수 있어요.<br />어려운 문제일 수록 경험치가 많고, 체감 난이도를 적어 주시면 생태계에 도움이 돼요!
-      </p>
-      <ul>
-        <li><BigLinkButton href="/ranking">전체 랭킹</BigLinkButton></li>
-        <li><BigLinkButton href="/ranking/friends">친구 랭킹</BigLinkButton></li>
-        <li><BigLinkButton href="/ranking/contribution">기여 랭킹</BigLinkButton></li>
-      </ul>
-    </section>
-  
-    <section>
-      <h2>원하는 문제가 있으신가요?</h2>
-      <p>
-        분류와 제목, 난이도, 태그 등 여러 조건을 사용해 내가 원하는 문제를 쉽고 빠르게 찾을 수 있어요.
-      </p>
-      <ul>
-        <li><BigLinkButton href="/search">검색 페이지로 이동</BigLinkButton></li>
-      </ul>
-    </section>
-  
-    <section>
-      <h2>디스코드에서 더 많은 얘기를 나눠보세요</h2>
-      <p>
-        CTF 문제, 풀이, 잡담 및 사이트 관련 건의 등을 주제로 대화합니다.
-      </p>
-      <ul style="padding: 2.5em 0;">
-        <a href="https://discord.gg/3JCgQQfSwj">
-          <img src="/assets/images/discord-icon.png" alt="Discord Icon" width="96" height="96">
-        </a>
-      </ul>
-    </section>
-  </main>
-  
-  <style>
-    * {
-      word-break: keep-all;
-    }
-  
-    main, header, section, ul, li {
-      display: flex;
-      flex-direction: column;
-    }
-    main, header {
-      align-items: center;
-    }
-    header, section, ul, li {
-      justify-content: center;
-    }
+	<div id="scoreboard" class="row">
+		<div class="col-md-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col" width="10px"><b>Place</b></th>
+						<th scope="col"><b>User</b></th>
+						<th scope="col"><b>Score</b></th>
+					</tr>
+				</thead>
+				<tbody>
+          {#each standings as {name,score}, i}
+					<tr>
+						<th scope="row" class="text-center">{i+1}</th>
+            <td>
+							<a href="/profile/{name}">
+								{name}
+							</a>
+						</td>
+            <td>{score}</td>
+					</tr>
+          {/each}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<style>
+  * {
+    text-align: center;
+  }
+
+  main > * {
+    padding: 5rem;
+  }
+
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 20rem;
+    background: url("/assets/images/banner-background.jpg") center center / cover;
+    color: #212121;
+  }
+  .banner-logo {
+    font-size: 4em;
+  }
+
+  header > section {
+    font-size: 1.05em;
+    margin-top: 3em;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  main > section {
+    padding: 3rem 0;
+  }
+  .links {
+    padding: 2rem 0;
+  }
+
+  @media (min-width: 1024px) {
     header {
-      width: 100%;
-      padding: 3rem;
-      background: url("/assets/images/banner-background.jpg") center center / cover;
-      color: #212121;
+      flex-direction: row;
     }
-    section {
-      text-align: center;
-      max-width: var(--content-max-width);
-      padding: 3rem 1rem;
-    }
-    ul {
-      list-style: none;
-      padding: 1rem 0;
-      margin: 0;
-    }
-  
     header > section {
-      font-size: 1.05em;
+      margin-top: 0;
+      margin-left: 6em;
     }
-    .banner-logo {
-      font-size: 4em;
+  }
+
+  @media (min-width: 640px) {
+    .links {
+      flex-direction: row;
     }
-  
-    @media (min-width: 1024px) {
-      header {
-        flex-direction: row;
-      }
-      header > section {
-        padding: 0;
-        margin-left: 6em;
-      }
-    }
-  
-    @media (min-width: 640px) {
-      ul {
-        flex-direction: row;
-      }
-    }
-  </style>
+  }
+
+  table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
