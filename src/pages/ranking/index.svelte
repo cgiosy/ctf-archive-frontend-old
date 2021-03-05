@@ -125,6 +125,7 @@ import { update_slot } from "svelte/internal";
   }
 
   table {
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
   }
