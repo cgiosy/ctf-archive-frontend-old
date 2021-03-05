@@ -32,6 +32,26 @@
 			<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
 		</div>
 	</div>
+  
+	<div id="scoreboard" class="row">
+		<div class="col-md-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td scope="col" width="10px"><b>Place</b></td>
+						<td scope="col"><b>User</b></td>
+						<td scope="col"><b>Score</b></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row" class="text-center">1</th>
+						<td>L0TUS</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 
 <style>
