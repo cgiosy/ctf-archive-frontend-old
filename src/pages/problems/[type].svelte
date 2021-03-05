@@ -2,8 +2,14 @@
   import Logo from "../_components/Logo.svelte";
   import BigLinkButton from '../_components/BigLinkButton.svelte';
   import { metatags } from '@roxi/routify'
+import { update_slot } from "svelte/internal";
   metatags.title = 'CTF Archive'
   metatags.description = 'CTF Archive'
+  let standings = [
+    { score: 69, name: 'ryute' },
+    { score: 74, name: 'cgiosy' },
+    { score: 420, name: 'l0tus' }
+  ];
 </script>
 
 <main>
@@ -44,10 +50,17 @@
 					</tr>
 				</thead>
 				<tbody>
+          {#each standings as {name,score}, i}
 					<tr>
-						<th scope="row" class="text-center">1</th>
-						<td>L0TUS</td>
+						<th scope="row" class="text-center">{i+1}</th>
+            <td>
+							<a href="/profile/{name}">
+								{name}
+							</a>
+						</td>
+            <td>{score}</td>
 					</tr>
+          {/each}
 				</tbody>
 			</table>
 		</div>
