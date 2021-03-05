@@ -41,17 +41,17 @@
     "rollup-plugin-hot": "^0.1.1",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.1.0",
-    "rollup-plugin-svelte-hot": "^1.0.0-4",
+    "rollup-plugin-svelte-hot": "^1.0.0-6",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-workbox": "^6.1.1",
     "spank": "^1.5.3",
     "spassr": "^2.2.3",
     "svelte": "^3.35.0",
-    "svelte-check": "^1.2.1",
+    "svelte-check": "^1.2.2",
     "svelte-preprocess": "^4.6.9",
     "tossr": "^1.4.2",
     "tslib": "^2.1.0",
-    "typescript": "^4.2.2"
+    "typescript": "^4.2.3"
   },
   "routify": {
     "extensions": "svelte,html,svx,md"
