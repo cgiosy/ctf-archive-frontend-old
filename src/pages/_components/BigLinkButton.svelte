@@ -8,7 +8,7 @@
   a {
     color: rgb(var(--link-color));
     padding: 1.25em 3em;
-    margin: 0 0.5em;
+    margin: 0.25em 0.5em;
     border-radius: 2.5em;
     font-weight: bold;
     transition: background-color 0.25s;

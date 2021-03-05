@@ -68,6 +68,7 @@
 <style>
   * {
     text-align: center;
+    word-break: keep-all;
   }
 
   main > * {
@@ -100,10 +101,7 @@
     padding: 1rem 0;
   }
   main > section {
-    padding: 3rem 0;
-  }
-  .links {
-    padding: 2rem 0;
+    padding: 3rem 1rem;
   }
 
   @media (min-width: 1024px) {
