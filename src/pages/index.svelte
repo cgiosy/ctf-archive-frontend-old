@@ -71,17 +71,14 @@
     word-break: keep-all;
   }
 
-  main > * {
-    padding: 5rem;
-  }
-
   header {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 26rem;
+    min-height: 20rem;
+    padding: 3rem;
     background: url("/assets/images/banner-background.jpg") center center / cover;
     color: #212121;
   }

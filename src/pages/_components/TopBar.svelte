@@ -67,6 +67,7 @@ import Logo from "./Logo.svelte";
     position: fixed;
     flex-direction: column;
     align-items: center;
+    top: 0;
   }
 
   #details {
