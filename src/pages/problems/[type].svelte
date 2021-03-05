@@ -26,6 +26,14 @@
 	</div>
 </div>
 
+<div class="container">
+  <div id="score-graph" class="row d-flex align-items-center">
+		<div class="col-md-12 text-center">
+			<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+		</div>
+	</div>
+</div>
+
 <style>
   * {
     text-align: center;
