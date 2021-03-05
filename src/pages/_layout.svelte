@@ -42,6 +42,9 @@
     background: rgb(var(--background-color));
     margin: 0;
   }
+  main {
+    margin-top: 3rem;
+  }
   a {
     color: inherit;
     text-decoration: none;

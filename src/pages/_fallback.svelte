@@ -1,24 +1,22 @@
 <script>
-    import { url } from '@roxi/routify'
+  import BigLinkButton from './_components/BigLinkButton.svelte';
 </script>
 
+<main>
+  <h1>404 Not Found</h1>
+  <p>요청하신 페이지를 찾을 수 없었어요! ㅜㅜ</p>
+  <div><BigLinkButton href='/'>메인 화면으로 이동</BigLinkButton></div>
+</main>
+
 <style>
-  .huge {
-    font-size: 12rem;
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
   }
-  .e404 {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+  main > * {
+    max-width: var(--content-max-width);
+    margin: 1em 0;
   }
 </style>
-
-<div class="e404">
-  <div class="huge">404</div>
-  <div class="big">Page not found. 
-  <!-- link to the parent folder of _fallback.svelte -->
-  <a href={$url('../')}>Go back</a>
-  </div>
-</div>

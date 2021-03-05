@@ -5,7 +5,7 @@ import Logo from "./Logo.svelte";
 <nav>
   <div id="menus">
     <div id="links">
-      <ul class="list">
+      <ul>
         <li id="logo-link"><a href="/"><Logo /></a></li>
         <li><a href="/problems">문제</a></li>
         <li><a href="/ranking">랭킹</a></li>
@@ -16,17 +16,17 @@ import Logo from "./Logo.svelte";
   </div>
   <div id="details">
     <div id="details-links">
-      <ul class="list empty-list"></ul>
-      <ul class="list">
+      <ul class="empty-list"></ul>
+      <ul>
         <li><a href="/problems">목록</a></li>
         <li><a href="/tags">태그</a></li>
       </ul>
-      <ul class="list">
+      <ul>
         <li><a href="/ranking">전체</a></li>
         <li><a href="/ranking/friends">친구</a></li>
         <li><a href="/ranking/contribution">기여</a></li>
       </ul>
-      <ul id="user-links" class="list">
+      <ul id="user-links">
         <li><a href="/profile">프로필</a></li>
         <li><a href="/notifications">알림</a></li>
         <li><a href="/settings">설정</a></li>
@@ -61,12 +61,13 @@ import Logo from "./Logo.svelte";
     pointer-events: auto;
   }
   #menus, #details {
-    box-shadow: 0 2px 4px 0 rgba(var(--text-color), 0.1);
+    box-shadow: 0 2px 4px 0 rgba(var(--text-color), calc(var(--background-opacity) * 1.25));
   }
   nav {
     position: fixed;
     flex-direction: column;
     align-items: center;
+    top: 0;
   }
 
   #details {
@@ -93,38 +94,39 @@ import Logo from "./Logo.svelte";
     padding-top: 0.5rem;
   }
 
-  .list {
+  ul {
     width: 100%;
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  #details-links > .list {
+  #details-links > ul {
     flex-direction: column;
   }
 
-  .list > li, #details-links > .list {
+  li, #details-links > ul {
     width: 5em;
   }
-  .list > li > a {
+  li {
+    transition: text-shadow 0.2s;
+  }
+  li > a {
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
+    padding: 0.333em 0;
   }
-  .list > li:hover {
+  li:not(#logo-link):hover {
     font-weight: bold;
+    text-shadow: 0 0 1.5rem rgba(var(--text-color), calc(var(--background-opacity) * 10));
   }
-  #links > .list > li {
+  #links li {
     height: 100%;
-  }
-  .list > li > a {
-    padding: 0.25em 0;
   }
   #details-links > .empty-list, #logo-link {
     width: 7rem;
     justify-content: start;
-    font-weight: bold;
   }
   #user-link, #user-links {
     justify-self: end;
