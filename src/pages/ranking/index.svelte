@@ -128,6 +128,7 @@ import { update_slot } from "svelte/internal";
     width: 70%;
     margin-left: auto;
     margin-right: auto;
+    border-collapse: collapse;
   }
   th{
     height: 40px;
