@@ -149,9 +149,9 @@ import { update_slot } from "svelte/internal";
     background-color: #ffffff;
   }
   tbody tr:nth-child(2n) {
-    background-color: #cccccc;
+    background-color: #ffffff;
   }
   tbody tr:nth-child(2n+1) {
-    background-color: #ffffff;
+    background-color: #cccccc;
   }
 </style>
