@@ -19,8 +19,8 @@
 
     /* Dark Theme */
     --text-color: 255, 255, 255;
-    --background-color: 17, 17, 17;
-    --background-opacity: 0.0625;
+    --background-color: 20, 20, 20;
+    --background-opacity: 0.05;
 
     /* Black Theme */
     /*
