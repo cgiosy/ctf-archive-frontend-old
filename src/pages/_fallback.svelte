@@ -1,11 +1,11 @@
 <script lang="ts">
-  import BigLinkButton from './_components/BigLinkButton.svelte';
+  import BigLinkButton from "./_components/BigLinkButton.svelte";
 </script>
 
 <main>
   <h1>404 Not Found</h1>
   <p>요청하신 페이지를 찾을 수 없었어요! ㅜㅜ</p>
-  <div><BigLinkButton href='/'>메인 화면으로 이동</BigLinkButton></div>
+  <div><BigLinkButton href="/">메인 화면으로 이동</BigLinkButton></div>
 </main>
 
 <style>

@@ -1,14 +1,14 @@
 <script lang="ts">
   import Logo from "../_components/Logo.svelte";
-  import BigLinkButton from '../_components/BigLinkButton.svelte';
-  import { metatags } from '@roxi/routify'
-import { update_slot } from "svelte/internal";
-  metatags.title = 'CTF Archive'
-  metatags.description = 'CTF Archive'
+  import BigLinkButton from "../_components/BigLinkButton.svelte";
+  import { metatags } from "@roxi/routify";
+  import { update_slot } from "svelte/internal";
+  metatags.title = "CTF Archive";
+  metatags.description = "CTF Archive";
   let standings = [
-    { score: 69, name: 'ryute' },
-    { score: 74, name: 'cgiosy' },
-    { score: 420, name: 'l0tus' }
+    { score: 69, name: "ryute" },
+    { score: 74, name: "cgiosy" },
+    { score: 420, name: "l0tus" },
   ];
 </script>
 
@@ -20,51 +20,52 @@ import { update_slot } from "svelte/internal";
     <section>
       <h1>시간에 구애받지 않고 즐기는<br />CTF 문제풀이 사이트</h1>
       <section>
-        모두 안녕!<br />기존에 출제된 문제들을 재현하여 사이트에서 채점받고, 랭킹을 보며 실력을 증진할 수 있습니다.
+        모두 안녕!<br />기존에 출제된 문제들을 재현하여 사이트에서 채점받고,
+        랭킹을 보며 실력을 증진할 수 있습니다.
       </section>
     </section>
   </header>
 </main>
 
 <div class="jumbotron">
-	<div class="container">
-		<h1>Scoreboard</h1>
-	</div>
+  <div class="container">
+    <h1>Scoreboard</h1>
+  </div>
 </div>
 
 <div class="container">
   <div id="score-graph" class="row d-flex align-items-center">
-		<div class="col-md-12 text-center">
-			<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
-		</div>
-	</div>
-  
-	<div id="scoreboard" class="row">
-		<div class="col-md-12">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th scope="col" width="10px"><b>Place</b></th>
-						<th scope="col"><b>User</b></th>
-						<th scope="col"><b>Score</b></th>
-					</tr>
-				</thead>
-				<tbody>
-          {#each standings as {name,score}, i}
-					<tr>
-						<th scope="row" class="text-center">{i+1}</th>
-            <td>
-							<a href="/profile/{name}">
-								{name}
-							</a>
-						</td>
-            <td>{score}</td>
-					</tr>
+    <div class="col-md-12 text-center">
+      <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner" />
+    </div>
+  </div>
+
+  <div id="scoreboard" class="row">
+    <div class="col-md-12">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col" width="10px"><b>Place</b></th>
+            <th scope="col"><b>User</b></th>
+            <th scope="col"><b>Score</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          {#each standings as { name, score }, i}
+            <tr>
+              <th scope="row" class="text-center">{i + 1}</th>
+              <td>
+                <a href="/profile/{name}">
+                  {name}
+                </a>
+              </td>
+              <td>{score}</td>
+            </tr>
           {/each}
-				</tbody>
-			</table>
-		</div>
-	</div>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -83,7 +84,8 @@ import { update_slot } from "svelte/internal";
     justify-content: center;
     width: 100%;
     min-height: 20rem;
-    background: url("/assets/images/banner-background.jpg") center center / cover;
+    background: url("/assets/images/banner-background.jpg") center center /
+      cover;
     color: #212121;
   }
   .banner-logo {

@@ -1,5 +1,5 @@
 <script lang="ts">
-import Logo from "./Logo.svelte";
+  import Logo from "./Logo.svelte";
 </script>
 
 <nav>
@@ -16,7 +16,7 @@ import Logo from "./Logo.svelte";
   </div>
   <div id="details">
     <div id="details-links">
-      <ul class="empty-list"></ul>
+      <ul class="empty-list" />
       <ul>
         <li><a href="/problems">목록</a></li>
         <li><a href="/tags">태그</a></li>
@@ -39,7 +39,8 @@ import Logo from "./Logo.svelte";
   * {
     display: flex;
   }
-  #links, #details-links {
+  #links,
+  #details-links {
     width: 100%;
     max-width: 70rem;
   }
@@ -49,10 +50,13 @@ import Logo from "./Logo.svelte";
 
   /* Navigation Bar */
 
-  nav, #details {
+  nav,
+  #details {
     pointer-events: none;
   }
-  nav, #menus, #details {
+  nav,
+  #menus,
+  #details {
     width: 100%;
     justify-content: center;
     z-index: 4;
@@ -60,10 +64,12 @@ import Logo from "./Logo.svelte";
   #menus {
     pointer-events: auto;
   }
-  #menus, #details {
-    box-shadow:
-      0 0.25rem 0.25rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 0.5)),
-      0 0.125rem 0.125rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 1));
+  #menus,
+  #details {
+    box-shadow: 0 0.25rem 0.25rem 0
+        rgba(var(--text-color), calc(var(--background-opacity) * 0.5)),
+      0 0.125rem 0.125rem 0
+        rgba(var(--text-color), calc(var(--background-opacity) * 1));
   }
   nav {
     position: fixed;
@@ -76,9 +82,10 @@ import Logo from "./Logo.svelte";
     height: 12rem;
     background-color: rgba(var(--background-color), 0.9);
     opacity: 0;
-    transition: opacity .25s;
+    transition: opacity 0.25s;
   }
-  #menus:hover + #details, #details:hover {
+  #menus:hover + #details,
+  #details:hover {
     opacity: 1;
     pointer-events: auto;
   }
@@ -86,7 +93,8 @@ import Logo from "./Logo.svelte";
   #menus {
     background-color: rgb(var(--background-color));
   }
-  #links, #details-links {
+  #links,
+  #details-links {
     height: 100%;
   }
   #links {
@@ -106,7 +114,8 @@ import Logo from "./Logo.svelte";
     flex-direction: column;
   }
 
-  li, #details-links > ul {
+  li,
+  #details-links > ul {
     width: 5em;
   }
   li {
@@ -121,18 +130,20 @@ import Logo from "./Logo.svelte";
   }
   li:not(#logo-link):hover {
     font-weight: bold;
-    text-shadow:
-      0 0 1.5em rgba(var(--text-color), calc(var(--background-opacity) * 9)),
+    text-shadow: 0 0 1.5em
+        rgba(var(--text-color), calc(var(--background-opacity) * 9)),
       0 0 1em rgba(var(--text-color), calc(var(--background-opacity) * 6));
   }
   #links li {
     height: 100%;
   }
-  #details-links > .empty-list, #logo-link {
+  #details-links > .empty-list,
+  #logo-link {
     width: 7rem;
     justify-content: start;
   }
-  #user-link, #user-links {
+  #user-link,
+  #user-links {
     justify-self: end;
     margin-left: auto;
   }
