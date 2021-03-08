@@ -1,7 +1,14 @@
 {
-		"editor.detectIndentation": false,
+  "editor.detectIndentation": false,
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "npm.packageManager": "pnpm",
+  "prettier.packageManager": "pnpm",
+  "eslint.packageManager": "pnpm",
+  "[svelte]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "svelte.svelte-vscode"
+  }
 }
