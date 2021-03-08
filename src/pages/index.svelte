@@ -104,7 +104,7 @@
     font-size: 4em;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 64rem) {
     header {
       flex-direction: row;
     }
@@ -114,7 +114,7 @@
     }
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 40rem) {
     ul {
       flex-direction: row;
     }
