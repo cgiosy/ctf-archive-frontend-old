@@ -1,3 +1,4 @@
+// @ts-expect-error
 import HMR from "@roxi/routify/hmr";
 import App from "./App.svelte";
 
