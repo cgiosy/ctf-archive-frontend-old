@@ -66,10 +66,8 @@
   }
   #menus,
   #details {
-    box-shadow: 0 0.25rem 0.25rem 0
-        rgba(var(--text-color), calc(var(--background-opacity) * 0.5)),
-      0 0.125rem 0.125rem 0
-        rgba(var(--text-color), calc(var(--background-opacity) * 1));
+    box-shadow: 0 0.25rem 0.25rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 0.5)),
+      0 0.125rem 0.125rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 1));
   }
   nav {
     position: fixed;
@@ -130,8 +128,7 @@
   }
   li:not(#logo-link):hover {
     font-weight: bold;
-    text-shadow: 0 0 1.5em
-        rgba(var(--text-color), calc(var(--background-opacity) * 9)),
+    text-shadow: 0 0 1.5em rgba(var(--text-color), calc(var(--background-opacity) * 9)),
       0 0 1em rgba(var(--text-color), calc(var(--background-opacity) * 6));
   }
   #links li {
