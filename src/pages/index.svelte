@@ -11,7 +11,7 @@
     <div class="banner-logo">
       <Logo />
     </div>
-    <section>
+    <section class="intro">
       <h1>시간에 구애받지 않고 즐기는<br />CTF 문제풀이 사이트</h1>
       <p>
         대회가 끝나면 더이상 볼 수 없었던 문제들, 모두 안녕!<br />기존에 출제된 문제들을 재현하여
@@ -93,6 +93,7 @@
     padding: 3rem;
     background: url("/assets/images/banner-background.jpg") center center / cover;
     color: #212121;
+    /* text-shadow: 0 0.1em 0.3em rgba(33, 33, 33, 0.2); */
   }
   section {
     text-align: center;
@@ -104,19 +105,18 @@
     padding: 1rem 0;
     margin: 0;
   }
-
-  header > section {
-    font-size: 1.05em;
-  }
   .banner-logo {
     font-size: 4em;
+  }
+  .intro {
+    font-size: 1.05em;
   }
 
   @media (min-width: 64em) {
     header {
       flex-direction: row;
     }
-    header > section {
+    .intro {
       padding: 0;
       margin-left: 6em;
     }
