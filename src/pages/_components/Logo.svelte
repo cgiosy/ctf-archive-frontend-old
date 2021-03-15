@@ -7,12 +7,12 @@
   a {
     display: flex;
     flex-direction: column;
+    align-items: center;
     font-family: Montserrat;
     font-weight: 800;
-    align-items: center;
     font-size: 0.5em;
   }
-  a > * {
+  p {
     margin: 0;
     letter-spacing: 0.1em;
   }
