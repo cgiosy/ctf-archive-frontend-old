@@ -11,27 +11,28 @@
 <style global>
   :root {
     /* Light Theme */
-    /*
     --text-color: 21, 32, 43;
     --background-color: 255, 255, 255;
     --background-opacity: 0.05;
-    */
-
-    /* Dark Theme */
-    --text-color: 255, 255, 255;
-    --background-color: 20, 20, 20;
-    --background-opacity: 0.05;
-
-    /* Black Theme */
-    /*
-    --text-color: 255, 255, 255;
-    --background-color: 0, 0, 0;
-    --background-opacity: 0.1;
-    */
 
     /* Others */
     --link-color: 61, 90, 254;
     --content-max-width: 70rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* Dark Theme */
+      --text-color: 255, 255, 255;
+      --background-color: 20, 20, 20;
+      --background-opacity: 0.05;
+
+      /* Black Theme */
+      /*
+      --text-color: 255, 255, 255;
+      --background-color: 0, 0, 0;
+      --background-opacity: 0.1;
+      */
+    }
   }
 
   * {
