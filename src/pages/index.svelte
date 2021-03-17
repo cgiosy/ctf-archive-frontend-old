@@ -69,7 +69,11 @@
   * {
     word-break: keep-all;
   }
-
+  main,
+  header,
+  section {
+    contain: content;
+  }
   main,
   header,
   section,
@@ -81,11 +85,6 @@
   main,
   header {
     align-items: center;
-  }
-  header,
-  section,
-  ul,
-  li {
     justify-content: center;
   }
   header {
@@ -101,6 +100,7 @@
     padding: 3rem 1rem;
   }
   ul {
+    justify-content: center;
     list-style: none;
     padding: 1rem 0;
     margin: 0;

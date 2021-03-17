@@ -18,6 +18,7 @@
     align-items: center;
   }
   div {
+    contain: content;
     width: 100%;
     max-width: var(--content-max-width);
     padding: 3.5em 1em;
