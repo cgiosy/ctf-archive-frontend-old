@@ -1,130 +1,120 @@
 <script lang="ts">
   import Logo from "./_components/Logo.svelte";
-  import BigLinkButton from "./_components/BigLinkButton.svelte";
-  import { metatags } from "@roxi/routify";
-  metatags.title = "CTF Archive";
-  metatags.description = "CTF Archive";
+
+  /*
+  import { goto } from "@roxi/routify";
+  if (!document.cookie.includes("SESSION_COOKIE")) {
+    $goto("/intro");
+  }
+  */
+
+  const isCategory = (query: string): boolean =>
+    ["web", "pwn", "rev", "crypto", "fore", "misc"].includes(query);
+  const isDifficulty = (query: string): boolean => query.match(/^[bsgpd][1-5]$/m) !== null;
+  const getQueryType = (query: string): string => {
+    const typeList = [
+      { check: isDifficulty, name: "difficulty" },
+      { check: isCategory, name: "category" },
+    ];
+    for (let { check, name } of typeList) {
+      if (check(query)) {
+        return name;
+      }
+    }
+    return "";
+  };
+
+  let queries: string[] = ["web", "d5", "ssti"];
+  let lastQuery: string = "";
+
+  $: {
+    if (lastQuery !== "") {
+      queries.push(lastQuery);
+      lastQuery = "";
+    }
+  }
+
+  $: {
+    queries = queries.filter((query) => query.trim() !== "");
+  }
 </script>
 
 <main>
   <header>
-    <div class="banner-logo">
+    <div class="search-logo">
       <Logo />
     </div>
-    <section class="intro">
-      <h1>시간에 구애받지 않고 즐기는<br />CTF 문제풀이 사이트</h1>
-      <p>
-        대회가 끝나면 더이상 볼 수 없었던 문제들, 모두 안녕!<br />기존에 출제된 문제들을 재현하여
-        사이트에서 채점받고, 랭킹을 보며 실력을 증진할 수 있습니다.
-      </p>
-    </section>
-  </header>
-
-  <section>
-    <h2>지금 바로 문제를 풀어보세요</h2>
-    <p>포너블, 리버싱, 크립토, 웹 등 다양한 분야의 문제들이 준비되어 있어요.</p>
-    <ul>
-      <li><BigLinkButton href="/problems">문제 풀러 가기</BigLinkButton></li>
-      <li><BigLinkButton href="/tags">태그 목록 보기</BigLinkButton></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>얼마나 잘하고 있는지 궁금하다면</h2>
-    <p>
-      문제를 풀면 경험치와 레벨이 올라가며 실시간으로 랭킹을 볼 수 있어요.<br />어려운 문제일 수록
-      경험치가 많고, 체감 난이도를 적어 주시면 생태계에 도움이 돼요!
-    </p>
-    <ul>
-      <li><BigLinkButton href="/ranking">전체 랭킹</BigLinkButton></li>
-      <li><BigLinkButton href="/ranking/friends">친구 랭킹</BigLinkButton></li>
+    <ul class="search-bar">
+      {#each queries as query}
+        <li>
+          {#if false && isDifficulty(query)}
+            <i class={`icon-${query}`} />
+          {/if}
+          <input type="text" class={getQueryType(query)} bind:value={query} />
+        </li>
+      {/each}
       <li>
-        <BigLinkButton href="/ranking/contribution">기여 랭킹</BigLinkButton>
+        <input type="text" bind:value={lastQuery} placeholder="검색어" />
       </li>
     </ul>
-  </section>
-
-  <section>
-    <h2>원하는 문제가 있으신가요?</h2>
-    <p>
-      분류와 제목, 난이도, 태그 등 여러 조건을 사용해 내가 원하는 문제를 쉽고 빠르게 찾을 수 있어요.
-    </p>
-    <ul>
-      <li><BigLinkButton href="/search">검색 페이지로 이동</BigLinkButton></li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>디스코드에서 더 많은 얘기를 나눠보세요</h2>
-    <p>CTF 문제, 풀이, 잡담 및 사이트 관련 건의 등을 주제로 대화합니다.</p>
-    <ul style="padding: 2.5em 0;">
-      <a href="https://discord.gg/3JCgQQfSwj">
-        <img src="/assets/images/discord-icon.png" alt="Discord Icon" width="96" height="96" />
-      </a>
-    </ul>
-  </section>
+  </header>
+  <ul>
+    <li />
+  </ul>
 </main>
 
 <style>
-  * {
-    word-break: keep-all;
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3rem;
   }
   main,
   header,
   section {
     contain: content;
   }
-  main,
-  header,
-  section,
-  ul,
-  li {
-    display: flex;
-    flex-direction: column;
-  }
-  main,
-  header {
-    align-items: center;
-    justify-content: center;
-  }
   header {
     width: 100%;
-    padding: 3rem;
-    background: url("/assets/images/banner-background.jpg") center center / cover;
-    color: #212121;
-    /* text-shadow: 0 0.1em 0.3em rgba(33, 33, 33, 0.2); */
-  }
-  section {
-    text-align: center;
     max-width: var(--content-max-width);
-    padding: 3rem 1rem;
+    padding: 2rem 1rem;
   }
   ul {
-    justify-content: center;
-    list-style: none;
-    padding: 1rem 0;
-    margin: 0;
+    list-style-type: none;
   }
-  .banner-logo {
-    font-size: 4em;
+  .search-bar {
+    display: flex;
+    padding: 1rem;
+    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 5));
+    border-radius: 0.5rem;
+    transition: box-shadow 0.1s;
   }
-  .intro {
-    font-size: 1.05em;
+  .search-bar:hover {
+    box-shadow: 0 0.1rem 0.4rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
   }
-
-  @media (min-width: 64em) {
-    header {
-      flex-direction: row;
-    }
-    .intro {
-      padding: 0;
-      margin-left: 6em;
-    }
+  li > input {
+    width: 6rem;
+    border: none;
+    border-radius: 1rem;
+    padding: 0.5em;
+    margin: 0 0.25em;
+    text-align: center;
+    background-color: rgba(var(--text-color), calc(var(--background-opacity) * 2));
   }
-
-  @media (min-width: 40em) {
-    ul {
-      flex-direction: row;
-    }
+  li > input:focus {
+    outline: none;
+  }
+  .search-logo {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+  .category {
+    color: white;
+    background-color: #2962ff;
+  }
+  .difficulty {
+    color: white;
+    background-color: #263238;
   }
 </style>
