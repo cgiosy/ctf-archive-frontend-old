@@ -1,0 +1,55 @@
+<script lang="ts">
+  export let level: number;
+  export let categories: string[];
+
+  const getColor = (category: string): string => {
+    return (
+      {
+        pwn: "rgb(252, 40, 157)",
+        rev: "rgb(78, 224, 174)",
+        crypto: "rgb(247, 147, 7)",
+        web: "rgb(66, 198, 220)",
+        fore: "rgb(241, 222, 64)",
+        misc: "rgb(164, 109, 254)",
+      }[category] ?? category
+    );
+  };
+
+  const singleColor = (color: string): string => `border: 4px solid ${getColor(color)}`;
+
+  const mixedColors = (colors: string[]): string => {
+    if (colors.length === 0) return "";
+    if (colors.length === 1) return singleColor(colors[0]);
+    colors.sort();
+
+    const deg = 360 / colors.length;
+    return `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${colors
+      .map((color, index) => `${getColor(color)} ${deg * index}deg ${deg * (index + 1)}deg`)
+      .join(", ")})`;
+  };
+</script>
+
+<div class={categories.length >= 2 ? "mixed" : ""} style={mixedColors(categories.map(getColor))}>
+  {level}
+</div>
+
+<style>
+  div {
+    display: inline-flex;
+    box-sizing: border-box;
+    width: 2.5em;
+    height: 2.5em;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 0.25rem;
+  }
+  .mixed {
+    border: double 4px transparent;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+  }
+</style>

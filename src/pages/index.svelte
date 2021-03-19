@@ -1,5 +1,6 @@
 <script lang="ts">
   import Logo from "./_components/Logo.svelte";
+  import LevelIcon from "./_components/LevelIcon.svelte";
 
   /*
   import { goto } from "@roxi/routify";
@@ -59,7 +60,9 @@
     </ul>
   </header>
   <ul>
-    <li />
+    <li><LevelIcon level={6} categories={["misc"]} /></li>
+    <li><LevelIcon level={17} categories={["web", "crypto"]} /></li>
+    <li><LevelIcon level={29} categories={["pwn", "rev", "fore"]} /></li>
   </ul>
 </main>
 
