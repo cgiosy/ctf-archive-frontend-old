@@ -179,7 +179,7 @@
 
   .problems {
     display: grid;
-    /* https://css-tricks.com/preventing-a-grid-blowout/ */
+    /* == https://css-tricks.com/preventing-a-grid-blowout == */
     grid-template-columns: minmax(0, 1fr);
   }
 
