@@ -30,13 +30,15 @@
 
   const problems = [
     {
+      id: 10000,
       level: 6,
       categories: ["misc"],
       title: "baby ssti",
-      source: "Hyp3rFlow - cgiosy",
+      source: "Hyp3rFlow",
       solves: 8396,
     },
     {
+      id: 10002,
       level: 17,
       categories: ["pwn"],
       title: "Welcome to The Friendzone",
@@ -44,20 +46,23 @@
       solves: 185,
     },
     {
+      id: 20005,
       level: 29,
       categories: ["web", "crypto"],
       title: "baby webrypto",
-      source: "Hyp3rFlow - Ryute",
+      source: "Hyp3rFlow",
       solves: 41,
     },
     {
+      id: 53337,
       level: 30,
       categories: ["pwn", "rev", "fore"],
       title: "baby forevpwn",
-      source: "Hyp3rFlow - L0TUS",
+      source: "Hyp3rFlow",
       solves: 37,
     },
     {
+      id: 123456,
       level: 99,
       categories: ["pwn", "rev", "crypto", "web", "fore", "misc"],
       title:
@@ -66,6 +71,7 @@
       solves: 2,
     },
     {
+      id: -42,
       level: -1,
       categories: ["misc"],
       title: "훈민져ᇰᅙᅳᆷ나랏말ᄊᆞ미듀ᇰ귁에달아",
@@ -106,9 +112,9 @@
     </ul>
   </header>
   <ul class="problems">
-    {#each problems as { level, categories, title, source, solves }}
+    {#each problems as { id, level, categories, title, source, solves }}
       <li class="problem">
-        <ProblemCard {level} {categories} {title} {source} {solves} />
+        <ProblemCard {id} {level} {categories} {title} {source} {solves} />
       </li>
     {/each}
   </ul>

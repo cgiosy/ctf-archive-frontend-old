@@ -29,16 +29,19 @@
   };
 </script>
 
-<div class={categories.length >= 2 ? "mixed" : ""} style={mixedColors(categories.map(getColor))}>
-  {level}
-</div>
+<a
+  href={`/?q=${level} ${categories.join(" ")}`}
+  class={categories.length >= 2 ? "mixed" : ""}
+  style={mixedColors(categories.map(getColor))}>{level}</a
+>
 
 <style>
-  div {
+  a {
     display: inline-flex;
     box-sizing: border-box;
     width: 2.5em;
     height: 2.5em;
+    line-height: 1;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -47,6 +50,15 @@
     font-size: 1.1em;
     margin: 0.25rem;
     flex-shrink: 0;
+    vertical-align: text-bottom;
+    /* 0.25s? */
+    transition: transform 0.2s cubic-bezier(0.17, 0.84, 0.44, 1);
+    will-change: transform;
+  }
+  a:hover {
+    /* 1.25? */
+    transform: scale(1.2);
+    /* text-decoration: underline; */
   }
   .mixed {
     border: double 4px transparent;

@@ -1,6 +1,7 @@
 <script lang="ts">
   import LevelIcon from "./LevelIcon.svelte";
 
+  export let id: number;
   export let level: number;
   export let categories: string[];
   export let title: string;
@@ -8,16 +9,16 @@
   export let solves: number;
 </script>
 
-<div class="problem">
+<a href={`/problem/${id}`} class="problem">
   <LevelIcon {level} {categories} />
   <section>
     <h3 class="title">{title}</h3>
     <div class="info">
-      <span class="source">{source}</span>
+      <a href={`/?q=${encodeURIComponent(source)}`} class="source">{source}</a>
       <span class="solves"><b>✓</b> {solves}</span>
     </div>
   </section>
-</div>
+</a>
 
 <style>
   .problem {
@@ -26,13 +27,15 @@
     padding: 1.5em 1em;
     margin: 0.5em;
     border-radius: 0.5em;
-    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 2)); /* 2 vs 2.5 vs 3 */
+    /* 2 vs 2.5 vs 3 */
+    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
     box-shadow: 0 0.1rem 0.3rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    transition: border 0.25s, box-shadow 0.25s;
+    transition: border 0.2s, box-shadow 0.2s, transform 0.2s;
   }
   .problem:hover {
     border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 4));
     box-shadow: 0 0.1rem 0.5rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 8));
+    transform: scale(1.025);
   }
   div {
     margin: 0.5em 0;
@@ -60,6 +63,9 @@
   }
   .source {
     margin-right: 1em;
+  }
+  .source:hover {
+    text-decoration: underline;
   }
   .solves {
     /* font-family: "Spoqa Han Sans KR"; */
