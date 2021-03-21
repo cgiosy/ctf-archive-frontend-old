@@ -14,7 +14,7 @@
     <h3 class="title">{title}</h3>
     <div class="info">
       <span class="source">{source}</span>
-      <span class="solves">✓ {solves}</span>
+      <span class="solves"><b>✓</b> {solves}</span>
     </div>
   </section>
 </div>
