@@ -50,7 +50,7 @@
     font-size: 1.1em;
     margin: 0.25rem;
     flex-shrink: 0;
-    transition: transform 0.15s cubic-bezier(0.17, 0.84, 0.44, 1);
+    transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
     will-change: transform;
   }
   .circle:hover {
