@@ -50,14 +50,11 @@
     font-size: 1.1em;
     margin: 0.25rem;
     flex-shrink: 0;
-    /* 0.25s? */
-    transition: transform 0.25s;
+    transition: transform 0.15s cubic-bezier(0.17, 0.84, 0.44, 1);
     will-change: transform;
   }
   .circle:hover {
-    /* 1.25? */
-    /* transform: scale(1.2); */
-    transform: rotate(-360deg);
+    transform: scale(1.15);
     /* text-decoration: underline; */
   }
   .mixed {

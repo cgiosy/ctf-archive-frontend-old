@@ -1,24 +1,30 @@
 <script lang="ts">
   import LevelIcon from "./LevelIcon.svelte";
+  import type { IProblem } from "../../types";
 
-  export let id: number;
-  export let level: number;
-  export let categories: string[];
-  export let title: string;
-  export let source: string;
-  export let solves: number;
+  export let problem: IProblem | undefined = undefined;
 </script>
 
-<a href={`/problem/${id}`} class="problem">
-  <LevelIcon {level} {categories} />
-  <section>
-    <h3 class="title">{title}</h3>
-    <div class="info">
-      <a href={`/?q=${encodeURIComponent(source)}`} class="source">{source}</a>
-      <span class="solves"><b>✓</b> {solves}</span>
-    </div>
-  </section>
-</a>
+{#if problem}
+  <a href={`/problem/${problem.id}`} class="problem">
+    <LevelIcon level={problem.level} categories={problem.categories} />
+    <section>
+      <h3 class="title">{problem.title}</h3>
+      <div class="info">
+        <a href={`/?q=${encodeURIComponent(problem.source)}`} class="source">{problem.source}</a>
+        <span class="solves"><b>✓</b> {problem.solves}</span>
+      </div>
+    </section>
+  </a>
+{:else}
+  <span class="problem" style="pointer-events: none">
+    <LevelIcon level="" />
+    <section>
+      <h3 class="title">&nbsp;</h3>
+      <div class="info">&nbsp;</div>
+    </section>
+  </span>
+{/if}
 
 <style>
   .problem {
@@ -30,7 +36,7 @@
     /* 2 vs 2.5 vs 3 */
     border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
     box-shadow: 0 0.1rem 0.3rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    transition: border 0.2s, box-shadow 0.2s, transform 0.2s;
+    transition: border 0.175s, box-shadow 0.175s, transform 0.175s;
   }
   .problem:hover {
     border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 4));

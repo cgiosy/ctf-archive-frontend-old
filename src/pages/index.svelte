@@ -1,6 +1,7 @@
 <script lang="ts">
   import Logo from "./_components/Logo.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
+  import type { IProblem } from "../types";
 
   /*
   import { goto } from "@roxi/routify";
@@ -8,6 +9,8 @@
     $goto("/intro");
   }
   */
+
+  const pageSize = 25;
 
   const isCategory = (query: string): boolean =>
     ["web", "pwn", "rev", "crypto", "fore", "misc"].includes(query);
@@ -27,58 +30,61 @@
 
   let queries: string[] = ["web", "d5", "ssti"];
   let lastQuery: string = "";
+  let problems: (IProblem | undefined)[] = new Array(pageSize);
 
-  const problems = [
-    {
-      id: 10000,
-      level: 6,
-      categories: ["misc"],
-      title: "baby ssti",
-      source: "Hyp3rFlow",
-      solves: 8396,
-    },
-    {
-      id: 10002,
-      level: 17,
-      categories: ["pwn"],
-      title: "Welcome to The Friendzone",
-      source: "Tenable CTF 2021",
-      solves: 185,
-    },
-    {
-      id: 20005,
-      level: 29,
-      categories: ["web", "crypto"],
-      title: "baby webrypto",
-      source: "Hyp3rFlow",
-      solves: 41,
-    },
-    {
-      id: 53337,
-      level: 30,
-      categories: ["pwn", "rev", "fore"],
-      title: "baby forevpwn",
-      source: "Hyp3rFlow",
-      solves: 37,
-    },
-    {
-      id: 123456,
-      level: 99,
-      categories: ["pwn", "rev", "crypto", "web", "fore", "misc"],
-      title:
-        "SUPER SUPER BINARY SEARCH DELUXE 2.5: THE LEGEND OF THE GOLDEN MAZASSUMNIDA, EPISODE 2: THE MAZWAETL UNIVERSE, PART 2: THE PARALLEL UNIVERSE AND THE LOST MAZASSUMNIDA: GAME OF THE YEAR EDITION",
-      source: "Contest > 구데기컵 > 제1회 구데기컵 🎮번",
-      solves: 2,
-    },
-    {
-      id: -42,
-      level: -1,
-      categories: ["misc"],
-      title: "훈민져ᇰᅙᅳᆷ나랏말ᄊᆞ미듀ᇰ귁에달아",
-      source: "《訓民正音 諺解本》 序文",
-      solves: -420420,
-    },
-  ];
+  setTimeout(() => {
+    problems = [
+      {
+        id: 10000,
+        level: 6,
+        categories: ["misc"],
+        title: "baby ssti",
+        source: "Hyp3rFlow",
+        solves: 8396,
+      },
+      {
+        id: 10002,
+        level: 17,
+        categories: ["pwn"],
+        title: "Welcome to The Friendzone",
+        source: "Tenable CTF 2021",
+        solves: 185,
+      },
+      {
+        id: 20005,
+        level: 29,
+        categories: ["web", "crypto"],
+        title: "baby webrypto",
+        source: "Hyp3rFlow",
+        solves: 41,
+      },
+      {
+        id: 53337,
+        level: 30,
+        categories: ["pwn", "rev", "fore"],
+        title: "baby forevpwn",
+        source: "Hyp3rFlow",
+        solves: 37,
+      },
+      {
+        id: 123456,
+        level: 99,
+        categories: ["pwn", "rev", "crypto", "web", "fore", "misc"],
+        title:
+          "SUPER SUPER BINARY SEARCH DELUXE 2.5: THE LEGEND OF THE GOLDEN MAZASSUMNIDA, EPISODE 2: THE MAZWAETL UNIVERSE, PART 2: THE PARALLEL UNIVERSE AND THE LOST MAZASSUMNIDA: GAME OF THE YEAR EDITION",
+        source: "Contest > 구데기컵 > 제1회 구데기컵 🎮번",
+        solves: 2,
+      },
+      {
+        id: -42,
+        level: -1,
+        categories: ["misc"],
+        title: "훈민져ᇰᅙᅳᆷ나랏말ᄊᆞ미듀ᇰ귁에달아",
+        source: "《訓民正音 諺解本》 序文",
+        solves: -420420,
+      },
+    ];
+  }, 1000);
 
   $: {
     if (lastQuery !== "") {
@@ -112,9 +118,9 @@
     </ul>
   </header>
   <ul class="problems">
-    {#each problems as { id, level, categories, title, source, solves }}
+    {#each problems as problem}
       <li class="problem">
-        <ProblemCard {id} {level} {categories} {title} {source} {solves} />
+        <ProblemCard {problem} />
       </li>
     {/each}
   </ul>
