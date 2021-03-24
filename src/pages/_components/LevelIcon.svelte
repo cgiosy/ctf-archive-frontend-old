@@ -1,6 +1,6 @@
 <script lang="ts">
-  export let level: number;
-  export let categories: string[];
+  export let level: number | "";
+  export let categories: string[] = [];
 
   const getColor = (category: string): string => {
     return (
@@ -18,7 +18,7 @@
   const singleColor = (color: string): string => `border: 4px solid ${getColor(color)}`;
 
   const mixedColors = (colors: string[]): string => {
-    if (colors.length === 0) return "";
+    if (colors.length === 0) return singleColor("rgb(var(--text-color))");
     if (colors.length === 1) return singleColor(colors[0]);
     colors.sort();
 
@@ -31,12 +31,12 @@
 
 <a
   href={`/?q=${level} ${categories.join(" ")}`}
-  class={categories.length >= 2 ? "mixed" : ""}
+  class={`${categories.length >= 2 ? "mixed " : ""}circle`}
   style={mixedColors(categories.map(getColor))}>{level}</a
 >
 
 <style>
-  a {
+  .circle {
     display: inline-flex;
     box-sizing: border-box;
     width: 2.5em;
@@ -50,14 +50,14 @@
     font-size: 1.1em;
     margin: 0.25rem;
     flex-shrink: 0;
-    vertical-align: text-bottom;
     /* 0.25s? */
-    transition: transform 0.2s cubic-bezier(0.17, 0.84, 0.44, 1);
+    transition: transform 0.25s;
     will-change: transform;
   }
-  a:hover {
+  .circle:hover {
     /* 1.25? */
-    transform: scale(1.2);
+    /* transform: scale(1.2); */
+    transform: rotate(-360deg);
     /* text-decoration: underline; */
   }
   .mixed {
