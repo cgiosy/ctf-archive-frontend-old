@@ -24,7 +24,7 @@
     <h2>지금 바로 문제를 풀어보세요</h2>
     <p>포너블, 리버싱, 크립토, 웹 등 다양한 분야의 문제들이 준비되어 있어요.</p>
     <ul>
-      <li><BigLinkButton href="/problems">문제 풀러 가기</BigLinkButton></li>
+      <li><BigLinkButton href="/">문제 풀러 가기</BigLinkButton></li>
       <li><BigLinkButton href="/tags">태그 목록 보기</BigLinkButton></li>
     </ul>
   </section>
