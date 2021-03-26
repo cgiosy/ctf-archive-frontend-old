@@ -1,6 +1,9 @@
 <script lang="ts">
+  import InfiniteLoading from "svelte-infinite-loading";
   import Logo from "./_components/Logo.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
+  import { charsets, randomInt, randomString, delay } from "../libs";
+  import type { InfiniteEvent } from "svelte-infinite-loading";
   import type { IProblem } from "../types";
 
   /*
@@ -14,7 +17,9 @@
 
   const isCategory = (query: string): boolean =>
     ["web", "pwn", "rev", "crypto", "fore", "misc"].includes(query);
+
   const isDifficulty = (query: string): boolean => query.match(/^[bsgpd][1-5]$/m) !== null;
+
   const getQueryType = (query: string): string => {
     const typeList = [
       { check: isDifficulty, name: "difficulty" },
@@ -28,63 +33,46 @@
     return "";
   };
 
+  const randomProblems = (count: number) =>
+    Array.from(new Array(count), (x, i) => ({
+      id: i + 1,
+      level: randomInt(30, 1),
+      categories: Array.from(
+        new Set(
+          Array.from(
+            new Array(randomInt(6, 1)),
+            () => ["web", "pwn", "rev", "crypto", "fore", "misc"][randomInt(6)]
+          )
+        )
+      ),
+      title: randomString(randomInt(24, 8), charsets.alphabet + "      "),
+      source: `${randomString(randomInt(10, 3), charsets.alphanumeric)} CTF ${randomInt(10, 2021)}`,
+      solves: randomInt(1000),
+    }));
+
+  const getProblems = (queryString: string, page: number) =>
+    delay({
+      count: randomInt(10) > 0 ? Infinity : 0,
+      problems: randomProblems(25),
+    });
+
   let queries: string[] = ["web", "d5", "ssti"];
   let lastQuery: string = "";
-  let problems: (IProblem | undefined)[] = new Array(pageSize);
+  let resultProblems: (IProblem | undefined)[] = [];
+  let page = 0;
 
-  setTimeout(() => {
-    problems = [
-      {
-        id: 10000,
-        level: 6,
-        categories: ["misc"],
-        title: "baby ssti",
-        source: "Hyp3rFlow",
-        solves: 8396,
-      },
-      {
-        id: 10002,
-        level: 17,
-        categories: ["pwn"],
-        title: "Welcome to The Friendzone",
-        source: "Tenable CTF 2021",
-        solves: 185,
-      },
-      {
-        id: 20005,
-        level: 29,
-        categories: ["web", "crypto"],
-        title: "baby webrypto",
-        source: "Hyp3rFlow",
-        solves: 41,
-      },
-      {
-        id: 53337,
-        level: 30,
-        categories: ["pwn", "rev", "fore"],
-        title: "baby forevpwn",
-        source: "Hyp3rFlow",
-        solves: 37,
-      },
-      {
-        id: 123456,
-        level: 99,
-        categories: ["pwn", "rev", "crypto", "web", "fore", "misc"],
-        title:
-          "SUPER SUPER BINARY SEARCH DELUXE 2.5: THE LEGEND OF THE GOLDEN MAZASSUMNIDA, EPISODE 2: THE MAZWAETL UNIVERSE, PART 2: THE PARALLEL UNIVERSE AND THE LOST MAZASSUMNIDA: GAME OF THE YEAR EDITION",
-        source: "Contest > 구데기컵 > 제1회 구데기컵 🎮번",
-        solves: 2,
-      },
-      {
-        id: -42,
-        level: -1,
-        categories: ["misc"],
-        title: "훈민져ᇰᅙᅳᆷ나랏말ᄊᆞ미듀ᇰ귁에달아",
-        source: "《訓民正音 諺解本》 序文",
-        solves: -420420,
-      },
-    ];
-  }, 1000);
+  const infiniteHandler = ({ detail: { loaded, complete } }: InfiniteEvent) => {
+    const request = getProblems(queries.join(" "), ++page);
+    const prevResultProblems = [...resultProblems];
+    resultProblems = [...prevResultProblems, ...new Array(pageSize)];
+    request.then(({ count, problems }) => {
+      resultProblems = [...prevResultProblems, ...problems];
+      if (resultProblems.length >= count) {
+        complete();
+      }
+      loaded();
+    });
+  };
 
   $: {
     if (lastQuery !== "") {
@@ -118,11 +106,13 @@
     </ul>
   </header>
   <ul class="problems">
-    {#each problems as problem}
-      <li class="problem">
-        <ProblemCard {problem} />
-      </li>
+    {#each resultProblems as problem}
+      <li><ProblemCard {problem} /></li>
     {/each}
+
+    <InfiniteLoading on:infinite={infiniteHandler}>
+      <slot name="noMore" />
+    </InfiniteLoading>
   </ul>
 </main>
 
@@ -135,7 +125,7 @@
   }
   main,
   header,
-  section {
+  ul {
     contain: content;
   }
   header,
@@ -152,10 +142,10 @@
     padding: 1rem;
     border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 5));
     border-radius: 0.5rem;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.15s;
   }
   .search-bar:hover {
-    box-shadow: 0 0.1rem 0.3rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
+    box-shadow: 0 0.0625rem 0.375rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
   }
   li > input {
     width: 6rem;
