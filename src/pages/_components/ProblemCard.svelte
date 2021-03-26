@@ -30,17 +30,18 @@
   .problem {
     display: flex;
     align-items: center;
+    contain: content;
     padding: 1.5em 1em;
     margin: 0.5em;
     border-radius: 0.5em;
     /* 2 vs 2.5 vs 3 */
-    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    box-shadow: 0 0.1rem 0.3rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
+    border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
+    box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
     transition: border 0.175s, box-shadow 0.175s, transform 0.175s;
   }
   .problem:hover {
-    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 4));
-    box-shadow: 0 0.1rem 0.5rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 8));
+    border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 4));
+    box-shadow: 0 0.125em 0.5em 0 rgba(var(--text-color), calc(var(--background-opacity) * 8));
     transform: scale(1.025);
   }
   div {
@@ -54,7 +55,6 @@
   .title {
     /* font-family: Montserrat; */
     margin: 0;
-    /* text-shadow: 0 0.1em 0.3em rgba(var(--text-color), 0.2); */
   }
   .title,
   .source {
@@ -64,7 +64,8 @@
   }
   .info {
     display: flex;
-    font-size: 0.95em;
+    font-size: 0.9375em;
+    /* font-size: 0.875em; */
     justify-content: space-between;
   }
   .source {

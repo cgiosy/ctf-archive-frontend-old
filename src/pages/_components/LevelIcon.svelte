@@ -41,7 +41,6 @@
     box-sizing: border-box;
     width: 2.5em;
     height: 2.5em;
-    line-height: 1;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
@@ -51,7 +50,6 @@
     margin: 0.25rem;
     flex-shrink: 0;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
-    will-change: transform;
   }
   .circle:hover {
     transform: scale(1.15);
