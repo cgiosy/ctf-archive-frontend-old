@@ -1,11 +1,32 @@
 <!-- routify:options preload="proximity" -->
 <script lang="ts">
+  import { goto } from "@roxi/routify";
+  import Config from "../config";
+  import loginStore from "../stores/login";
   import TopBar from "./_components/TopBar.svelte";
   import Footer from "./_components/Footer.svelte";
+
+  let allowed: boolean = false;
+  let loginStatus: boolean = !Config.requireLogin;
+  if (Config.requireLogin) {
+    loginStore.subscribe((value: string) => {
+      localStorage.setItem("login", value);
+      loginStatus = value === "true";
+    });
+  }
+
+  $: {
+    allowed = Config.isAllowedPath(location.pathname);
+    if (!(allowed || loginStatus)) {
+      $goto("/intro");
+    }
+  }
 </script>
 
 <TopBar />
-<slot />
+{#if allowed || loginStatus}
+  <slot />
+{/if}
 <Footer />
 
 <style global>

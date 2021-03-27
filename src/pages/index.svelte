@@ -6,13 +6,6 @@
   import type { InfiniteEvent } from "svelte-infinite-loading";
   import type { IProblem } from "../types";
 
-  /*
-  import { goto } from "@roxi/routify";
-  if (!document.cookie.includes("SESSION_COOKIE")) {
-    $goto("/intro");
-  }
-  */
-
   const pageSize = 25;
 
   const isCategory = (query: string): boolean =>
