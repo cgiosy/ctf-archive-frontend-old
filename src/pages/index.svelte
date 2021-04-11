@@ -2,7 +2,7 @@
   import InfiniteLoading from "svelte-infinite-loading";
   import Logo from "./_components/Logo.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
-  import { charsets, randomInt, randomString, delay } from "../libs";
+  import { randomInt, randomProblems, delay } from "../libs";
   import type { InfiniteEvent } from "svelte-infinite-loading";
   import type { IProblem } from "../types";
 
@@ -25,23 +25,6 @@
     }
     return "";
   };
-
-  const randomProblems = (count: number) =>
-    Array.from(new Array(count), (x, i) => ({
-      id: i + 1,
-      level: randomInt(30, 1),
-      categories: Array.from(
-        new Set(
-          Array.from(
-            new Array(randomInt(6, 1)),
-            () => ["web", "pwn", "rev", "crypto", "fore", "misc"][randomInt(6)]
-          )
-        )
-      ),
-      title: randomString(randomInt(24, 8), charsets.alphabet + "      "),
-      source: `${randomString(randomInt(10, 3), charsets.alphanumeric)} CTF ${randomInt(10, 2021)}`,
-      solves: randomInt(1000),
-    }));
 
   const getProblems = (queryString: string, page: number) =>
     delay({
