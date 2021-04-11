@@ -1,6 +1,8 @@
 <script lang="ts">
   export let level: number | "";
   export let categories: string[] = [];
+  export let url: string = `/?q=${level} ${categories.join(" ")}`;
+  export let solved: boolean = false;
 
   const getColor = (category: string): string => {
     return (
@@ -30,8 +32,8 @@
 </script>
 
 <a
-  href={`/?q=${level} ${categories.join(" ")}`}
-  class={`${categories.length >= 2 ? "mixed " : ""}circle`}
+  href={url}
+  class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}circle`}
   style={mixedColors(categories.map(getColor))}>{level}</a
 >
 
@@ -59,5 +61,8 @@
     border: double 4px transparent;
     background-origin: border-box;
     background-clip: content-box, border-box;
+  }
+  .solved {
+    color: #34a853;
   }
 </style>
