@@ -19,7 +19,7 @@
     );
   };
 
-  const singleColor = (color: string): string => `border: 4px solid ${getColor(color)}`;
+  const singleColor = (color: string): string => `border: 0.25em solid ${getColor(color)}`;
 
   const mixedColors = (colors: string[]): string => {
     if (colors.length === 0) return singleColor("rgb(var(--text-color))");
@@ -60,7 +60,7 @@
     /* text-decoration: underline; */
   }
   .mixed {
-    border: double 4px transparent;
+    border: double 0.25em transparent;
     background-origin: border-box;
     background-clip: content-box, border-box;
   }
