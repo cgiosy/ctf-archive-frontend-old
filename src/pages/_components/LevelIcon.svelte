@@ -1,8 +1,10 @@
 <script lang="ts">
-  export let level: number | "";
+  import { randomInt } from "../../libs";
+
+  export let level: number | "" = "";
   export let categories: string[] = [];
   export let url: string = `/?q=${level} ${categories.join(" ")}`;
-  export let solved: boolean = false;
+  export let solved: boolean = randomInt(2) === 0;
 
   const getColor = (category: string): string => {
     return (
@@ -63,6 +65,6 @@
     background-clip: content-box, border-box;
   }
   .solved {
-    color: #34a853;
+    color: rgb(var(--green));
   }
 </style>

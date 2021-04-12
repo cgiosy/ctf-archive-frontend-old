@@ -18,7 +18,7 @@
   </a>
 {:else}
   <span class="problem" style="pointer-events: none">
-    <LevelIcon level="" />
+    <LevelIcon />
     <section>
       <h3 class="title">&nbsp;</h3>
       <div class="info">&nbsp;</div>
