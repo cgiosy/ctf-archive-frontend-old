@@ -1,4 +1,4 @@
-import { IProblem } from "../types";
+import type { IProblem, IContest } from "../types";
 
 // Charsets
 
@@ -19,6 +19,38 @@ export const charsets = {
   alphanumeric,
   printable,
 };
+
+// Utils
+
+export const compString = (a: string, b: string): -1 | 0 | 1 => (a < b ? -1 : a > b ? 1 : 0);
+
+export const compStringArray = (a: string[], b: string[]): -1 | 0 | 1 => {
+  const n: number = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) {
+    if (a[i] !== b[i]) {
+      return a[i] < b[i] ? -1 : 1;
+    }
+  }
+  if (a.length !== b.length) {
+    return a.length < b.length ? -1 : 1;
+  }
+  return 0;
+};
+
+export const compCategories = (a: string[], b: string[]): -1 | 0 | 1 => {
+  if (a.length !== b.length) {
+    return a.length < b.length ? -1 : 1;
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return a[i] < b[i] ? -1 : 1;
+    }
+  }
+  return 0;
+};
+
+export const compProblem = (a: IProblem, b: IProblem): number =>
+  compCategories(a.categories, b.categories) || a.level - b.level;
 
 // Random
 
@@ -49,6 +81,15 @@ export const randomString = (length: number, charset: string): string => {
   return arr.join("");
 };
 
+export const randomContestTitle = (
+  charset: string = charsets.alphanumeric,
+  range: number = 10,
+  start: number = 3
+): string => `${randomString(randomInt(range, start), charset)} CTF ${randomInt(10, 2021)}`;
+
+const randomCategorySize = (dim: number = 1): number =>
+  dim < 6 && randomInt(3) === 0 ? randomCategorySize(dim + 1) : dim;
+
 export const randomProblems = (
   count: number,
   titleCharset: string = charsets.alphabet + "      ",
@@ -60,14 +101,22 @@ export const randomProblems = (
     categories: Array.from(
       new Set(
         Array.from(
-          new Array(randomInt(6, 1)),
+          new Array(randomCategorySize()),
           () => ["web", "pwn", "rev", "crypto", "fore", "misc"][randomInt(6)]
         )
       )
-    ),
+    ).sort(compString),
     title: randomString(randomInt(24, 8), titleCharset),
-    source: `${randomString(randomInt(10, 3), sourceCharset)} CTF ${randomInt(10, 2021)}`,
+    source: randomContestTitle(sourceCharset),
     solves: randomInt(1000),
+  }));
+
+export const randomContests = (count: number): IContest[] =>
+  Array.from(new Array(count), (x, i) => ({
+    id: i + 1,
+    level: randomInt(30, 1),
+    problems: randomProblems(randomInt(20, 10)).sort(compProblem),
+    title: randomContestTitle(),
   }));
 
 // Promise
@@ -78,3 +127,25 @@ export const delay = <T>(value: T, timeout: number = 750): Promise<T> =>
       resolve(value);
     }, timeout);
   });
+
+// Escape
+
+export const escapeEmpty = (c: string) => "";
+
+export const escapeBackslash = (c: string) => "\\" + c;
+
+export const escapeURL = (c: string) => "%" + c.charCodeAt(0).toString(16);
+
+export const escapeBlock = (
+  str: string,
+  charset: string,
+  replacer: (substring: string, ...args: any[]) => string = escapeEmpty
+): string =>
+  str.replace(new RegExp(`[${charset.replace(/[\-\\]\^\]]/g, escapeBackslash)}]`), replacer);
+
+export const escapeAllow = (
+  str: string,
+  charset: string,
+  replacer: (substring: string, ...args: any[]) => string = escapeEmpty
+): string =>
+  str.replace(new RegExp(`[^${charset.replace(/[\-\\]\^\]]/g, escapeBackslash)}]`), replacer);
