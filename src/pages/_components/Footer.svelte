@@ -9,7 +9,7 @@
     background: rgba(var(--text-color), calc(var(--background-opacity) / 2));
     padding: 2rem 3rem;
     justify-content: center;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
   }
   section {
     width: 100%;
