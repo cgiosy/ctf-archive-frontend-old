@@ -57,6 +57,7 @@ export const compProblem = (a: IProblem, b: IProblem): number =>
 const BUFFER_SIZE = 16384;
 const buffer = new Uint32Array(BUFFER_SIZE);
 let pos = BUFFER_SIZE;
+let lastNextIntValue = 1;
 
 export const random32 = (): number => {
   if (pos === BUFFER_SIZE) {
@@ -119,6 +120,14 @@ export const randomContests = (count: number): IContest[] =>
     title: randomContestTitle(),
   }));
 
+// 디버깅용
+export const nextInt = (init: number = Number.MAX_SAFE_INTEGER): number => {
+  if (init !== Number.MAX_SAFE_INTEGER) {
+    lastNextIntValue = init;
+  }
+  return lastNextIntValue++;
+};
+
 // Promise
 
 export const delay = <T>(value: T, timeout: number = 750): Promise<T> =>
@@ -149,3 +158,12 @@ export const escapeAllow = (
   replacer: (substring: string, ...args: any[]) => string = escapeEmpty
 ): string =>
   str.replace(new RegExp(`[^${charset.replace(/[\-\\]\^\]]/g, escapeBackslash)}]`), replacer);
+
+// Exp
+
+export const expToLevel = (exp: number, precision: number = 1) => {
+  const level = Math.max(Math.floor(Math.log2(exp)) - 5, 1);
+  const remain = Math.pow(2, level + 6) - exp;
+  const percentage = Math.floor((exp / Math.pow(2, level + 5) - 1) * (precision * 100)) / precision;
+  return { level, remain, percentage };
+};

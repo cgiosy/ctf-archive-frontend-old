@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { randomInt } from "../../libs";
+  import { randomInt } from "../../libs/utils";
 
   export let level: number | "" = "";
   export let categories: string[] = [];

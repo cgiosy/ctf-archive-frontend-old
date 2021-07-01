@@ -2,7 +2,7 @@
   import InfiniteLoading from "svelte-infinite-loading";
   import Logo from "../_components/Logo.svelte";
   import ContestCard from "../_components/ContestCard.svelte";
-  import { randomInt, randomContests, delay } from "../../libs";
+  import { randomInt, randomContests, delay } from "../../libs/utils";
   import type { InfiniteEvent } from "svelte-infinite-loading";
   import type { IContest } from "../../types";
 
@@ -75,7 +75,7 @@
   .search-bar {
     display: flex;
     width: 100%;
-    padding: 1.5rem 2rem;
+    padding: 1em 1.5em;
     border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 5));
     border-radius: 0.5rem;
     color: rgb(var(--text-color));
@@ -83,7 +83,7 @@
     transition: box-shadow 0.15s;
   }
   .search-bar:hover {
-    box-shadow: 0 0.0625rem 0.375rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
+    box-shadow: 0 0.125em 0.5em 0 rgba(var(--text-color), calc(var(--background-opacity) * 5));
   }
   .search-bar:focus {
     outline: none;

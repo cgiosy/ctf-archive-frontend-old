@@ -2,7 +2,7 @@
   import InfiniteLoading from "svelte-infinite-loading";
   import Logo from "./_components/Logo.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
-  import { randomInt, randomProblems, delay } from "../libs";
+  import { randomInt, randomProblems, delay } from "../libs/utils";
   import type { InfiniteEvent } from "svelte-infinite-loading";
   import type { IProblem } from "../types";
 
