@@ -3,10 +3,26 @@
   import type { IProblem } from "../../types";
 
   export let problem: IProblem | undefined = undefined;
+  export let wallpaper: string = "";
+  export let wallpaperPos: number = 50;
+
+  // 디버깅용 함수
+  // on:wheel|preventDefault={scrollHorizontally}
+  const scrollHorizontally = (e: WheelEvent) => {
+    wallpaperPos = Math.max(0, Math.min(100, wallpaperPos + (e.deltaY / Math.abs(e.deltaY)) * 1));
+  };
+
+  let style: string =
+    wallpaper === ""
+      ? ""
+      : `background-position: top ${wallpaperPos}%, center;` +
+        `background-image: linear-gradient(to right, rgba(32, 32, 32, 0.95), rgba(32, 32, 32, 0.8), rgba(32, 32, 32, 0.35))${
+          wallpaper ? `, url('${wallpaper}.jpg')` : ""
+        }`;
 </script>
 
 {#if problem}
-  <a href={`/problem/${problem.id}`} class="problem">
+  <a href={`/problem/${problem.id}`} class="problem" {style}>
     <LevelIcon level={problem.level} categories={problem.categories} />
     <section>
       <h3 class="title">{problem.title}</h3>
@@ -34,6 +50,8 @@
     padding: 1.5em 1em;
     margin: 0.5em;
     border-radius: 0.5em;
+    background-position: center center;
+    background-size: cover;
     /* 2 vs 2.5 vs 3 */
     border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
     box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
