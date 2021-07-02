@@ -14,3 +14,19 @@ export interface IContest {
   problems: IProblem[];
   title: string;
 }
+
+export interface IUserPublicInfo {
+  username: string;
+  problems: number[];
+  exp: number[];
+  achievements: number[];
+  description: string;
+  profileImage: string;
+  profileBackground: string;
+}
+
+export interface IUserPrivateInfo extends IUserPublicInfo {
+  email: string;
+  friends: number[];
+  settings: string;
+}

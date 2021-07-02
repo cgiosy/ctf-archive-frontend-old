@@ -2,29 +2,22 @@
 <script lang="ts">
   import { goto } from "@roxi/routify";
   import Config from "../config";
-  import loginStore from "../stores/login";
+  import { login } from "../stores";
   import TopBar from "./_components/TopBar.svelte";
   import Footer from "./_components/Footer.svelte";
 
   let allowed: boolean = false;
-  let loginStatus: boolean = !Config.requireLogin;
-  if (Config.requireLogin) {
-    loginStore.subscribe((value: string) => {
-      localStorage.setItem("login", value);
-      loginStatus = value === "true";
-    });
-  }
 
   $: {
     allowed = Config.isAllowedPath(location.pathname);
-    if (!(allowed || loginStatus)) {
+    if (!(!Config.requireLogin || allowed || $login)) {
       $goto("/intro");
     }
   }
 </script>
 
 <TopBar />
-{#if allowed || loginStatus}
+{#if !Config.requireLogin || allowed || $login}
   <slot />
 {/if}
 <Footer />
