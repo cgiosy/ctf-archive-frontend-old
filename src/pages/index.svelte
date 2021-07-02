@@ -32,7 +32,7 @@
       problems: randomProblems(25),
     });
 
-  let queries: string[] = ["web", "d5", "ssti"];
+  let queries: string[] = ["@cgiosy", "d5..d2", "xss"];
   let lastQuery: string = "";
   let resultProblems: (IProblem | undefined)[] = [];
   let page = 0;
@@ -124,9 +124,11 @@
     box-shadow: 0 0.0625rem 0.375rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
   }
   li > input {
-    width: 6rem;
+    font-family: D2Coding;
+    font-size: 1.25rem;
+    width: 6em;
     border: none;
-    border-radius: 1rem;
+    border-radius: 1em;
     padding: 0.5em;
     margin: 0 0.25em;
     text-align: center;
