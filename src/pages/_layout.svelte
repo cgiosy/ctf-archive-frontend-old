@@ -60,6 +60,7 @@
     color: rgb(var(--text-color));
     background: rgb(var(--background-color));
     margin: 0;
+    overflow-y: scroll;
   }
   main {
     margin-top: 3rem;
