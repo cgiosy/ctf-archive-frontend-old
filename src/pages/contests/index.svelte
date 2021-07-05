@@ -1,6 +1,7 @@
 <script lang="ts">
   import InfiniteLoading from "svelte-infinite-loading";
   import Logo from "../_components/Logo.svelte";
+  import TextInput from "../_components/TextInput.svelte";
   import ContestCard from "../_components/ContestCard.svelte";
   import { randomInt, randomContests, delay } from "../../libs/utils";
   import type { InfiniteEvent } from "svelte-infinite-loading";
@@ -38,7 +39,7 @@
     <div class="search-logo">
       <Logo />
     </div>
-    <input type="text" class="search-bar" bind:value={query} placeholder="대회 검색" />
+    <TextInput type="text" bind:value={query} monospace={true} large={true}>대회 검색</TextInput>
   </header>
   <ul class="contests">
     {#each resultContests as contest}
@@ -71,22 +72,6 @@
   }
   ul {
     list-style-type: none;
-  }
-  .search-bar {
-    display: flex;
-    width: 100%;
-    padding: 1em 1.5em;
-    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 5));
-    border-radius: 0.5rem;
-    color: rgb(var(--text-color));
-    font-size: 1.25em;
-    transition: box-shadow 0.15s;
-  }
-  .search-bar:hover {
-    box-shadow: 0 0.125em 0.5em 0 rgba(var(--text-color), calc(var(--background-opacity) * 5));
-  }
-  .search-bar:focus {
-    outline: none;
   }
   .search-logo {
     font-size: 3rem;
