@@ -1,6 +1,7 @@
 <script lang="ts">
   export let large: boolean = false;
   export let monospace: boolean = false;
+  export let value: string = "";
 
   const classes: string[] = [];
   if (large) classes.push("large");
@@ -8,7 +9,7 @@
 </script>
 
 <label class={classes.join(" ")}>
-  <input {...$$restProps} placeholder=" " />
+  <input placeholder=" " {...$$restProps} bind:value />
   <div><slot /></div>
 </label>
 
