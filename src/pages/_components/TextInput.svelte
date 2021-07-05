@@ -1,22 +1,39 @@
-<label>
+<script lang="ts">
+  export let large: boolean = false;
+  export let monospace: boolean = false;
+
+  const classes: string[] = [];
+  if (large) classes.push("large");
+  if (monospace) classes.push("monospace");
+</script>
+
+<label class={classes.join(" ")}>
   <input {...$$restProps} placeholder=" " />
   <div><slot /></div>
 </label>
 
 <style>
   label {
-    line-height: 300%;
+    display: block;
     position: relative;
+    margin: 0.375em;
+  }
+  .large {
+    font-size: 1.5em;
+  }
+  .monospace,
+  .monospace * {
+    font-family: monospace;
   }
   input,
   div {
-    display: flex;
-    font-size: 1.25em;
+    display: block;
+    font-size: 1em;
   }
   div {
     position: absolute;
-    top: 1.125em;
-    left: 0.875em;
+    top: 0.75em;
+    left: 0.5em;
     padding: 0 0.5em;
     line-height: normal;
     transition: color 0.15s, transform 0.15s;
@@ -27,7 +44,6 @@
     contain: size;
     width: 100%;
     padding: 0.6875em 0.9375em;
-    margin: 0.375em;
     color: rgb(var(--text-color));
     background: rgb(var(--background-color));
     border-radius: 0.25em;
@@ -37,7 +53,7 @@
   }
   input:hover,
   input:focus {
-    box-shadow: 0 0.0625rem 0.375rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
+    box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
   }
   input:focus {
     padding: 0.625em 0.875em;
