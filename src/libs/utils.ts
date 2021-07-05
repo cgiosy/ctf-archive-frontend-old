@@ -167,3 +167,18 @@ export const expToLevel = (exp: number, precision: number = 1) => {
   const percentage = Math.floor((exp / Math.pow(2, level + 5) - 1) * (precision * 100)) / precision;
   return { level, remain, percentage };
 };
+
+// Local Storage
+
+export const getLocalStorage = <T = unknown>(key: string, initialValue?: T) => (): T | null => {
+  const value = localStorage.getItem(key);
+  if (value === null) return initialValue ?? null;
+  return JSON.parse(value);
+};
+export const setLocalStorage = <T = unknown>(key: string) => async (value: T | null) => {
+  if (value === null) {
+    localStorage.removeItem(key);
+    return;
+  }
+  localStorage.setItem(key, JSON.stringify(value));
+};
