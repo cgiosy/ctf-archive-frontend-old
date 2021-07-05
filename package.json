@@ -65,8 +65,8 @@
     ]
   },
   "dependencies": {
+    "@sveltestack/svelte-query": "^1.4.1",
     "normalize.css": "^8.0.1",
-    "svelte-infinite-loading": "^1.3.6",
-    "svelte-query": "^0.0.1-alpha1"
+    "svelte-infinite-loading": "^1.3.6"
   }
 }
