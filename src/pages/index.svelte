@@ -1,6 +1,7 @@
 <script lang="ts">
   import InfiniteLoading from "svelte-infinite-loading";
   import Logo from "./_components/Logo.svelte";
+  import TextInput from "./_components/TextInput.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
   import { randomInt, randomProblems, delay } from "../libs/utils";
   import type { InfiniteEvent } from "svelte-infinite-loading";
@@ -8,6 +9,7 @@
 
   const pageSize = 25;
 
+  // Tag Functions
   const isCategory = (query: string): boolean =>
     ["web", "pwn", "rev", "crypto", "fore", "misc"].includes(query);
 
@@ -32,13 +34,12 @@
       problems: randomProblems(25),
     });
 
-  let queries: string[] = ["@cgiosy", "d5..d2", "xss"];
-  let lastQuery: string = "";
+  let queries: string = "";
   let resultProblems: (IProblem | undefined)[] = [];
   let page = 0;
 
   const infiniteHandler = ({ detail: { loaded, complete } }: InfiniteEvent) => {
-    const request = getProblems(queries.join(" "), ++page);
+    const request = getProblems(queries, ++page);
     const prevResultProblems = [...resultProblems];
     resultProblems = [...prevResultProblems, ...new Array(pageSize)];
     request.then(({ count, problems }) => {
@@ -49,17 +50,6 @@
       loaded();
     });
   };
-
-  $: {
-    if (lastQuery !== "") {
-      queries.push(lastQuery);
-      lastQuery = "";
-    }
-  }
-
-  $: {
-    queries = queries.filter((query) => query.trim() !== "");
-  }
 </script>
 
 <main>
@@ -67,19 +57,7 @@
     <div class="search-logo">
       <Logo />
     </div>
-    <ul class="search-bar">
-      {#each queries as query}
-        <li>
-          {#if false && isDifficulty(query)}
-            <i class={`icon-${query}`} />
-          {/if}
-          <input type="text" class={getQueryType(query)} bind:value={query} />
-        </li>
-      {/each}
-      <li>
-        <input type="text" bind:value={lastQuery} placeholder="검색어" />
-      </li>
-    </ul>
+    <TextInput type="text" bind:value={queries} monospace={true} large={true}>검색어</TextInput>
   </header>
   <ul class="problems">
     {#each resultProblems as problem}
@@ -113,42 +91,9 @@
   ul {
     list-style-type: none;
   }
-  .search-bar {
-    display: flex;
-    padding: 1rem;
-    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 5));
-    border-radius: 0.5rem;
-    transition: box-shadow 0.15s;
-  }
-  .search-bar:hover {
-    box-shadow: 0 0.0625rem 0.375rem 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
-  }
-  li > input {
-    font-family: D2Coding;
-    font-size: 1.25rem;
-    width: 6em;
-    border: none;
-    border-radius: 1em;
-    padding: 0.5em;
-    margin: 0 0.25em;
-    text-align: center;
-    color: rgb(var(--text-color));
-    background-color: rgba(var(--text-color), calc(var(--background-opacity) * 2));
-  }
-  li > input:focus {
-    outline: none;
-  }
   .search-logo {
     font-size: 3rem;
     margin-bottom: 2rem;
-  }
-  .category {
-    color: white;
-    background-color: #2962ff;
-  }
-  .difficulty {
-    color: white;
-    background-color: #263238;
   }
 
   .problems {
