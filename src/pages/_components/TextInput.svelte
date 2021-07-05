@@ -35,6 +35,7 @@
     top: 0.75em;
     left: 0.5em;
     padding: 0 0.5em;
+    color: rgba(var(--text-color), calc(var(--background-opacity) * 10));
     line-height: normal;
     transition: color 0.15s, transform 0.15s;
     transform-origin: top left;
