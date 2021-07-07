@@ -1,13 +1,26 @@
 <script lang="ts">
+  import CircleSpinner from "./CircleSpinner.svelte";
+  import ErrorMessage from "./ErrorMessage.svelte";
+
   export let onClick: svelte.JSX.MouseEventHandler<HTMLButtonElement> | undefined = undefined;
+  export let status: "loading" | "error" | "success" | undefined = undefined;
+  export let errorMsg: string = "";
 </script>
 
-<button on:click={onClick}><slot /></button>
+<button class={status} on:click={onClick} disabled={status === "loading"}>
+  {#if status === "loading"}
+    <CircleSpinner />
+  {:else}
+    {#if status === "error"}
+      <ErrorMessage fadeout={true}>{errorMsg}</ErrorMessage>
+    {/if}
+    <div><slot /></div>
+  {/if}
+</button>
 
 <style>
   button {
-    display: inline-flex;
-    justify-content: center;
+    display: grid;
     color: rgb(var(--link-color));
     background: none;
     padding: 1.25em 3em;
@@ -19,7 +32,26 @@
     transition: background-color 0.25s;
     cursor: pointer;
   }
+  button[disabled] {
+    background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.75));
+  }
   button:hover {
     background-color: rgba(var(--text-color), var(--background-opacity));
+  }
+  button.error > div {
+    grid-area: 1 / 1 / 2 / 2;
+    animation: fadein linear 1.5s forwards;
+  }
+
+  @keyframes fadein {
+    0% {
+      transform: rotateY(90deg);
+    }
+    87.5% {
+      transform: rotateY(90deg);
+    }
+    100% {
+      transform: rotateY(0);
+    }
   }
 </style>
