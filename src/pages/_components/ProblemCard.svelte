@@ -59,7 +59,7 @@
   }
   .problem:hover {
     border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 4));
-    box-shadow: 0 0.125em 0.5em 0 rgba(var(--text-color), calc(var(--background-opacity) * 8));
+    box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
     transform: scale(1.025);
   }
   div {
