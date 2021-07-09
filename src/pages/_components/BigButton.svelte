@@ -22,8 +22,12 @@
   button {
     display: grid;
     color: rgb(var(--link-color));
+    align-items: center;
+    justify-content: center;
     background: none;
-    padding: 1.25em 3em;
+    height: 3.5em;
+    /* padding: 1.25em 3em; */
+    padding: 0 3em;
     margin: 0.25em 0.5em;
     border: none;
     border-radius: 2.5em;
