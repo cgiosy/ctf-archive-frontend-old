@@ -1,23 +1,27 @@
 <!-- routify:options preload="proximity" -->
 <script lang="ts">
   import { goto } from "@roxi/routify";
+  import { useQuery } from "@sveltestack/svelte-query";
   import Config from "../config";
-  import { login } from "../stores";
+  import type { IUserPrivateInfo } from "../types";
+  import { getLocalStorage } from "../libs/utils";
   import TopBar from "./_components/TopBar.svelte";
   import Footer from "./_components/Footer.svelte";
 
   let allowed: boolean = false;
+  const user = useQuery("user", getLocalStorage<IUserPrivateInfo>("user"));
 
   $: {
     allowed = Config.isAllowedPath(location.pathname);
-    if (!(!Config.requireLogin || allowed || $login)) {
+    if (!(!Config.requireLogin || allowed || $user.data)) {
+      sessionStorage.setItem("lastPage", location.pathname);
       $goto("/intro");
     }
   }
 </script>
 
 <TopBar />
-{#if !Config.requireLogin || allowed || $login}
+{#if !Config.requireLogin || allowed || $user.data}
   <slot />
 {/if}
 <Footer />
@@ -32,6 +36,7 @@
 
     /* == Others == */
     --link-color: 61, 90, 254;
+    --error-color: 255, 82, 82;
     --content-max-width: 70rem;
   }
   @media (prefers-color-scheme: dark) {
@@ -39,7 +44,7 @@
       /* == Dark Theme == */
       --text-color: 255, 255, 255;
       --background-color: 20, 20, 20;
-      --background-opacity: 0.05;
+      --background-opacity: 0.035;
       --green: 20, 185, 20;
 
       /* == Black Theme == */
