@@ -76,6 +76,12 @@ export const randomInt = (range: number, start: number = 0): number => {
   return ((x % range >>> 0) + start) >>> 0;
 };
 
+export const randomBinomialInt = (range: number, middle: number): number => {
+  let result = 0;
+  for (let i = 0; i < range; i++) result += randomInt(range) < middle ? 1 : 0;
+  return result;
+};
+
 export const randomString = (length: number, charset: string): string => {
   const arr = new Array(length);
   for (let i = 0; i < length; ++i) arr[i] = charset[randomInt(charset.length)];
@@ -112,11 +118,28 @@ export const randomProblems = (
     solves: randomInt(1000),
   }));
 
-export const randomContests = (count: number): IContest[] =>
+export const randomProblemsWithCategory = (
+  count: number,
+  category: string,
+  titleCharset: string = charsets.alphabet + "      ",
+  sourceCharset: string = charsets.alphanumeric
+): IProblem[] =>
   Array.from(new Array(count), (x, i) => ({
     id: i + 1,
     level: randomInt(30, 1),
-    problems: randomProblems(randomInt(20, 10)).sort(compProblem),
+    categories: [category],
+    title: randomString(randomInt(24, 8), titleCharset),
+    source: randomContestTitle(sourceCharset),
+    solves: randomInt(1000),
+  }));
+
+export const randomContests = (count: number): IContest[] =>
+  Array.from(new Array(count), (x, i) => ({
+    id: i + 1,
+    problems: ["web", "rev", "pwn", "crypto", "misc"]
+      .map((category) => randomProblemsWithCategory(randomBinomialInt(12, 6), category))
+      .reduce((prv, cur) => [...prv, ...cur])
+      .sort(compProblem),
     title: randomContestTitle(),
   }));
 
@@ -162,9 +185,9 @@ export const escapeAllow = (
 // Exp
 
 export const expToLevel = (exp: number, precision: number = 1) => {
-  const level = Math.max(Math.floor(Math.log2(exp)) - 5, 1);
-  const remain = Math.pow(2, level + 6) - exp;
-  const percentage = Math.floor((exp / Math.pow(2, level + 5) - 1) * (precision * 100)) / precision;
+  const level = Math.max(Math.floor(Math.log2(exp)) - 3, 1);
+  const remain = Math.pow(2, level + 3) - exp;
+  const percentage = Math.floor((exp / Math.pow(2, level + 3) - 1) * (precision * 100)) / precision;
   return { level, remain, percentage };
 };
 
