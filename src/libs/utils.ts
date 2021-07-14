@@ -37,20 +37,21 @@ export const compStringArray = (a: string[], b: string[]): -1 | 0 | 1 => {
   return 0;
 };
 
-export const compCategories = (a: string[], b: string[]): -1 | 0 | 1 => {
-  if (a.length !== b.length) {
-    return a.length < b.length ? -1 : 1;
+export const compLevels = (a: number[], b: number[]): -1 | 0 | 1 => {
+  let cntA = 0;
+  let cntB = 0;
+  for (let i = 0; i < a.length; i++) if (a[i] !== 0) cntA += 1;
+  for (let i = 0; i < b.length; i++) if (b[i] !== 0) cntB += 1;
+  if (cntA !== cntB) {
+    return cntA < cntB ? -1 : 1;
   }
   for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) {
-      return a[i] < b[i] ? -1 : 1;
-    }
+    if (a[i] !== b[i]) return b[i] === 0 || (a[i] !== 0 && a[i] < b[i]) ? -1 : 1;
   }
   return 0;
 };
 
-export const compProblem = (a: IProblem, b: IProblem): number =>
-  compCategories(a.categories, b.categories) || a.level - b.level;
+export const compProblem = (a: IProblem, b: IProblem): number => compLevels(a.levels, b.levels);
 
 // Random
 
@@ -97,6 +98,13 @@ export const randomContestTitle = (
 const randomCategorySize = (dim: number = 1): number =>
   dim < 6 && randomInt(3) === 0 ? randomCategorySize(dim + 1) : dim;
 
+const randomLevels = (): number[] => {
+  const levels = [0, 0, 0, 0, 0, 0];
+  do levels[randomInt(20) ? randomInt(4) : randomInt(2, 4)] = randomInt(30, 1);
+  while (!randomInt(20));
+  return levels;
+};
+
 export const randomProblems = (
   count: number,
   titleCharset: string = charsets.alphabet + "      ",
@@ -104,15 +112,7 @@ export const randomProblems = (
 ): IProblem[] =>
   Array.from(new Array(count), (x, i) => ({
     id: i + 1,
-    level: randomInt(30, 1),
-    categories: Array.from(
-      new Set(
-        Array.from(
-          new Array(randomCategorySize()),
-          () => ["web", "pwn", "rev", "crypto", "fore", "misc"][randomInt(6)]
-        )
-      )
-    ).sort(compString),
+    levels: randomLevels(),
     title: randomString(randomInt(24, 8), titleCharset),
     source: randomContestTitle(sourceCharset),
     solves: randomInt(1000),
@@ -120,14 +120,13 @@ export const randomProblems = (
 
 export const randomProblemsWithCategory = (
   count: number,
-  category: string,
+  category: number,
   titleCharset: string = charsets.alphabet + "      ",
   sourceCharset: string = charsets.alphanumeric
 ): IProblem[] =>
   Array.from(new Array(count), (x, i) => ({
     id: i + 1,
-    level: randomInt(30, 1),
-    categories: [category],
+    levels: randomLevels(),
     title: randomString(randomInt(24, 8), titleCharset),
     source: randomContestTitle(sourceCharset),
     solves: randomInt(1000),
@@ -137,7 +136,7 @@ export const randomContests = (count: number): IContest[] =>
   Array.from(new Array(count), (x, i) => ({
     id: i + 1,
     problems: ["web", "rev", "pwn", "crypto", "misc"]
-      .map((category) => randomProblemsWithCategory(randomBinomialInt(12, 6), category))
+      .map((x, i) => randomProblemsWithCategory(randomBinomialInt(8, 4), i))
       .reduce((prv, cur) => [...prv, ...cur])
       .sort(compProblem),
     title: randomContestTitle(),
