@@ -2,8 +2,7 @@ export type IProblemCategory = "web" | "pwn" | "rev" | "crypto" | "fore" | "misc
 
 export interface IProblem {
   id: number;
-  level: number;
-  categories: string[];
+  levels: number[];
   title: string;
   source: string;
   solves: number;
@@ -26,6 +25,7 @@ export interface IUserPublicInfo {
 }
 
 export interface IUserPrivateInfo extends IUserPublicInfo {
+  sessionid: string;
   email: string;
   friends: number[];
   settings: string;

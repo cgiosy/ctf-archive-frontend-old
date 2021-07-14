@@ -32,7 +32,6 @@
     --text-color: 21, 32, 43;
     --background-color: 255, 255, 255;
     --background-opacity: 0.05;
-    --green: 16, 138, 16;
 
     /* == Others == */
     --link-color: 61, 90, 254;
@@ -45,7 +44,6 @@
       --text-color: 255, 255, 255;
       --background-color: 20, 20, 20;
       --background-opacity: 0.035;
-      --green: 20, 185, 20;
 
       /* == Black Theme == */
       /*

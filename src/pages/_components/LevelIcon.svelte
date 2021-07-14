@@ -1,42 +1,59 @@
 <script lang="ts">
   import { randomInt } from "../../libs/utils";
 
-  export let level: number | "" = "";
-  export let categories: string[] = [];
-  export let url: string = `/?q=${level} ${categories.join(" ")}`;
+  interface ICategory {
+    index: number;
+    levelSum: number;
+  }
+
+  export let levels: number[] = [0, 0, 0, 0, 0];
   export let solved: boolean = randomInt(2) === 0;
 
-  const getColor = (category: string): string => {
+  const getColor = (category: number): string => {
     return (
       {
-        pwn: "rgb(252, 40, 157)",
-        rev: "rgb(78, 224, 174)",
-        crypto: "rgb(247, 147, 7)",
-        web: "rgb(66, 198, 220)",
-        fore: "rgb(241, 222, 64)",
-        misc: "rgb(164, 109, 254)",
-      }[category] ?? category
+        0: "rgb(240, 98, 146)",
+        1: "rgb(179, 136, 255)",
+        2: "rgb(255, 112, 67)",
+        3: "rgb(100, 181, 246)",
+        4: "rgb(67, 160, 71)",
+        5: "rgb(97, 97, 97)",
+      }[category] ?? "rgb(--text-color)"
     );
   };
 
-  const singleColor = (color: string): string => `border: 0.25em solid ${getColor(color)}`;
+  const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
 
-  const mixedColors = (colors: string[]): string => {
-    if (colors.length === 0) return singleColor("rgb(var(--text-color))");
-    if (colors.length === 1) return singleColor(colors[0]);
-    colors.sort();
+  let categories: ICategory[] = [];
+  let levelSum = 0;
+  let expSum = 0;
+  for (let index = 0; index < levels.length; index++) {
+    const level = levels[index];
+    if (level > 0) {
+      levelSum += level;
+      expSum += 1 << level;
+      categories.push({ index, levelSum });
+    }
+  }
 
-    const deg = 360 / colors.length;
-    return `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${colors
-      .map((color, index) => `${getColor(color)} ${deg * index}deg ${deg * (index + 1)}deg`)
-      .join(", ")})`;
-  };
+  const deg = 360 / levelSum;
+  const style =
+    categories.length === 0
+      ? "rgb(var(--text-color))"
+      : categories.length === 1
+      ? toBorder(getColor(categories[0].index))
+      : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${categories
+          .map(
+            ({ index, levelSum }) =>
+              `${getColor(index)} ${deg * (levelSum - levels[index])}deg ${deg * levelSum}deg`
+          )
+          .join(", ")})`;
 </script>
 
 <a
-  href={url}
+  href="/"
   class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}circle`}
-  style={mixedColors(categories.map(getColor))}>{level}</a
+  {style}>{expSum > 0 ? Math.floor(Math.log2(expSum)) : ""}</a
 >
 
 <style>
@@ -65,6 +82,6 @@
     background-clip: content-box, border-box;
   }
   .solved {
-    color: rgb(var(--green));
+    /* opacity: 0.375; */
   }
 </style>

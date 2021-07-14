@@ -23,7 +23,7 @@
 
 {#if problem}
   <a href={`/problem/${problem.id}`} class="problem" {style}>
-    <LevelIcon level={problem.level} categories={problem.categories} />
+    <LevelIcon levels={problem.levels} />
     <section>
       <h3 class="title">{problem.title}</h3>
       <div class="info">
