@@ -10,7 +10,6 @@
     // TODO: smooth scroll
     if (e.currentTarget) (e.currentTarget as Element).scrollLeft += e.deltaY;
   }
-  // url={`/problem/${id}`}
 </script>
 
 {#if contest}
@@ -21,7 +20,7 @@
       </h3>
       <ul on:wheel|preventDefault={scrollHorizontally}>
         {#each contest.problems as { id, levels }}
-          <li><LevelIcon {levels} /></li>
+          <li><LevelIcon url={`/problem/${id}`} {levels} /></li>
         {/each}
       </ul>
     </section>

@@ -6,6 +6,7 @@
     levelSum: number;
   }
 
+  export let url: string | undefined = undefined;
   export let levels: number[] = [0, 0, 0, 0, 0];
   export let solved: boolean = randomInt(2) === 0;
 
@@ -51,7 +52,7 @@
 </script>
 
 <a
-  href="/"
+  href={url}
   class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}circle`}
   {style}>{expSum > 0 ? Math.floor(Math.log2(expSum)) : ""}</a
 >
@@ -82,6 +83,6 @@
     background-clip: content-box, border-box;
   }
   .solved {
-    /* opacity: 0.375; */
+    opacity: 0.375;
   }
 </style>
