@@ -40,7 +40,7 @@
   const deg = 360 / levelSum;
   const style =
     categories.length === 0
-      ? "rgb(var(--text-color))"
+      ? toBorder("rgb(var(--text-color))")
       : categories.length === 1
       ? toBorder(getColor(categories[0].index))
       : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${categories
