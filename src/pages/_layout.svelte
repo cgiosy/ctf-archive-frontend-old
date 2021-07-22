@@ -21,7 +21,7 @@
 </script>
 
 <TopBar />
-{#if !Config.requireLogin || allowed || $user.data}
+{#if Config.requireLogin === false || allowed === true || $user.data != null}
   <slot />
 {/if}
 <Footer />

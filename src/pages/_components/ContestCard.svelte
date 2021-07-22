@@ -12,7 +12,7 @@
   }
 </script>
 
-{#if contest}
+{#if contest !== undefined}
   <a href={`/contest/${contest.id}`} class="contest">
     <section>
       <h3 class="title" style="/* background-image: src('/assets/images/contest/{contest.id}') */">

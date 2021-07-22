@@ -21,7 +21,7 @@
         }`;
 </script>
 
-{#if problem}
+{#if problem !== undefined}
   <a href={`/problem/${problem.id}`} class="problem" {style}>
     <LevelIcon levels={problem.levels} />
     <section>
