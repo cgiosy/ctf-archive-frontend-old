@@ -3,7 +3,8 @@
   import Logo from "../_components/Logo.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import ContestCard from "../_components/ContestCard.svelte";
-  import { randomInt, randomContests, delay } from "../../libs/utils";
+  import { randomInt, randomContests } from "../../libs/random";
+  import { delay } from "../../libs/utils";
   import type { InfiniteEvent } from "svelte-infinite-loading";
   import type { IContest } from "../../types";
 

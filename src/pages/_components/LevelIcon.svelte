@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { randomInt } from "../../libs/utils";
-
   interface ICategory {
     index: number;
     levelSum: number;
@@ -8,7 +6,8 @@
 
   export let url: string | undefined = undefined;
   export let levels: number[] = [0, 0, 0, 0, 0];
-  export let solved: boolean = randomInt(2) === 0;
+  export let solved: boolean = false;
+  export let small: boolean = false;
 
   const getColor = (category: number): string => {
     return (
@@ -53,7 +52,9 @@
 
 <a
   href={url}
-  class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}circle`}
+  class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}${
+    small ? "small " : ""
+  }circle`}
   {style}>{expSum > 0 ? Math.floor(Math.log2(expSum)) : ""}</a
 >
 
@@ -68,7 +69,7 @@
     border-radius: 50%;
     font-family: Montserrat;
     font-weight: bold;
-    font-size: 1.1em;
+    font-size: 1.125em;
     margin: 0.25rem;
     flex-shrink: 0;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
@@ -84,5 +85,9 @@
   }
   .solved {
     opacity: 0.375;
+  }
+  .small {
+    font-size: 0.875em;
+    /* font-size: 0.9375em; */
   }
 </style>
