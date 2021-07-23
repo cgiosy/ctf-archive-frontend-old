@@ -4,20 +4,21 @@ import type { IUserPrivateInfo } from "../types";
 
 const user = getLocalStorage<IUserPrivateInfo>("user");
 
-export const get = (path: string, query?: Record<string, string>, config?: RequestInit) => {
+const toSearchParams = (query?: Record<string, string>) => {
   const searchParams = new URLSearchParams(query).toString();
-  return fetch(Config.apiHost + path + (searchParams ? "?" + searchParams : "")).then(
-    async (res) => {
-      if (res.ok === false) {
-        const status = res.status.toString();
-        const text = await res.text();
-        throw new Error(text ? status + ":" + text : status);
-      }
-      const json = await res.json();
-      return json;
-    }
-  );
+  return searchParams ? "?" + searchParams : "";
 };
+
+export const get = (path: string, query?: Record<string, string>, config?: RequestInit) =>
+  fetch(Config.apiHost + path + toSearchParams(query)).then(async (res) => {
+    if (res.ok === false) {
+      const status = res.status.toString();
+      const text = await res.text();
+      throw new Error(text ? status + ":" + text : status);
+    }
+    const json = await res.json();
+    return json;
+  });
 
 export const post = (path: string, body?: unknown, config?: RequestInit) =>
   fetch(Config.apiHost + path, {
