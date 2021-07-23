@@ -1,18 +1,24 @@
 <script lang="ts">
+  import type { MutationStoreResult } from "@sveltestack/svelte-query";
+  import { toLocaleErrorMessage } from "../../libs/error_message";
+
   import CircleSpinner from "./CircleSpinner.svelte";
   import ErrorMessage from "./ErrorMessage.svelte";
 
-  export let onClick: svelte.JSX.MouseEventHandler<HTMLButtonElement> | undefined = undefined;
-  export let status: "loading" | "error" | "success" | undefined = undefined;
-  export let errorMsg: string = "";
+  export let mutation: MutationStoreResult;
+  export let args: any = undefined;
+
+  const mutate = () => {
+    $mutation.mutate(args);
+  };
 </script>
 
-<button class={status} on:click={onClick} disabled={status === "loading"}>
-  {#if status === "loading"}
+<button on:click={mutate} class={$mutation.status} disabled={$mutation.isLoading}>
+  {#if $mutation.isLoading === true}
     <CircleSpinner />
   {:else}
-    {#if status === "error"}
-      <ErrorMessage fadeout={true}>{errorMsg}</ErrorMessage>
+    {#if $mutation.isError === true}
+      <ErrorMessage fadeout={true}>{toLocaleErrorMessage($mutation.error)}</ErrorMessage>
     {/if}
     <div><slot /></div>
   {/if}
