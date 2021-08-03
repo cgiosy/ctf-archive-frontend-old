@@ -5,8 +5,9 @@ Starter template for [Routify](https://github.com/sveltech/routify).
 ### Get started
 
 #### Starter templates
+
 | Template                                  | Description                                                 |
-|-------------------------------------------|-------------------------------------------------------------|
+| ----------------------------------------- | ----------------------------------------------------------- |
 | [master](https://example.routify.dev/)    | Default template, includes examples folder                  |
 | [blog](https://blog-example.routify.dev/) | Generates a blog from local markdown posts. Includes mdsvex |
 | [auth](https://auth-example.routify.dev/) | Embedded login on protected pages. Includes Auth0           |
@@ -23,15 +24,15 @@ The above commands will populate the current directory, they don't create a new 
 
 ### npm scripts
 
-| Syntax           | Description                                                                       |
-|------------------|-----------------------------------------------------------------------------------|
-| `dev`            | Development (port 5000)                                                           |
-| `dev:nollup`     | Development with crazy fast rebuilds (port 5000)                                  |
-| `dev-dynamic`    | Development with dynamic imports                                                  |
-| `build`          | Build a bundled app with SSR + prerendering and dynamic imports                   |
-| `serve`          | Run after a build to preview. Serves SPA on 5000 and SSR on 5005                  |
-| `deploy:*`       | Deploy to netlify or now                                                          |
-| `export`         | Create static pages from content in dist folder (used by `npm run build`)         |
+| Syntax        | Description                                                               |
+| ------------- | ------------------------------------------------------------------------- |
+| `dev`         | Development (port 5000)                                                   |
+| `dev:nollup`  | Development with crazy fast rebuilds (port 5000)                          |
+| `dev-dynamic` | Development with dynamic imports                                          |
+| `build`       | Build a bundled app with SSR + prerendering and dynamic imports           |
+| `serve`       | Run after a build to preview. Serves SPA on 5000 and SSR on 5005          |
+| `deploy:*`    | Deploy to netlify or now                                                  |
+| `export`      | Create static pages from content in dist folder (used by `npm run build`) |
 
 ### SSR and pre-rendering
 
@@ -49,9 +50,9 @@ See [src/pages/example/api/[showId].svelte](https://github.com/sveltech/routify-
 
 ### Production
 
-* For SPA or SSR apps please make sure that url rewrite is enabled on the server.
-* For SPA redirect to `__app.html`.
-* For SSR redirect to the lambda function or express server.
+- For SPA or SSR apps please make sure that url rewrite is enabled on the server.
+- For SPA redirect to `index.html`.
+- For SSR redirect to the lambda function or express server.
 
 ### Typescript
 
@@ -60,7 +61,6 @@ For Typescript, we recommend [@lamualfa](https://github.com/lamualfa) excellent 
 New project: `npx routify-ts init <project-name> [routify-init-args]`
 
 Existing project: `npx routify-ts convert [project-directory]`
-
 
 ### Issues?
 

@@ -18,7 +18,7 @@
     "build": "run-s build:*",
     "build:app": "routify -b && rollup -c",
     "build:static": "spank",
-    "serve": "spassr --assets-dir dist --entrypoint dist/__app.html --script dist/assets/main.js --ssr",
+    "serve": "spassr --assets-dir dist --entrypoint dist/index.html --script dist/assets/main.js --ssr",
     "rollup": "rollup -cw",
     "nollup": "nollup -c",
     "routify": "routify",

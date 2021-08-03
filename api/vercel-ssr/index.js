@@ -1,14 +1,8 @@
 const fs = require("fs");
 const { tossr } = require("tossr");
 
-const script = fs.readFileSync(
-  require.resolve("../../dist/assets/bundle.js"),
-  "utf8"
-);
-const template = fs.readFileSync(
-  require.resolve("../../dist/__app.html"),
-  "utf8"
-);
+const script = fs.readFileSync(require.resolve("../../dist/assets/bundle.js"), "utf8");
+const template = fs.readFileSync(require.resolve("../../dist/index.html"), "utf8");
 
 module.exports = async (req, res) => {
   const html = await tossr(template, script, req.url, {});
