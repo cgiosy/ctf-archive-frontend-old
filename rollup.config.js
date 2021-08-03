@@ -42,7 +42,7 @@ const serve = () => ({
 const copyToDistAndExit = () => ({
   writeBundle() {
     copySync(publicDir, distDir);
-    process.exit(code);
+    process.exit();
   },
 });
 
