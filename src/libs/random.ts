@@ -1,5 +1,5 @@
-import type { IProblem, IContest, IUserPublicInfo } from "../types";
-import { charsets } from "./utils";
+import type { IProblem, IContest, IUserPublicInfo, Levels, Exps } from "../types";
+import { charsets, expsSum, levelsToExp } from "./utils";
 import { compProblem } from "./compare";
 
 const BUFFER_SIZE = 16384;
@@ -45,11 +45,18 @@ export const randomContestTitle = (
 const randomCategorySize = (dim: number = 1): number =>
   dim < 6 && randomInt(3) === 0 ? randomCategorySize(dim + 1) : dim;
 
-const randomLevels = (): number[] => {
-  const levels = [0, 0, 0, 0, 0, 0];
+const randomLevels = () => {
+  const levels: Levels = [0, 0, 0, 0, 0, 0];
   do levels[randomInt(20) ? randomInt(4) : randomInt(2, 4)] = randomInt(30, 1);
   while (!randomInt(20));
-  return levels;
+  return { level: levelsToExp(levels), levels };
+};
+
+const randomExps = () => {
+  const exps: Exps = [0, 0, 0, 0, 0, 0];
+  do exps[randomInt(20) ? randomInt(4) : randomInt(2, 4)] = randomInt(1 << 30, 0);
+  while (!randomInt(20));
+  return { exp: expsSum(exps), exps };
 };
 
 export const randomProblems = (
@@ -59,10 +66,10 @@ export const randomProblems = (
 ): IProblem[] =>
   Array.from(new Array(count), (x, i) => ({
     id: i + 1,
-    levels: randomLevels(),
     title: randomString(randomInt(24, 8), titleCharset),
     source: randomContestTitle(sourceCharset),
     solves: randomInt(1000),
+    ...randomLevels(),
   }));
 
 export const randomProblemsWithCategory = (
@@ -73,10 +80,10 @@ export const randomProblemsWithCategory = (
 ): IProblem[] =>
   Array.from(new Array(count), (x, i) => ({
     id: i + 1,
-    levels: randomLevels(),
     title: randomString(randomInt(24, 8), titleCharset),
     source: randomContestTitle(sourceCharset),
     solves: randomInt(1000),
+    ...randomLevels(),
   }));
 
 export const randomContests = (count: number): IContest[] =>
@@ -93,11 +100,11 @@ export const randomUsers = (count: number): IUserPublicInfo[] =>
   Array.from(new Array(count), (x, i) => ({
     username: randomString(randomInt(7, 3), charsets.lowercase + charsets.numeric),
     problems: Array.from(new Array(randomInt(1000)), (x, i) => i),
-    exp: Array.from(new Array(6), (x, i) => randomInt(1 << 26)),
     achievements: [],
     description: randomString(randomInt(50), charsets.alphanumeric + "                  "),
     profileImage: "",
     profileBackground: "",
+    ...randomExps(),
   }));
 
 // 디버깅용

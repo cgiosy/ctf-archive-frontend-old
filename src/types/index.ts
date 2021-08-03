@@ -1,8 +1,20 @@
-export type IProblemCategory = "web" | "pwn" | "rev" | "crypto" | "fore" | "misc";
+export enum ProblemCategory {
+  Pwnable,
+  Reversing,
+  Crypto,
+  Web,
+  Forensic,
+  Misc,
+}
+
+export type Levels = [number, number, number, number, number, number];
+
+export type Exps = [number, number, number, number, number, number];
 
 export interface IProblem {
   id: number;
-  levels: number[];
+  level: number;
+  levels: Levels;
   title: string;
   source: string;
   solves: number;
@@ -17,7 +29,8 @@ export interface IContest {
 export interface IUserPublicInfo {
   username: string;
   problems: number[];
-  exp: number[];
+  exp: number;
+  exps: Exps;
   achievements: number[];
   description: string;
   profileImage: string;
