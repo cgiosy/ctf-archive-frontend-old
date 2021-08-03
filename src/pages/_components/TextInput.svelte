@@ -31,6 +31,7 @@
     display: block;
     font: inherit;
     line-height: 1;
+    cursor: text;
   }
   div {
     position: absolute;
