@@ -29,15 +29,17 @@
   input,
   div {
     display: block;
-    font-size: 1em;
+    font: inherit;
+    line-height: 1;
   }
   div {
     position: absolute;
-    top: 0.75em;
+    display: inline;
+    /* top: 0.75em; */
+    top: 0.875em;
     left: 0.5em;
     padding: 0 0.5em;
     color: rgba(var(--text-color), calc(var(--background-opacity) * 10));
-    line-height: normal;
     transition: color 0.15s, transform 0.15s;
     transform-origin: top left;
     user-select: none;
