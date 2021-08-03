@@ -27,7 +27,7 @@
     });
   };
 
-  const signin = useMutation(() => post("/login", { id: username, password }), {
+  const signin = useMutation(() => post("/login", { id: text || username, password }), {
     onSuccess: (data) => {
       delete data.type;
       login(data);
