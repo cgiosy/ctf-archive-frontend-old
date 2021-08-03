@@ -38,9 +38,11 @@ const serve = () => ({
     });
   },
 });
-const copyToDist = () => ({
+
+const copyToDistAndExit = () => ({
   writeBundle() {
     copySync(publicDir, distDir);
+    process.exit(code);
   },
 });
 
@@ -107,7 +109,7 @@ export default {
       maximumFileSizeToCacheInBytes: 10000000, // 10 MB,
       mode: "production",
     }),
-    production && copyToDist(),
+    production && copyToDistAndExit(),
   ],
   watch: {
     clearScreen: false,
