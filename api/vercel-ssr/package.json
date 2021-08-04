@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "vercel-build": ""
+    "vercel-build": "echo Not implemented."
   },
   "devDependencies": {
     "rollup": "^2.28.2"
