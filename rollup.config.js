@@ -7,7 +7,6 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import { copySync, removeSync } from "fs-extra";
-// import { spassr } from "spassr";
 import getConfig from "@roxi/routify/lib/utils/config";
 import sveltePreprocess from "svelte-preprocess";
 import postcssImport from "postcss-import";
@@ -29,15 +28,6 @@ const serve = () => ({
       entrypoint: `${publicDir}/index.html`,
       script: `${buildDir}/main.js`,
     };
-    /*
-    spassr({ ...options, port: 5000 });
-    spassr({
-      ...options,
-      ssr: true,
-      port: 5005,
-      ssrOptions: { inlineDynamicImports: true, dev: true },
-    });
-    */
   },
 });
 
