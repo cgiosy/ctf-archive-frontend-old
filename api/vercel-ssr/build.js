@@ -3,8 +3,7 @@ const { existsSync } = require("fs");
 const { execSync } = require("child_process");
 const { rollup } = require("rollup");
 
-const shouldBuildSpa =
-  process.env.NOW_GITHUB_DEPLOYMENT || process.env.NOW_BUILDER;
+const shouldBuildSpa = process.env.NOW_GITHUB_DEPLOYMENT || process.env.NOW_BUILDER;
 const script = resolve(__dirname, "../../dist/assets/main.js");
 const bundlePath = resolve(__dirname, "../../dist/assets/bundle.js");
 
@@ -12,7 +11,7 @@ build();
 
 async function build() {
   if (shouldBuildSpa)
-    execSync("pnpm install && pnpm run build:app", {
+    execSync("npx pnpm install && pnpm run build:app", {
       cwd: resolve("..", ".."),
       stdio: "inherit",
     });
