@@ -9,7 +9,7 @@
 </script>
 
 <label class={classes.join(" ")}>
-  <input placeholder=" " {...$$restProps} bind:value />
+  <input placeholder=" " spellcheck={false} {...$$restProps} bind:value />
   <div><slot /></div>
 </label>
 
@@ -24,12 +24,13 @@
   }
   .monospace,
   .monospace * {
-    font-family: monospace;
+    font-family: var(--font-family-monospace);
   }
   input,
   div {
     display: block;
-    font: inherit;
+    font-family: var(--font-family);
+    font-size: 1em;
     line-height: 1;
     cursor: text;
   }
