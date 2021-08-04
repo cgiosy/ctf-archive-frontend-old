@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { categoryColors, levelsToCategories, levelsToLevel, reduceMap } from "../../libs/utils";
+  import { categoryColors, levelsToCategories, levelsSum, reduceMap } from "../../libs/utils";
   import type { Levels } from "../../types";
 
   export let url: string | undefined = undefined;
@@ -10,9 +10,10 @@
   const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
 
   const categories = levelsToCategories(levels);
-  const { level } = levelsToLevel(levels);
+  const nonzeroLevels = levels.filter((x) => x > 0);
+  const levelSum = levelsSum(levels);
 
-  const deg = 360 / level;
+  const deg = 360 / levelSum;
   const style =
     categories.length === 0
       ? "rgb(var(--text-color))"
@@ -21,8 +22,8 @@
       : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${reduceMap(
           categories,
           (sum, category, index) => [
-            sum + levels[index],
-            `${categoryColors[category]} ${deg * sum}deg ${deg * (sum + levels[index])}deg`,
+            sum + nonzeroLevels[index],
+            `${categoryColors[category]} ${deg * sum}deg ${deg * (sum + nonzeroLevels[index])}deg`,
           ],
           0
         ).join(", ")})`;
@@ -33,7 +34,7 @@
   class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}${
     small ? "small " : ""
   }circle`}
-  {style}>{level}</a
+  {style}>{levelSum}</a
 >
 
 <style>
