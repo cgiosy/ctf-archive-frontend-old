@@ -7,7 +7,7 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import { copySync, removeSync } from "fs-extra";
-import { spassr } from "spassr";
+// import { spassr } from "spassr";
 import getConfig from "@roxi/routify/lib/utils/config";
 import sveltePreprocess from "svelte-preprocess";
 import postcssImport from "postcss-import";
@@ -29,6 +29,7 @@ const serve = () => ({
       entrypoint: `${publicDir}/index.html`,
       script: `${buildDir}/main.js`,
     };
+    /*
     spassr({ ...options, port: 5000 });
     spassr({
       ...options,
@@ -36,6 +37,7 @@ const serve = () => ({
       port: 5005,
       ssrOptions: { inlineDynamicImports: true, dev: true },
     });
+    */
   },
 });
 
@@ -55,6 +57,9 @@ export default {
     dir: buildDir,
     // for performance, disabling filename hashing in development
     chunkFileNames: `[name]${(production && "-[hash]") || ""}.js`,
+    manualChunks() {
+      return "main";
+    },
   },
   plugins: [
     svelte({
@@ -63,8 +68,7 @@ export default {
       compilerOptions: {
         css: !production && isNollup,
         dev: !production,
-        // generate: "ssr",
-        hydratable: true,
+        hydratable: false,
       },
       preprocess: [
         sveltePreprocess({
