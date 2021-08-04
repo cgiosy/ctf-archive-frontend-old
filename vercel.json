@@ -15,7 +15,8 @@
       "source": "/(.*)",
       "headers": [
         {
-          "key": "Access-Control-Allow-Origin"
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://ctf-archive.com"
         },
         {
           "key": "Strict-Transport-Security",
