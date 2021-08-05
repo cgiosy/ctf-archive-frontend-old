@@ -1,21 +1,22 @@
-<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <circle
-    cx="16"
-    cy="16"
-    r="12.5"
-    fill="none"
-    stroke-dasharray="98.125"
-    stroke-dashoffset="39.27"
-    stroke-width="3"
-  />
+<svg>
+  <circle />
 </svg>
 
 <style>
   svg {
-    width: 32px;
-    height: 32px;
+    width: 2em;
+    height: 2em;
     animation: spin linear 0.5s infinite;
     stroke: rgb(var(--link-color));
+  }
+  circle {
+    cx: 1em;
+    cy: 1em;
+    r: 0.75em;
+    fill: none;
+    stroke-dasharray: 6em;
+    stroke-dashoffset: 2.5em;
+    stroke-width: 0.1875em;
   }
   @keyframes spin {
     from {
