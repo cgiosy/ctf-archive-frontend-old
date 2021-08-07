@@ -30,7 +30,6 @@
   div {
     display: block;
     font-family: var(--font-family);
-    font-size: 1em;
     line-height: 1;
     cursor: text;
   }

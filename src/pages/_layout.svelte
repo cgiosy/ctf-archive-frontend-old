@@ -76,4 +76,8 @@
     color: inherit;
     text-decoration: none;
   }
+  button,
+  input {
+    font-size: 1em;
+  }
 </style>

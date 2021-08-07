@@ -37,7 +37,6 @@
     margin: 0.25em 0.5em;
     border: none;
     border-radius: 2.5em;
-    font-size: 1em;
     font-weight: bold;
     transition: background-color 0.25s;
     cursor: pointer;
