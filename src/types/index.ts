@@ -26,13 +26,26 @@ export interface IContest {
   title: string;
 }
 
+export interface IUserMiniInfo {
+  username: string;
+  solves: number;
+  exp: number;
+  exps: Exps;
+  favoriteAchievement: number;
+  description: string;
+  profileImage: string;
+  profileBackground: string;
+}
+
 export interface IUserPublicInfo {
   username: string;
+  solves: number;
   problems: number[];
   exp: number;
   exps: Exps;
   achievements: number[];
   description: string;
+  favoriteAchievement: number;
   profileImage: string;
   profileBackground: string;
 }
