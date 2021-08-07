@@ -1,44 +1,48 @@
 <script lang="ts">
-  import { categoryColors, levelsToCategories, levelsSum, reduceMap } from "../../libs/utils";
-  import type { Levels } from "../../types";
+  import { categoryColors } from "../../libs/utils";
+  import type { Levels, ProblemCategory } from "../../types";
 
   export let url: string | undefined = undefined;
-  export let levels: Levels = [0, 0, 0, 0, 0, 0];
+  export let levels: Levels = [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity];
   export let solved: boolean = false;
   export let small: boolean = false;
 
   const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
 
-  const categories = levelsToCategories(levels);
-  const nonzeroLevels = levels.filter((x) => x > 0);
-  const levelSum = levelsSum(levels);
+  let levelSum = 0;
+  const categories = levels
+    .map((level, category: ProblemCategory) => ({ level, category }))
+    .filter(({ level }) => level > 0)
+    .map(({ level, category }) => ({
+      sum: (levelSum += level),
+      level,
+      category,
+    }));
 
   const deg = 360 / levelSum;
   const style =
     categories.length === 0
       ? toBorder("rgb(var(--text-color))")
       : categories.length === 1
-      ? toBorder(categoryColors[categories[0]])
-      : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${reduceMap(
-          categories,
-          (sum, category, index) => [
-            sum + nonzeroLevels[index],
-            `${categoryColors[category]} ${deg * sum}deg ${deg * (sum + nonzeroLevels[index])}deg`,
-          ],
-          0
-        ).join(", ")})`;
+      ? toBorder(categoryColors[categories[0].category])
+      : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${categories
+          .map(
+            ({ sum, level, category }) =>
+              `${categoryColors[category]} ${deg * (sum - level)}deg ${deg * sum}deg`
+          )
+          .join(", ")})`;
 </script>
 
 <a
   href={url}
   class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}${
     small ? "small " : ""
-  }circle`}
-  {style}>{levelSum}</a
+  }`}
+  {style}>{levelSum >= 0 ? levelSum : ""}</a
 >
 
 <style>
-  .circle {
+  a {
     display: inline-flex;
     box-sizing: border-box;
     width: 2.5em;
@@ -53,7 +57,7 @@
     flex-shrink: 0;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
   }
-  .circle:hover {
+  a:hover {
     transform: scale(1.15);
     /* text-decoration: underline; */
   }

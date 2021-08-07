@@ -32,19 +32,6 @@ export const categoryColors: { readonly [key in ProblemCategory]: string } = {
   [ProblemCategory.Misc]: "rgb(97, 97, 97)",
 };
 
-// Util
-
-export const reduceMap = <T, U, V>(
-  arr: T[],
-  fn: (prevValue: U, value: T, index: number, arr: T[]) => [U, V],
-  initialValue: U
-) =>
-  arr.map((...args) => {
-    const ret = fn(initialValue, ...args);
-    initialValue = ret[0];
-    return ret[1];
-  });
-
 // Promise
 
 export const delay = <T>(value: T, timeout: number = 300): Promise<T> =>
@@ -107,7 +94,7 @@ export const expsToCategories = (exps: Exps): ProblemCategory[] => {
 };
 
 export const expToLevel = (exp: number, precision: number = 1) => {
-  const level = Math.max(Math.floor(Math.log2(exp)) - 3, 1);
+  const level = Math.max(Math.floor(Math.log2(exp)) - 3, 0);
   const remain = Math.pow(2, level + 3) - exp;
   const percentage = Math.floor((exp / Math.pow(2, level + 3) - 1) * (precision * 100)) / precision;
   return { level, remain, percentage };
