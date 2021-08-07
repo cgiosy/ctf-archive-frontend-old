@@ -3,7 +3,6 @@ import Hmr from "rollup-plugin-hot";
 import css from "rollup-plugin-css-only";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import { copySync, removeSync } from "fs-extra";
@@ -15,24 +14,11 @@ import { injectManifest } from "rollup-plugin-workbox";
 const { distDir } = getConfig(); // use Routify's distDir for SSOT
 const publicDir = "public";
 const buildDir = `${distDir}/assets`;
-const isNollup = !!process.env.NOLLUP;
 const production = !process.env.ROLLUP_WATCH;
-
-removeSync(buildDir);
-removeSync(distDir);
-
-const serve = () => ({
-  writeBundle: async () => {
-    const options = {
-      assetsDir: [publicDir, distDir],
-      entrypoint: `${publicDir}/index.html`,
-      script: `${buildDir}/main.js`,
-    };
-  },
-});
 
 const copyToDistAndExit = () => ({
   writeBundle() {
+    removeSync(distDir);
     copySync(publicDir, distDir);
     process.exit();
   },
@@ -53,10 +39,10 @@ export default {
   },
   plugins: [
     svelte({
-      emitCss: !(!production && isNollup),
-      hot: isNollup,
+      emitCss: production,
+      hot: !production,
       compilerOptions: {
-        css: !production && isNollup,
+        css: !production,
         dev: !production,
         hydratable: false,
       },
@@ -73,7 +59,6 @@ export default {
     }),
     css({ output: `main.css` }),
 
-    // resolve matching modules from current working directory
     resolve({
       browser: true,
       dedupe: (importee) => !!importee.match(/svelte(\/|$)/),
@@ -85,9 +70,7 @@ export default {
     }),
 
     production && terser(),
-    !production && !isNollup && serve(),
-    !production && !isNollup && livereload(distDir), // refresh entire window when code is updated
-    !production && isNollup && Hmr({ inMemory: true, public: publicDir }), // refresh only updated code
+    !production && Hmr({ inMemory: true, public: publicDir }),
     {
       // provide node environment on the client
       transform: (code) => ({
@@ -100,7 +83,7 @@ export default {
       globPatterns: ["**/*.{js,css,svg}", "index.html"],
       swSrc: `src/sw.js`,
       swDest: `${buildDir}/serviceworker.js`,
-      maximumFileSizeToCacheInBytes: 10000000, // 10 MB,
+      maximumFileSizeToCacheInBytes: 16 * 1024 * 1024,
       mode: "production",
     }),
     production && copyToDistAndExit(),
