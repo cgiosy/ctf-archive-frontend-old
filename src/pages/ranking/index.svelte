@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { useQuery } from "@sveltestack/svelte-query";
+  import { useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import Logo from "../_components/Logo.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import { expsSum } from "../../libs/utils";
@@ -22,11 +22,26 @@
       page: page.toString(),
     });
 
-  const users = useQuery({ queryKey: ["users", query, sort, page], queryFn: getUsers });
-  let count = 0;
+  let version = 0;
+  let count = -1;
+  let queryKey = ["users", query, sort, page];
+  const queryClient = useQueryClient();
+  const users = useQuery({ queryKey, queryFn: getUsers });
 
-  $: users.setOptions({ queryKey: ["users", query, sort, page], queryFn: getUsers });
-  $: count = $users.data?.count || count;
+  $: count = $users.data?.count ?? count;
+  $: {
+    version += 1;
+    if (version > 1) {
+      const prevVersion = version;
+      setTimeout(() => {
+        if (prevVersion === version)
+          queryClient.cancelQueries(queryKey).then(() => {
+            users.setOptions({ queryKey, queryFn: getUsers });
+          });
+      }, 500);
+    }
+    queryKey = ["users", query, sort, page];
+  }
 </script>
 
 <main>
@@ -34,11 +49,17 @@
     <div class="search-logo">
       <Logo />
     </div>
-    <TextInput type="text" bind:value={query} monospace={true}>검색어</TextInput>
-    <RadioBox bind:group={sort} value="exp_desc">경험치 ↘</RadioBox>
-    <RadioBox bind:group={sort} value="exp_asc">경험치 ↗</RadioBox>
-    <RadioBox bind:group={sort} value="solves_desc">문제 수 ↘</RadioBox>
-    <RadioBox bind:group={sort} value="solves_asc">문제 수 ↗</RadioBox>
+    <div class="search">
+      <div class="search-bar">
+        <TextInput type="text" bind:value={query} monospace={true}>검색어</TextInput>
+      </div>
+      <div class="search-options">
+        <RadioBox bind:group={sort} value="exp_desc">경험치 ↘</RadioBox>
+        <RadioBox bind:group={sort} value="exp_asc">경험치 ↗</RadioBox>
+        <RadioBox bind:group={sort} value="solves_desc">문제 수 ↘</RadioBox>
+        <RadioBox bind:group={sort} value="solves_asc">문제 수 ↗</RadioBox>
+      </div>
+    </div>
   </header>
   <table>
     <tr>
@@ -62,7 +83,7 @@
         </tr>
       {/each}
     {:else}
-      {#each new Array(count ? Math.max(count - (page - 1) * pageSize, 0) : pageSize) as _, index}
+      {#each new Array(count >= 0 ? Math.max(count - (page - 1) * pageSize, 0) : pageSize) as _, index}
         <tr>
           <td>#{(page - 1) * pageSize + index + 1}</td>
           <td />
@@ -96,6 +117,20 @@
     font-size: 3rem;
     margin-bottom: 2rem;
   }
+  .search {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .search-bar {
+    width: 100%;
+    display: inline-flex;
+  }
+  .search-options {
+    display: inline-flex;
+    margin-left: auto;
+  }
   tr {
     height: 4.25em;
     border-bottom: 1px solid #e0e0e0;
@@ -110,5 +145,14 @@
   }
   .description {
     font-family: inherit;
+  }
+
+  @media (min-width: 64em) {
+    .search {
+      flex-direction: row;
+    }
+    .search-bar {
+      max-width: 16em;
+    }
   }
 </style>
