@@ -55,12 +55,12 @@
     /* 2 vs 2.5 vs 3 */
     border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
     box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    transition: border 0.175s, box-shadow 0.175s, transform 0.175s;
+    transition: border 0.175s, box-shadow 0.175s, transform 0.175s ease-out;
   }
   .problem:hover {
     border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 4));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
-    transform: scale(1.025);
+    transform: translateY(-0.1875em);
   }
   div {
     margin: 0.5em 0;
