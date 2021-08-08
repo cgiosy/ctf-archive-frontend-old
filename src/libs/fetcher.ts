@@ -23,14 +23,25 @@ export const get = <T>(
   path: string,
   query?: Record<string, string>,
   config?: RequestInit
-): Promise<T> =>
-  fetch(Config.apiHost + path + toSearchParams(query), {
+): Promise<T> => {
+  const abortController = new AbortController();
+  const request = fetch(Config.apiHost + path + toSearchParams(query), {
     ...config,
     method: "GET",
     headers: {
       "X-Session-Id": user()?.sessionid ?? "",
     },
+    signal: abortController.signal,
   }).then(done);
+
+  // https://github.com/tannerlinsley/react-query/issues/1265
+  // @ts-expect-error
+  request.cancel = () => {
+    abortController.abort();
+  };
+
+  return request;
+};
 
 export const post = <T, U>(path: string, body?: U, config?: RequestInit): Promise<T> =>
   fetch(Config.apiHost + path, {
