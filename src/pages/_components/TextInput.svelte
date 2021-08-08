@@ -17,6 +17,7 @@
   label {
     display: block;
     position: relative;
+    width: 100%;
     margin: 0.375em;
   }
   .large {
