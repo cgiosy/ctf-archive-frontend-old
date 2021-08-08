@@ -11,13 +11,12 @@
 
   let levelSum = 0;
   const categories = levels
-    .map((level, category: ProblemCategory) => ({ level, category }))
-    .filter(({ level }) => level > 0)
-    .map(({ level, category }) => ({
+    .map((level, category: ProblemCategory) => ({
       sum: (levelSum += level),
       level,
       category,
-    }));
+    }))
+    .filter(({ level }) => level > 0);
 
   const deg = 360 / levelSum;
   const style =
