@@ -22,7 +22,7 @@
       page: page.toString(),
     });
 
-  const users = useQuery(["users", query, sort, page], getUsers);
+  const users = useQuery({ queryKey: ["users", query, sort, page], queryFn: getUsers });
   let count = 0;
 
   $: users.setOptions({ queryKey: ["users", query, sort, page], queryFn: getUsers });
