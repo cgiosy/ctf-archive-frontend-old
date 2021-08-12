@@ -1,8 +1,15 @@
 import Config from "../config";
 import { getLocalStorage } from "./utils";
-import type { IUserPrivateInfo } from "../types";
 
-const user = getLocalStorage<IUserPrivateInfo>("user");
+const getSessionId = getLocalStorage<string>("sessionid");
+const getSessionHeader = (): HeadersInit => {
+  const sessionid = getSessionId();
+  return sessionid !== null
+    ? {
+        "X-Session-Id": sessionid,
+      }
+    : {};
+};
 
 const toSearchParams = (query?: Record<string, string>) => {
   const searchParams = new URLSearchParams(query).toString();
@@ -29,7 +36,7 @@ export const get = <T>(
     ...config,
     method: "GET",
     headers: {
-      "X-Session-Id": user()?.sessionid ?? "",
+      ...getSessionHeader(),
     },
     signal: abortController.signal,
   }).then(done);
@@ -43,13 +50,13 @@ export const get = <T>(
   return request;
 };
 
-export const post = <T, U>(path: string, body?: U, config?: RequestInit): Promise<T> =>
+export const post = <T, U = any>(path: string, body?: U, config?: RequestInit): Promise<T> =>
   fetch(Config.apiHost + path, {
     ...config,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Session-Id": user()?.sessionid ?? "",
+      ...getSessionHeader(),
     },
     body: JSON.stringify(body),
   }).then(done);
@@ -63,17 +70,17 @@ export const del = <T>(
     ...config,
     method: "DELETE",
     headers: {
-      "X-Session-Id": user()?.sessionid ?? "",
+      ...getSessionHeader(),
     },
   }).then(done);
 
-export const put = <T, U>(path: string, body?: U, config?: RequestInit): Promise<T> =>
+export const put = <T, U = any>(path: string, body?: U, config?: RequestInit): Promise<T> =>
   fetch(Config.apiHost + path, {
     ...config,
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "X-Session-Id": user()?.sessionid ?? "",
+      ...getSessionHeader(),
     },
     body: JSON.stringify(body),
   }).then(done);

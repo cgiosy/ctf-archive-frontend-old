@@ -51,7 +51,6 @@ export interface IUserPublicInfo {
 }
 
 export interface IUserPrivateInfo extends IUserPublicInfo {
-  sessionid: string;
   email: string;
   friends: number[];
   settings: string;

@@ -5,7 +5,7 @@
   import CircleSpinner from "./CircleSpinner.svelte";
   import ErrorMessage from "./ErrorMessage.svelte";
 
-  export let mutation: MutationStoreResult;
+  export let mutation: MutationStoreResult<any>;
   export let args: any = undefined;
 
   const mutate = () => {

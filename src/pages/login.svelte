@@ -3,7 +3,6 @@
   import { useQueryClient, useMutation } from "@sveltestack/svelte-query";
   import { post } from "../libs/fetcher";
   import { setLocalStorage } from "../libs/utils";
-  import type { IUserPrivateInfo } from "../types";
   import BigButton from "./_components/BigButton.svelte";
   import Logo from "./_components/Logo.svelte";
   import TextInput from "./_components/TextInput.svelte";
@@ -16,23 +15,23 @@
   let step: number = 0;
 
   const queryClient = useQueryClient();
-  const mutation = useMutation("user", setLocalStorage<IUserPrivateInfo>("user"));
+  const setSessionId = setLocalStorage<string>("sessionid");
 
-  const login = (user: IUserPrivateInfo) => {
-    $mutation.mutate(user, {
-      onSuccess: () => {
-        queryClient.invalidateQueries("user");
-        $goto(sessionStorage.getItem("lastPage") ?? "/");
-      },
+  const login = (sessionid: string) => {
+    setSessionId(sessionid);
+    queryClient.invalidateQueries().then(() => {
+      $goto(sessionStorage.getItem("lastPage") ?? "/");
     });
   };
 
-  const signin = useMutation(() => post("/login", { id: text || username, password }), {
-    onSuccess: (data) => {
-      delete data.type;
-      login(data);
-    },
-  });
+  const signin = useMutation(
+    () => post<{ sessionid: string }>("/login", { id: text || username, password }),
+    {
+      onSuccess: (data) => {
+        login(data.sessionid);
+      },
+    }
+  );
 
   const signup = useMutation(() => {
     if (text.includes("@")) {
@@ -50,12 +49,14 @@
     },
   });
 
-  const register = useMutation(() => post("/register", { code, email, username, password }), {
-    onSuccess: (data) => {
-      delete data.type;
-      login(data);
-    },
-  });
+  const register = useMutation(
+    () => post<{ sessionid: string }>("/register", { code, email, username, password }),
+    {
+      onSuccess: (data) => {
+        login(data.sessionid);
+      },
+    }
+  );
 </script>
 
 <main>
