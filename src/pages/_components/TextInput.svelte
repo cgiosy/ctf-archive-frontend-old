@@ -2,6 +2,11 @@
   export let large: boolean = false;
   export let monospace: boolean = false;
   export let value: string = "";
+  export let onEnter: Function | undefined = undefined;
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter" && onEnter !== undefined) onEnter();
+  };
 
   const classes: string[] = [];
   if (large) classes.push("large");
@@ -9,7 +14,7 @@
 </script>
 
 <label class={classes.join(" ")}>
-  <input placeholder=" " spellcheck={false} {...$$restProps} bind:value />
+  <input placeholder=" " spellcheck={false} bind:value on:keydown={onKeyDown} {...$$restProps} />
   <div><slot /></div>
 </label>
 

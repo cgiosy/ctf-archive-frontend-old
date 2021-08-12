@@ -38,12 +38,12 @@
   const users = useQuery({ queryFn: getUsers, enabled: false });
   const queryClient = useQueryClient();
 
-  const onQueryChanged = () => {
+  const onQueryChanged = (immediate: boolean = false) => {
     clearTimeout(timeoutId);
     if (queryKey !== undefined && !dequal(queryKey, ["users", query, sort, page])) {
       timeoutId = setTimeout(
         () => $goto(undefined, { query, sort, page }),
-        queryKey.length <= 1 || queryKey[1] === query ? 0 : 500
+        immediate || queryKey.length <= 1 || queryKey[1] === query ? 0 : 500
       );
     }
   };
@@ -72,7 +72,12 @@
     </div>
     <div class="search">
       <div class="search-bar">
-        <TextInput type="text" bind:value={query} monospace={true}>검색어</TextInput>
+        <TextInput
+          type="text"
+          monospace={true}
+          bind:value={query}
+          onEnter={() => onQueryChanged(true)}>검색어</TextInput
+        >
       </div>
       <div class="search-options">
         <RadioBox bind:group={sort} value="exp_desc">경험치 ↘</RadioBox>
