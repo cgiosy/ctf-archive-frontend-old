@@ -1,16 +1,26 @@
 <script lang="ts">
+  import { goto, params } from "@roxi/routify";
   import { useQuery, useQueryClient } from "@sveltestack/svelte-query";
+  import { dequal } from "dequal/lite";
   import Logo from "../_components/Logo.svelte";
   import TextInput from "../_components/TextInput.svelte";
-  import { expsSum } from "../../libs/utils";
+  import { useVars, expsSum } from "../../libs/utils";
   import { get } from "../../libs/fetcher";
   import type { IUserMiniInfo } from "../../types";
   import ExpIcon from "../_components/ExpIcon.svelte";
   import RadioBox from "../_components/RadioBox.svelte";
 
-  let query = "";
-  let sort: "exp_desc" | "exp_asc" | "solves_asc" | "solves_desc" = "exp_desc";
-  const page = 1;
+  type GetUsersSortKey = "exp_desc" | "exp_asc" | "solves_asc" | "solves_desc";
+  type GetUsersQueryKey = ["users", string, GetUsersSortKey, number];
+
+  const toSort = (str: string) =>
+    str === "exp_desc" || str === "exp_asc" || str === "solves_asc" || str === "solves_desc"
+      ? str
+      : "exp_desc";
+
+  let query: string;
+  let sort: GetUsersSortKey;
+  let page: number;
   const pageSize = 50;
   const getUsers = () =>
     get<{
@@ -22,26 +32,37 @@
       page: page.toString(),
     });
 
-  let version = 0;
   let count = -1;
-  let queryKey = ["users", query, sort, page];
+  let queryKey: GetUsersQueryKey;
+  let timeoutId: NodeJS.Timeout;
+  const users = useQuery({ queryFn: getUsers, enabled: false });
   const queryClient = useQueryClient();
-  const users = useQuery({ queryKey, queryFn: getUsers });
+
+  const onQueryChanged = () => {
+    clearTimeout(timeoutId);
+    if (queryKey !== undefined && !dequal(queryKey, ["users", query, sort, page])) {
+      timeoutId = setTimeout(
+        () => $goto(undefined, { query, sort, page }),
+        queryKey.length <= 1 || queryKey[1] === query ? 0 : 500
+      );
+    }
+  };
+  const onParamsChanged = () => {
+    const newQueryKey: GetUsersQueryKey = [
+      "users",
+      (query = typeof $params.query === "string" ? $params.query : ""),
+      (sort = toSort($params.sort)),
+      (page = Math.max(Number($params.page), 1) || 1),
+    ];
+    queryClient.cancelQueries(queryKey).then(() => {
+      queryKey = newQueryKey;
+      users.setOptions({ queryKey, queryFn: getUsers });
+    });
+  };
 
   $: count = $users.data?.count ?? count;
-  $: {
-    version += 1;
-    if (version > 1) {
-      const prevVersion = version;
-      setTimeout(() => {
-        if (prevVersion === version)
-          queryClient.cancelQueries(queryKey).then(() => {
-            users.setOptions({ queryKey, queryFn: getUsers });
-          });
-      }, 500);
-    }
-    queryKey = ["users", query, sort, page];
-  }
+  $: useVars(query, sort, page), onQueryChanged();
+  $: useVars($params), onParamsChanged();
 </script>
 
 <main>

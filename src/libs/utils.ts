@@ -1,6 +1,8 @@
 import { ProblemCategory } from "../types";
 import type { Exps, Levels } from "../types";
 
+export const useVars = (...args: unknown[]) => {};
+
 // Charsets
 
 const numeric = "0123456789";
