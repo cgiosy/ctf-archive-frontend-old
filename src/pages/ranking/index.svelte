@@ -56,7 +56,7 @@
     ];
     queryClient.cancelQueries(queryKey).then(() => {
       queryKey = newQueryKey;
-      users.setOptions({ queryKey, queryFn: getUsers });
+      users.setOptions({ queryKey, queryFn: getUsers, staleTime: 1000 * 60 * 5 });
     });
   };
 
