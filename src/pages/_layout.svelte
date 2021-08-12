@@ -1,6 +1,6 @@
 <!-- routify:options preload="proximity" -->
 <script lang="ts">
-  import { goto } from "@roxi/routify";
+  import { goto, url } from "@roxi/routify";
   import { useQuery } from "@sveltestack/svelte-query";
   import Config from "../config";
   import type { IUserPrivateInfo } from "../types";
@@ -12,9 +12,9 @@
   const user = useQuery("user", getLocalStorage<IUserPrivateInfo>("user"));
 
   $: {
-    allowed = Config.isAllowedPath(location.pathname);
+    allowed = Config.isAllowedPath($url());
     if (!(!Config.requireLogin || allowed || $user.data)) {
-      sessionStorage.setItem("lastPage", location.pathname);
+      sessionStorage.setItem("lastPage", $url());
       $goto("/intro");
     }
   }
