@@ -3,12 +3,12 @@
   import { useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { dequal } from "dequal/lite";
   import Logo from "../_components/Logo.svelte";
+  import ExpIcon from "../_components/ExpIcon.svelte";
+  import RadioBox from "../_components/RadioBox.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import { useVars, expsSum } from "../../libs/utils";
   import { get } from "../../libs/fetcher";
   import type { IUserMiniInfo } from "../../types";
-  import ExpIcon from "../_components/ExpIcon.svelte";
-  import RadioBox from "../_components/RadioBox.svelte";
 
   type GetUsersSortKey = "exp_desc" | "exp_asc" | "solves_asc" | "solves_desc";
   type GetUsersQueryKey = ["users", string, GetUsersSortKey, number];
@@ -35,7 +35,7 @@
   let count = -1;
   let queryKey: GetUsersQueryKey;
   let timeoutId: NodeJS.Timeout;
-  const users = useQuery({ queryFn: getUsers, enabled: false });
+  const usersQuery = useQuery({ queryFn: getUsers, enabled: false });
   const queryClient = useQueryClient();
 
   const onQueryChanged = (immediate: boolean = false) => {
@@ -56,11 +56,11 @@
     ];
     queryClient.cancelQueries(queryKey).then(() => {
       queryKey = newQueryKey;
-      users.setOptions({ queryKey, queryFn: getUsers, staleTime: 1000 * 60 * 5 });
+      usersQuery.setOptions({ queryKey, queryFn: getUsers, staleTime: 1000 * 60 * 5 });
     });
   };
 
-  $: count = $users.data?.count ?? count;
+  $: count = $usersQuery.data?.count ?? count;
   $: useVars(query, sort, page), onQueryChanged();
   $: useVars($params), onParamsChanged();
 </script>
@@ -95,8 +95,8 @@
       <th>경험치</th>
       <th>문제 수</th>
     </tr>
-    {#if $users.isSuccess}
-      {#each $users.data.users as user, index}
+    {#if $usersQuery.isSuccess}
+      {#each $usersQuery.data.users as user, index}
         <tr>
           <td>#{(page - 1) * pageSize + index + 1}</td>
           <td
