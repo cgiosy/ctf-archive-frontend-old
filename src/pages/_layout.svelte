@@ -24,8 +24,8 @@
 {#if Config.requireLogin === false || allowed === true || $user.data != null}
   <slot />
 {/if}
-<Footer />
 
+<!-- <Footer /> -->
 <style global>
   :root {
     /* == Light Theme == */
