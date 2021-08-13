@@ -16,9 +16,10 @@ const publicDir = "public";
 const buildDir = `${distDir}/assets`;
 const production = !process.env.ROLLUP_WATCH;
 
+removeSync(distDir);
+
 const copyToDistAndExit = () => ({
   writeBundle() {
-    removeSync(distDir);
     copySync(publicDir, distDir);
     process.exit();
   },
