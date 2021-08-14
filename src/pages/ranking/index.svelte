@@ -42,7 +42,9 @@
     clearTimeout(timeoutId);
     if (queryKey !== undefined && !dequal(queryKey, ["users", query, sort, page])) {
       timeoutId = setTimeout(
-        () => $goto(undefined, { query, sort, page }),
+        () => {
+          $goto(undefined, { query, sort, page });
+        },
         immediate || queryKey.length <= 1 || queryKey[1] === query ? 0 : 500
       );
     }
