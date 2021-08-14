@@ -3,22 +3,17 @@
   import { goto, url } from "@roxi/routify";
   import { useQuery } from "@sveltestack/svelte-query";
   import Config from "../config";
-  import type { IUserPrivateInfo } from "../types";
+  import { getLocalStorage } from "../libs/utils";
   import TopBar from "./_components/TopBar.svelte";
   // import Footer from "./_components/Footer.svelte";
-  import { get } from "../libs/fetcher";
 
   let allowed: boolean = false;
-  const me = useQuery({
-    queryKey: "me",
-    queryFn: () => get<IUserPrivateInfo>("/users/-"),
-    staleTime: 1000 * 60 * 5,
-    retry: false,
-  });
+  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"));
+  const loggedIn = $sessionid.data != null;
 
   $: {
     allowed = Config.isAllowedPath($url());
-    if (!(!Config.requireLogin || allowed || $me.isSuccess)) {
+    if (allowed === false && !loggedIn) {
       sessionStorage.setItem("lastPage", $url());
       $goto("/intro");
     }
@@ -26,11 +21,10 @@
 </script>
 
 <TopBar />
-{#if Config.requireLogin === false || allowed === true || $me.isSuccess}
+{#if allowed === true || loggedIn}
   <slot />
 {/if}
 
-<!-- <Footer /> -->
 <style global>
   :root {
     /* == Light Theme == */

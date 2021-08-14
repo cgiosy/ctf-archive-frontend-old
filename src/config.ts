@@ -1,6 +1,5 @@
 export default {
-  requireLogin: false,
-  isAllowedPath: (path: string): boolean => ["/intro", "/login", "/signup"].includes(path),
+  isAllowedPath: (path: string): boolean => ["/api"].every((p: string) => !path.startsWith(p)),
   apiHost: "/api",
   // apiHost: "https://953d5fd2be3c.ngrok.io",
 };
