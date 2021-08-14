@@ -1,5 +1,16 @@
 <script lang="ts">
+  import { useQuery } from "@sveltestack/svelte-query";
+  import { get } from "../../libs/fetcher";
   import Logo from "./Logo.svelte";
+  import ProfileImage from "./ProfileImage.svelte";
+  import type { IUserPrivateInfo } from "../../types";
+
+  const me = useQuery({
+    queryKey: "me",
+    queryFn: () => get<IUserPrivateInfo>("/users/-"),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
 </script>
 
 <nav>
@@ -10,7 +21,11 @@
         <li><a href="/">문제</a></li>
         <li><a href="/contests">대회</a></li>
         <li><a href="/ranking">랭킹</a></li>
-        <li class="user-link"><a href="/login">로그인</a></li>
+        <li class="user-link">
+          {#if $me.isSuccess}<a class="profile-link" href={`/profile/${$me.data.username}`}
+              ><ProfileImage src={$me.data.profileImage} size="xs" alt={$me.data.username} /></a
+            >{:else if $me.isError}<a href="/login">로그인</a>{/if}
+        </li>
       </ul>
     </div>
   </div>
@@ -30,9 +45,10 @@
         <li><a href="/ranking/contribution">기여</a></li>
       </ul>
       <ul class="user-links">
-        <li><a href="/profile">프로필</a></li>
+        {#if $me.isSuccess}<li><a href={`/profile/${$me.data.username}`}>프로필</a></li>{/if}
         <li><a href="/notifications">알림</a></li>
         <li><a href="/settings">설정</a></li>
+        {#if $me.isSuccess}<li><a href={`/logout`}>로그아웃</a></li>{/if}
       </ul>
     </div>
   </div>
@@ -149,5 +165,8 @@
   .user-links {
     justify-self: end;
     margin-left: auto;
+  }
+  .profile-link {
+    font-size: 1.5em;
   }
 </style>

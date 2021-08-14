@@ -4,16 +4,21 @@
   import { useQuery } from "@sveltestack/svelte-query";
   import Config from "../config";
   import type { IUserPrivateInfo } from "../types";
-  import { getLocalStorage } from "../libs/utils";
   import TopBar from "./_components/TopBar.svelte";
-  import Footer from "./_components/Footer.svelte";
+  // import Footer from "./_components/Footer.svelte";
+  import { get } from "../libs/fetcher";
 
   let allowed: boolean = false;
-  const user = useQuery("user", getLocalStorage<IUserPrivateInfo>("user"));
+  const me = useQuery({
+    queryKey: "me",
+    queryFn: () => get<IUserPrivateInfo>("/users/-"),
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
 
   $: {
     allowed = Config.isAllowedPath($url());
-    if (!(!Config.requireLogin || allowed || $user.data)) {
+    if (!(!Config.requireLogin || allowed || $me.isSuccess)) {
       sessionStorage.setItem("lastPage", $url());
       $goto("/intro");
     }
@@ -21,7 +26,7 @@
 </script>
 
 <TopBar />
-{#if Config.requireLogin === false || allowed === true || $user.data != null}
+{#if Config.requireLogin === false || allowed === true || $me.isSuccess}
   <slot />
 {/if}
 
