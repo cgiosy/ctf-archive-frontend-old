@@ -38,7 +38,7 @@
   const usersQuery = useQuery({ queryFn: getUsers, enabled: false });
   const queryClient = useQueryClient();
 
-  const onQueryChanged = (immediate: boolean = false) => {
+  const onQueryChanged = async (immediate: boolean = false) => {
     clearTimeout(timeoutId);
     if (queryKey !== undefined && !dequal(queryKey, ["users", query, sort, page])) {
       timeoutId = setTimeout(
@@ -47,17 +47,16 @@
       );
     }
   };
-  const onParamsChanged = () => {
+  const onParamsChanged = async () => {
     const newQueryKey: GetUsersQueryKey = [
       "users",
       (query = typeof $params.query === "string" ? $params.query : ""),
       (sort = toSort($params.sort)),
       (page = Math.max(Number($params.page), 1) || 1),
     ];
-    queryClient.cancelQueries(queryKey).then(() => {
-      queryKey = newQueryKey;
-      usersQuery.setOptions({ queryKey, queryFn: getUsers, staleTime: 1000 * 60 * 5 });
-    });
+    if (queryKey !== undefined) await queryClient.cancelQueries(queryKey);
+    queryKey = newQueryKey;
+    usersQuery.setOptions({ queryKey, queryFn: getUsers, staleTime: 1000 * 60 * 5 });
   };
 
   $: count = $usersQuery.data?.count ?? count;
