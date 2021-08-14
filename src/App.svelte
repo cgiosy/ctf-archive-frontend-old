@@ -11,11 +11,15 @@
   const cacheTime = 1000 * 60 * 60 * 24 * 7; // 7 days
   const staleTime = 1000 * 60 * 5; // 5 mins
 
+  const retryWhenServerError = (failureCount: number, error: unknown) =>
+    failureCount < 4 && (error as Error).message[0] === "5";
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
         cacheTime,
         staleTime,
+        retry: retryWhenServerError,
       },
     },
   });
