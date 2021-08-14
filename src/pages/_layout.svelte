@@ -61,6 +61,7 @@
 
   * {
     box-sizing: border-box;
+    vertical-align: middle;
   }
   body {
     font-family: var(--font-family);
