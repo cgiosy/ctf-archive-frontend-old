@@ -3,7 +3,7 @@
   import { useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { dequal } from "dequal/lite";
   import Logo from "../_components/Logo.svelte";
-  import ExpIcon from "../_components/ExpIcon.svelte";
+  import UserLink from "../_components/UserLink.svelte";
   import RadioBox from "../_components/RadioBox.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import { useVars, expsSum } from "../../libs/utils";
@@ -99,10 +99,7 @@
       {#each $usersQuery.data.users as user, index}
         <tr>
           <td>#{(page - 1) * pageSize + index + 1}</td>
-          <td
-            ><ExpIcon url={"/profile/" + user.username} exps={user.exps} small={true} />
-            {user.username}</td
-          >
+          <td><UserLink {user} /></td>
           <td class="description">{user.description}</td>
           <td>{new Intl.NumberFormat().format(expsSum(user.exps))}</td>
           <td>{new Intl.NumberFormat().format(user.solves)}</td>
