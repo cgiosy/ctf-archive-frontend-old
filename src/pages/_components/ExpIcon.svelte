@@ -65,7 +65,7 @@
     background-clip: content-box, border-box;
   }
   .small {
-    font-size: 0.875em;
+    font-size: 0.9em;
     /* font-size: 0.9375em; */
   }
 </style>
