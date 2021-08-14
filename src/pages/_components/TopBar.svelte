@@ -20,7 +20,6 @@
       me.setOptions({
         queryKey: "me",
         queryFn: getMyInfo,
-        staleTime: 1000 * 60 * 5,
         retry: false,
       });
   }

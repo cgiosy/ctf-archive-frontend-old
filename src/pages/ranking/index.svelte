@@ -56,7 +56,7 @@
     ];
     if (queryKey !== undefined) await queryClient.cancelQueries(queryKey);
     queryKey = newQueryKey;
-    usersQuery.setOptions({ queryKey, queryFn: getUsers, staleTime: 1000 * 60 * 5 });
+    usersQuery.setOptions({ queryKey, queryFn: getUsers });
   };
 
   $: count = $usersQuery.data?.count ?? count;
