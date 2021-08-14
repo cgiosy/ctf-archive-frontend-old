@@ -12,10 +12,11 @@
   const loggedIn = $sessionid.data != null;
 
   $: {
-    allowed = Config.isAllowedPath($url());
+    const path = location.pathname;
+    if (path !== "login" && path !== "/login") sessionStorage.setItem("lastPage", path);
+    allowed = Config.isAllowedPath(path);
     if (allowed === false && !loggedIn) {
-      sessionStorage.setItem("lastPage", $url());
-      $goto("/intro");
+      $goto("/login");
     }
   }
 </script>
