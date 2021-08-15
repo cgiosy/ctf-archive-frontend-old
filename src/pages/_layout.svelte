@@ -78,7 +78,8 @@
     text-decoration: none;
   }
   button,
-  input {
+  input,
+  textarea {
     font-size: 1em;
   }
 </style>
