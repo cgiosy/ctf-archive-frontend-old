@@ -64,7 +64,6 @@
     vertical-align: middle;
   }
   body {
-    font-family: var(--font-family);
     color: rgb(var(--text-color));
     background: rgb(var(--background-color));
     margin: 0;
@@ -77,9 +76,11 @@
     color: inherit;
     text-decoration: none;
   }
+  body,
   button,
   input,
   textarea {
+    font-family: var(--font-family);
     font-size: 1em;
   }
 </style>
