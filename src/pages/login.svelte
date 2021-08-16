@@ -60,7 +60,7 @@
 </script>
 
 <main>
-  <div class="wrapper">
+  <section>
     <Logo />
     <h1>Sign in</h1>
     <br />
@@ -83,7 +83,7 @@
         <BigButton mutation={register}>가입</BigButton>
       {/if}
     {/if}
-  </div>
+  </section>
 </main>
 
 <style>
@@ -92,15 +92,15 @@
     padding: 2em 0;
   }
   main,
-  div {
+  section {
     display: flex;
     flex-direction: column;
     border-radius: 0.75em;
   }
-  .wrapper {
+  section {
     contain: content;
     width: 100%;
-    max-width: 35rem;
+    max-width: calc(var(--content-max-width) / 2);
     padding: 3em 4em;
     border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
     box-shadow: 0 0.0625em 0.5em rgba(var(--text-color), calc(var(--background-opacity) * 3));
