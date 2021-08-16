@@ -20,7 +20,7 @@
       </h3>
       <ul on:wheel|preventDefault={scrollHorizontally}>
         {#each contest.problems as { id, levels }}
-          <li><LevelIcon url={`/problem/${id}`} {levels} /></li>
+          <li><LevelIcon url={`/problems/${id}`} {levels} /></li>
         {/each}
       </ul>
     </section>
