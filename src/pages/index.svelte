@@ -1,14 +1,22 @@
 <script lang="ts">
-  import InfiniteLoading from "svelte-infinite-loading";
+  import { useInfiniteQuery, useQueryClient } from "@sveltestack/svelte-query";
+  import { goto, params } from "@roxi/routify";
+  import { dequal } from "dequal/lite";
   import Logo from "./_components/Logo.svelte";
+  import RadioBox from "./_components/RadioBox.svelte";
   import TextInput from "./_components/TextInput.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
-  import { randomInt, randomProblems } from "../libs/random";
-  import { delay } from "../libs/utils";
-  import type { InfiniteEvent } from "svelte-infinite-loading";
+  import { get } from "../libs/fetcher";
+  import { useVars } from "../libs/utils";
   import type { IProblem } from "../types";
 
-  const pageSize = 25;
+  type GetUsersSortKey = "level_desc" | "level_asc" | "solves_asc" | "solves_desc";
+  type GetUsersQueryKey = ["problems", string, GetUsersSortKey];
+
+  const toSort = (str: string) =>
+    str === "level_desc" || str === "level_asc" || str === "solves_asc" || str === "solves_desc"
+      ? str
+      : "solves_desc";
 
   // Tag Functions
   const isCategory = (query: string): boolean =>
@@ -29,45 +37,96 @@
     return "";
   };
 
-  const getProblems = (queryString: string, page: number) =>
-    delay({
-      count: randomInt(10) > 0 ? Infinity : 0,
-      problems: randomProblems(25),
+  const getProblems = ({ pageParam }: any) =>
+    get<{ count: number; problems: IProblem[] }>("/problems", {
+      query,
+      sort,
+      page: String(Number(pageParam) || 1),
     });
 
-  let queries: string = "";
-  let resultProblems: (IProblem | undefined)[] = [];
-  let page = 0;
+  let scrollY = 0;
+  let query: string = "";
+  let sort: GetUsersSortKey = "solves_desc";
+  let page = 1;
+  const pageSize = 25;
 
-  const infiniteHandler = ({ detail: { loaded, complete } }: InfiniteEvent) => {
-    const request = getProblems(queries, ++page);
-    const prevResultProblems = [...resultProblems];
-    resultProblems = [...prevResultProblems, ...new Array(pageSize)];
-    request.then(({ count, problems }) => {
-      resultProblems = [...prevResultProblems, ...problems];
-      if (resultProblems.length >= count) {
-        complete();
-      }
-      loaded();
-    });
+  let count = -1;
+  let queryKey: GetUsersQueryKey;
+  let timeoutId: NodeJS.Timeout;
+  const problems = useInfiniteQuery({
+    queryFn: getProblems,
+    enabled: false,
+    // getNextPageParam: (lastGroup) => lastGroup.nextId || undefined,
+    // staleTime: 1000 * 60 * 1
+  });
+  const queryClient = useQueryClient();
+
+  const onQueryChanged = async (immediate: boolean = false) => {
+    clearTimeout(timeoutId);
+    if (queryKey !== undefined && !dequal(queryKey, ["problems", query, sort])) {
+      timeoutId = setTimeout(
+        () => {
+          $goto("/", { query, sort });
+        },
+        immediate || queryKey.length <= 1 || queryKey[1] === query ? 0 : 500
+      );
+    }
   };
+  const onParamsChanged = async () => {
+    const newQueryKey: GetUsersQueryKey = [
+      "problems",
+      (query = typeof $params.query === "string" ? $params.query : ""),
+      (sort = toSort($params.sort)),
+      // (page = Math.max(Number($params.page), 1) || 1),
+    ];
+    if (queryKey !== undefined) await queryClient.cancelQueries(queryKey);
+    queryKey = newQueryKey;
+    problems.setOptions({ queryKey, queryFn: getProblems, staleTime: 1000 * 60 * 5 });
+  };
+
+  // $: count = $problems.data?.count ?? count;
+  $: useVars(query, sort), onQueryChanged();
+  $: useVars($params), onParamsChanged();
 </script>
+
+<svelte:window bind:scrollY />
 
 <main>
   <header>
     <div class="search-logo">
       <Logo />
     </div>
-    <TextInput type="text" bind:value={queries} monospace={true} large={true}>검색어</TextInput>
+    <div class="search">
+      <div class="search-bar">
+        <TextInput
+          type="text"
+          monospace={true}
+          bind:value={query}
+          large={true}
+          onEnter={() => onQueryChanged(true)}>검색어</TextInput
+        >
+      </div>
+      <div class="search-options">
+        <RadioBox bind:group={sort} value="solves_desc">문제 수 ↘</RadioBox>
+        <RadioBox bind:group={sort} value="solves_asc">문제 수 ↗</RadioBox>
+        <RadioBox bind:group={sort} value="level_desc">경험치 ↘</RadioBox>
+        <RadioBox bind:group={sort} value="level_asc">경험치 ↗</RadioBox>
+      </div>
+    </div>
   </header>
   <ul class="problems">
-    {#each resultProblems as problem}
-      <li><ProblemCard {problem} /></li>
-    {/each}
-
-    <InfiniteLoading on:infinite={infiniteHandler}>
-      <slot name="noMore" />
-    </InfiniteLoading>
+    {#if $problems.status === "success"}
+      {#each $problems.data.pages as page}
+        {#each page.problems as problem}
+          <li><ProblemCard {problem} /></li>
+        {/each}
+      {/each}
+    {/if}
+    {#if $problems.status !== "success" || $problems.isFetchingNextPage}
+      {#each new Array(pageSize) as _}
+        <li><ProblemCard /></li>
+      {/each}
+    {/if}
   </ul>
 </main>
 

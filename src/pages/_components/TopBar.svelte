@@ -4,7 +4,7 @@
   import { getLocalStorage } from "../../libs/utils";
   import Logo from "./Logo.svelte";
   import ProfileImage from "./ProfileImage.svelte";
-  import type { IUserPrivateInfo } from "../../types";
+  import { IUserPrivateInfo, UserAuth } from "../../types";
 
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
 
@@ -49,6 +49,9 @@
       <ul>
         <li><a href="/">검색</a></li>
         <li><a href="/tags">태그</a></li>
+        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Creator}<li>
+            <a href={`/problems/add`}>만들기</a>
+          </li>{/if}
       </ul>
       <ul>
         <li><a href="/contests">목록</a></li>
@@ -77,7 +80,7 @@
   .links,
   .details-links {
     width: 100%;
-    max-width: 70rem;
+    max-width: var(--content-max-width);
   }
   .logo-link {
     font-size: 1.25rem;
