@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { useQuery } from "@sveltestack/svelte-query";
-  import { get } from "../../libs/fetcher";
+  import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
+  import { get, post } from "../../libs/fetcher";
   import { getLocalStorage } from "../../libs/utils";
   import Logo from "./Logo.svelte";
   import ProfileImage from "./ProfileImage.svelte";
@@ -8,12 +8,22 @@
 
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
 
+  const queryClient = useQueryClient();
+  const logoutMutation = useMutation(() => post<{}>("/logout"), {
+    onSuccess: () => {
+      localStorage.removeItem("sessionid");
+      queryClient.invalidateQueries();
+    },
+  });
+
   const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"));
   const me = useQuery({
     queryFn: getMyInfo,
     enabled: false,
   });
   let loggedIn = false;
+
+  const logout = () => $logoutMutation.mutate();
 
   $: {
     if ((loggedIn = $sessionid.data != null))
@@ -67,7 +77,7 @@
           </li>{/if}
         <li><a href="/notifications">알림</a></li>
         <li><a href="/settings">설정</a></li>
-        {#if loggedIn}<li><a href={`/logout`}>로그아웃</a></li>{/if}
+        {#if loggedIn}<li><a href={"/intro"} on:click={logout}>로그아웃</a></li>{/if}
       </ul>
     </div>
   </div>
