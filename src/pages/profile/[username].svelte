@@ -5,6 +5,7 @@
   import ExpIcon from "../_components/ExpIcon.svelte";
   import ProfileImage from "../_components/ProfileImage.svelte";
   import type { IUserPublicInfo } from "../../types";
+  import { expsSum } from "../../libs/utils";
 
   let username: string;
   const getUserProfile = () => get<IUserPublicInfo>("/users/" + username);
@@ -47,7 +48,7 @@
         </div>
         <div class="info">
           <p><b>{new Intl.NumberFormat().format($user.data.solves)}</b> 개의 맞은 문제</p>
-          <p><b>{new Intl.NumberFormat().format($user.data.exp)}</b> 경험치</p>
+          <p><b>{new Intl.NumberFormat().format(expsSum($user.data.exps))}</b> 경험치</p>
         </div>
       </div>
       <div class="solves" />

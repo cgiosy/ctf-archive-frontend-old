@@ -1,6 +1,9 @@
 import Config from "../config";
 import { getLocalStorage } from "./utils";
 
+const isRawType = (value: any): value is Blob | ReadableStream =>
+  value instanceof Blob || value instanceof ReadableStream;
+
 const getSessionId = getLocalStorage<string>("sessionid");
 const getSessionHeader = (): HeadersInit => {
   const sessionid = getSessionId();
@@ -58,7 +61,7 @@ export const post = <T, U = any>(path: string, body?: U, config?: RequestInit): 
       "Content-Type": "application/json",
       ...getSessionHeader(),
     },
-    body: JSON.stringify(body),
+    body: isRawType(body) ? body : JSON.stringify(body),
   }).then(done);
 
 export const del = <T>(
@@ -82,5 +85,5 @@ export const put = <T, U = any>(path: string, body?: U, config?: RequestInit): P
       "Content-Type": "application/json",
       ...getSessionHeader(),
     },
-    body: JSON.stringify(body),
+    body: isRawType(body) ? body : JSON.stringify(body),
   }).then(done);

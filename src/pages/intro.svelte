@@ -122,7 +122,7 @@
     }
   }
 
-  @media (min-width: 40em) {
+  @media (min-width: 48em) {
     ul {
       flex-direction: row;
     }

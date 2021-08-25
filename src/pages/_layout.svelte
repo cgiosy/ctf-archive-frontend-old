@@ -9,7 +9,7 @@
 
   let allowed: boolean = false;
   const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"));
-  const loggedIn = $sessionid.data != null;
+  const loggedIn = $sessionid.isSuccess;
 
   $: {
     const path = location.pathname;
@@ -80,6 +80,7 @@
   button,
   input,
   textarea {
+    color: rgb(var(--text-color));
     font-family: var(--font-family);
     font-size: 1em;
   }

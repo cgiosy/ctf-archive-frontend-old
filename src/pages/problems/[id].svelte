@@ -1,18 +1,49 @@
 <script lang="ts">
   import { params } from "@roxi/routify";
-  import { useQuery } from "@sveltestack/svelte-query";
-  import { get } from "../../libs/fetcher";
-  import LevelIcon from "../_components/LevelIcon.svelte";
-  import type { IProblemDetails } from "../../types";
+  import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
+  import { get, post } from "../../libs/fetcher";
+  import { getLocalStorage } from "../../libs/utils";
   import FileLink from "../_components/FileLink.svelte";
+  import TextArea from "../_components/TextArea.svelte";
+  import BigButton from "../_components/BigButton.svelte";
+  import TextInput from "../_components/TextInput.svelte";
+  import LevelIcon from "../_components/LevelIcon.svelte";
+  import SubmissionCircle from "../_components/SubmissionCircle.svelte";
+  import { IStatus, ProblemType } from "../../types";
+  import type { IProblemDetails } from "../../types";
 
   let id: number;
+  let loggedIn = false;
   const getProblem = () => get<IProblemDetails>("/problems/" + id);
+  const getStatus = () => get<IStatus>("/problems/status");
+  const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: 10 });
+  const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
+
+  const queryClient = useQueryClient();
+
+  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"));
+
+  const status = useQuery({
+    queryFn: getStatus,
+    enabled: false,
+  });
 
   const problem = useQuery({
     queryFn: getProblem,
     enabled: false,
   });
+
+  const startMutation = useMutation(startServer, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("status");
+    },
+  });
+  const stopMutation = useMutation(stopServer, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("status");
+    },
+  });
+  const submitMutation = useMutation(async () => 1);
 
   $: {
     id = Number($params.id);
@@ -21,6 +52,14 @@
       queryFn: getProblem,
     });
   }
+  $: {
+    if ((loggedIn = $sessionid.isSuccess)) {
+      status.setOptions({
+        queryKey: "status",
+        queryFn: getStatus,
+      });
+    }
+  }
 </script>
 
 <main>
@@ -28,11 +67,34 @@
     <section>
       <h1>
         <LevelIcon levels={$problem.data.levels} small={true} />
-        {$problem.data.title}
-        {#if $problem.data.file}<FileLink {id} key="" float="right" />{/if}
+        <span>{$problem.data.title}</span>
+        {#if $problem.data.types & ProblemType.ProblemFileExist}
+          <FileLink {id} key={$problem.data.uuid} float="right" />
+        {/if}
       </h1>
       <p>{$problem.data.content}</p>
     </section>
+    {#if $status.isSuccess}
+      <section>
+        {#if $status.data.id !== id}
+          <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
+            >서버 시작하기</BigButton
+          >
+        {:else}
+          <BigButton mutation={stopMutation}>서버 종료하기</BigButton>
+        {/if}
+      </section>
+    {/if}
+    {#if $sessionid.isSuccess}
+      <section>
+        <TextInput>플래그</TextInput>
+        <div>
+          <SubmissionCircle />
+          <TextArea rows={8}>댓글</TextArea>
+        </div>
+        <BigButton mutation={submitMutation}>제출</BigButton>
+      </section>
+    {/if}
   {/if}
 </main>
 
@@ -40,6 +102,7 @@
   main {
     display: flex;
     align-items: center;
+    padding: 1rem 1rem;
   }
   main,
   section {
@@ -50,20 +113,31 @@
     display: flex;
     width: 100%;
     max-width: var(--content-max-width);
+    padding: 1.5em 2em;
+    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
+    border-radius: 0.75em;
+    margin: 1em 0;
+    /* box-shadow: 0 0.0625em 0.5em rgba(var(--text-color), calc(var(--background-opacity) * 2)); */
   }
   h1 {
     width: 100%;
   }
-  p {
-    padding: 1.5em 2em;
-    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
-    /* box-shadow: 0 0.0625em 0.5em rgba(var(--text-color), calc(var(--background-opacity) * 3)); */
-    border-radius: 0.75em;
+  span {
+    margin-left: 0.5em;
+  }
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1em 0;
   }
 
   @media (min-width: 48em) {
   }
 
   @media (min-width: 64em) {
+    div {
+      flex-direction: row;
+    }
   }
 </style>

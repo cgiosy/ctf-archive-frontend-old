@@ -6,6 +6,7 @@
   import ErrorMessage from "./ErrorMessage.svelte";
 
   export let mutation: MutationStoreResult<any>;
+  export let disabled: boolean = false;
   export let args: any = undefined;
 
   const mutate = () => {
@@ -13,7 +14,7 @@
   };
 </script>
 
-<button on:click={mutate} class={$mutation.status} disabled={$mutation.isLoading}>
+<button on:click={mutate} class={$mutation.status} disabled={disabled || $mutation.isLoading}>
   {#if $mutation.isLoading === true}
     <CircleSpinner />
   {:else}
@@ -40,9 +41,11 @@
     font-weight: bold;
     transition: background-color 0.25s;
     cursor: pointer;
+    user-select: none;
   }
   button[disabled] {
     background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.75));
+    pointer-events: none;
   }
   button:hover {
     background-color: rgba(var(--text-color), var(--background-opacity));

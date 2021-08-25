@@ -36,7 +36,7 @@
   div {
     display: block;
     font-family: var(--font-family);
-    line-height: 1;
+    line-height: normal;
     cursor: text;
   }
   div {
@@ -55,7 +55,6 @@
     contain: size;
     width: 100%;
     padding: 0.6875em 0.9375em;
-    color: rgb(var(--text-color));
     background: rgb(var(--background-color));
     border-radius: 0.25em;
     border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 5));

@@ -34,6 +34,9 @@ export const categoryColors: { readonly [key in ProblemCategory]: string } = {
   [ProblemCategory.Misc]: "rgb(97, 97, 97)",
 };
 
+export const setColorOpacity = (color: string, opacity: number) =>
+  color.replace(/rgb\((.+)\)|rgba\((.+),.+?\)/, `rgba($1$2, ${opacity})`);
+
 // Promise
 
 export const delay = <T>(value: T, timeout: number = 300): Promise<T> =>
@@ -42,6 +45,40 @@ export const delay = <T>(value: T, timeout: number = 300): Promise<T> =>
       resolve(value);
     }, timeout);
   });
+
+// Stream
+
+type DoneValue<T> = { done: false; value: T } | { done: true; value?: void };
+
+async function* makeStreamIterator<T>(stream: ReadableStream<T>) {
+  const reader = stream.getReader();
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) return;
+      yield value;
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+export const proxyStream = <T>(
+  stream: ReadableStream<T>,
+  onStream: (args: DoneValue<T>) => unknown
+): ReadableStream => {
+  return new ReadableStream({
+    async start(controller: ReadableStreamController<T>) {
+      for await (const value of makeStreamIterator(stream)) {
+        if (value === undefined) continue;
+        controller.enqueue(value);
+        onStream({ done: false, value });
+      }
+      controller.close();
+      onStream({ done: true });
+    },
+  });
+};
 
 // Escape
 

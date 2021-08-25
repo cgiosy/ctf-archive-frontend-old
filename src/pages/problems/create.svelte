@@ -2,15 +2,23 @@
   import { goto } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { put } from "../../libs/fetcher";
+  import { proxyStream } from "../../libs/utils";
   import BigButton from "../_components/BigButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import TextArea from "../_components/TextArea.svelte";
+  import FileUpload from "../_components/FileUpload.svelte";
 
   let title: string = "";
   let source: string = "";
   let flag: string = "";
   let content: string = "";
   let group: string = "everyone";
+
+  let problemFile: File | null = null;
+  let buildFile: File | null = null;
+
+  let uploadedProblemFileSize = 0;
+  let uploadedBuildFileSize = 0;
 
   const queryClient = useQueryClient();
 
@@ -19,7 +27,25 @@
     {
       onSuccess: async (data) => {
         const { id } = data;
-        queryClient.invalidateQueries("problems").then(() => {
+        Promise.all([
+          queryClient.invalidateQueries("problems"),
+          problemFile &&
+            put<{}>(
+              `/problems/${id}/files`,
+              proxyStream<any>(problemFile.stream(), ({ done, value }) => {
+                if (done) uploadedProblemFileSize = Infinity;
+                else uploadedProblemFileSize += value.length;
+              })
+            ),
+          buildFile &&
+            put<{}>(
+              `/problems/${id}/buildfile`,
+              proxyStream<any>(buildFile.stream(), ({ done, value }) => {
+                if (done) uploadedBuildFileSize = Infinity;
+                else uploadedBuildFileSize += value.length;
+              })
+            ),
+        ]).then(() => {
           $goto(`/problems/${id}`);
         });
       },
@@ -31,9 +57,10 @@
   <section>
     <TextInput type="text" bind:value={title}>제목</TextInput>
     <TextInput type="text" bind:value={source}>출처</TextInput>
-    <TextInput type="text" bind:value={flag} monospace={true}>플래그 (정규식 지원)</TextInput>
+    <TextInput type="text" bind:value={flag} monospace={true}>플래그</TextInput>
     <TextArea bind:value={content} rows={15}>디스크립션</TextArea>
-    <!-- File Upload -->
+    <FileUpload bind:file={problemFile}>문제 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
+    <FileUpload bind:file={buildFile}>빌드 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
     <BigButton mutation={upload}>업로드</BigButton>
   </section>
 </main>

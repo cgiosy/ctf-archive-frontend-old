@@ -13,6 +13,11 @@ export enum UserAuth {
   Admin = 100,
 }
 
+export enum ProblemType {
+  ProblemFileExist = 1 << 0,
+  BuildFileExist = 1 << 1,
+}
+
 export type Levels = [number, number, number, number, number, number];
 
 export type Exps = [number, number, number, number, number, number];
@@ -27,13 +32,20 @@ export interface IProblem {
 }
 
 export interface IProblemDetails {
-  level: number;
   levels: Levels;
   title: string;
   source: string;
-  file: string;
+  uuid: string;
   content: string;
   solves: number;
+  types: number;
+}
+
+export interface IStatus {
+  id: number;
+  port: number;
+  used: number;
+  remain: number;
 }
 
 export interface IContest {
@@ -45,7 +57,6 @@ export interface IContest {
 export interface IUserMiniInfo {
   username: string;
   solves: number;
-  exp: number;
   exps: Exps;
   favoriteAchievement: number;
   description: string;
@@ -57,7 +68,6 @@ export interface IUserPublicInfo {
   username: string;
   solves: number;
   problems: number[];
-  exp: number;
   exps: Exps;
   achievements: number[];
   description: string;
