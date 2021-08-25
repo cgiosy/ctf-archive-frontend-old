@@ -9,7 +9,7 @@
 
   let allowed: boolean = false;
   const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"));
-  const loggedIn = $sessionid.isSuccess;
+  const loggedIn = $sessionid.data != null;
 
   $: {
     const path = location.pathname;

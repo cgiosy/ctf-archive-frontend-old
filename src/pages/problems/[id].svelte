@@ -53,7 +53,7 @@
     });
   }
   $: {
-    if ((loggedIn = $sessionid.isSuccess)) {
+    if ((loggedIn = $sessionid.data != null)) {
       status.setOptions({
         queryKey: "status",
         queryFn: getStatus,
@@ -85,7 +85,7 @@
         {/if}
       </section>
     {/if}
-    {#if $sessionid.isSuccess}
+    {#if $sessionid.data != null}
       <section>
         <TextInput>플래그</TextInput>
         <div>

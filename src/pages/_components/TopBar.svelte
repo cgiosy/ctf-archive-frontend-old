@@ -26,7 +26,7 @@
   const logout = () => $logoutMutation.mutate();
 
   $: {
-    if ((loggedIn = $sessionid.isSuccess))
+    if ((loggedIn = $sessionid.data != null))
       me.setOptions({
         queryKey: "me",
         queryFn: getMyInfo,
@@ -48,7 +48,7 @@
               class="profile-link"
               href={`/profile/${$me.data.username}`}
               ><ProfileImage src={$me.data.profileImage} size="xs" alt={$me.data.username} /></a
-            >{:else if !$sessionid.isSuccess}<a href="/login">로그인</a>{/if}
+            >{:else if $sessionid.data == null}<a href="/login">로그인</a>{/if}
         </li>
       </ul>
     </div>
