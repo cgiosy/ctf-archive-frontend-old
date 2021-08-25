@@ -1,11 +1,9 @@
 <script lang="ts">
-  import InfiniteLoading from "svelte-infinite-loading";
   import Logo from "../_components/Logo.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import ContestCard from "../_components/ContestCard.svelte";
   import { randomInt, randomContests } from "../../libs/random";
   import { delay } from "../../libs/utils";
-  import type { InfiniteEvent } from "svelte-infinite-loading";
   import type { IContest } from "../../types";
 
   const pageSize = 25;
@@ -47,9 +45,9 @@
       <li><ContestCard {contest} /></li>
     {/each}
 
-    <InfiniteLoading on:infinite={infiniteHandler}>
+    <!-- <InfiniteLoading on:infinite={infiniteHandler}>
       <slot name="noMore" />
-    </InfiniteLoading>
+    </InfiniteLoading> -->
   </ul>
 </main>
 
