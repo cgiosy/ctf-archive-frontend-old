@@ -11,7 +11,7 @@
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import { ProblemType, UserAuth } from "../../types";
   import type { IProblemDetails, IUserPrivateInfo, IStatus } from "../../types";
-  import ProblemEditButton from "../_components/ProblemEditButton.svelte";
+  import ProblemEditLink from "../_components/ProblemEditLink.svelte";
 
   let id: number;
   let lifetime = 10;
@@ -82,7 +82,7 @@
         <LevelIcon levels={$problem.data.levels} small={true} />
         <span>{$problem.data.title}</span>
         {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
-          <ProblemEditButton {id} float="right" />
+          <ProblemEditLink {id} float="right" />
         {/if}
         {#if $problem.data.types & ProblemType.ProblemFileExist}
           <FileLink {id} key={$problem.data.uuid} float="right" />

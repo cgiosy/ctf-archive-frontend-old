@@ -14,8 +14,8 @@ export enum UserAuth {
 }
 
 export enum ProblemType {
-  ProblemFileExist = 1 << 0,
-  BuildFileExist = 1 << 1,
+  BuildFileExist = 1 << 0,
+  ProblemFileExist = 1 << 1,
 }
 
 export type Levels = [number, number, number, number, number, number];
@@ -39,6 +39,14 @@ export interface IProblemDetails {
   content: string;
   solves: number;
   types: number;
+}
+
+export interface IProblemEdit {
+  title: string;
+  source: string;
+  flag: string;
+  content: string;
+  group: string;
 }
 
 export interface IStatus {
