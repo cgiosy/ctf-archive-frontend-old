@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { goto } from "@roxi/routify";
+  import { goto, params } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
-  import { put } from "../../libs/fetcher";
-  import { proxyStream } from "../../libs/utils";
-  import BigButton from "../_components/BigButton.svelte";
-  import TextInput from "../_components/TextInput.svelte";
-  import TextArea from "../_components/TextArea.svelte";
-  import FileUpload from "../_components/FileUpload.svelte";
+  import { del, post } from "../../../libs/fetcher";
+  import { proxyStream } from "../../../libs/utils";
+  import BigButton from "../../_components/BigButton.svelte";
+  import TextInput from "../../_components/TextInput.svelte";
+  import TextArea from "../../_components/TextArea.svelte";
+  import FileUpload from "../../_components/FileUpload.svelte";
 
+  let id: number;
   let title: string = "";
   let source: string = "";
   let flag: string = "";
@@ -20,17 +21,20 @@
   let uploadedProblemFileSize = 0;
   let uploadedBuildFileSize = 0;
 
+  let step = 0;
+  let removeId = "";
+
   const queryClient = useQueryClient();
 
   const upload = useMutation(
-    () => put<{ id: number }>("/problems", { title, source, flag, content, group }),
+    () => post<{ id: number }>("/problems", { title, source, flag, content, group }),
     {
       onSuccess: async (data) => {
         const { id } = data;
         Promise.all([
           queryClient.invalidateQueries("problems"),
           problemFile &&
-            put<{}>(
+            post<{}>(
               `/problems/${id}/files`,
               problemFile
               /*
@@ -41,7 +45,7 @@
               */
             ),
           buildFile &&
-            put<{}>(
+            post<{}>(
               `/problems/${id}/buildfile`,
               buildFile
               /*
@@ -57,6 +61,28 @@
       },
     }
   );
+
+  const remove = useMutation(
+    () => {
+      if (id !== Number(removeId)) throw new Error("올바르지 않은 값입니다!");
+      return del<{}>(`/problems/${id}`);
+    },
+    {
+      onSuccess: async () => {
+        Promise.all([queryClient.invalidateQueries("problems")]).then(() => {
+          $goto(`/`);
+        });
+      },
+    }
+  );
+
+  const next = useMutation(async () => {
+    step = 1;
+  });
+
+  $: {
+    id = Number($params.id);
+  }
 </script>
 
 <main>
@@ -68,6 +94,14 @@
     <FileUpload bind:file={problemFile}>문제 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
     <FileUpload bind:file={buildFile}>빌드 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
     <BigButton mutation={upload}>업로드</BigButton>
+    {#if step === 0}
+      <BigButton mutation={next}>삭제</BigButton>
+    {:else}
+      <TextInput type="string" bind:value={removeId} monospace={true}
+        >문제 번호를 입력해 주세요!</TextInput
+      >
+      <BigButton mutation={remove}>삭제</BigButton>
+    {/if}
   </section>
 </main>
 

@@ -33,14 +33,13 @@
     }
   );
 
-  const signup = useMutation(() => {
+  const signup = useMutation(async () => {
     if (text.includes("@")) {
       email = text;
     } else {
       username = text;
     }
     step = 1;
-    return new Promise(() => {});
   });
 
   const authEmail = useMutation(() => post("/authenticate_email", { email }), {

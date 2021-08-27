@@ -1,7 +1,7 @@
 <script lang="ts">
   export let large: boolean = false;
   export let monospace: boolean = false;
-  export let value: string = "";
+  export let value: string | number | string[] | null | undefined = "";
   export let onEnter: Function | undefined = undefined;
 
   const onKeyDown = (e: KeyboardEvent) => {

@@ -9,14 +9,17 @@
   import TextInput from "../_components/TextInput.svelte";
   import LevelIcon from "../_components/LevelIcon.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
-  import { IStatus, ProblemType } from "../../types";
-  import type { IProblemDetails } from "../../types";
+  import { ProblemType, UserAuth } from "../../types";
+  import type { IProblemDetails, IUserPrivateInfo, IStatus } from "../../types";
+  import ProblemEditButton from "../_components/ProblemEditButton.svelte";
 
   let id: number;
+  let lifetime = 10;
   let loggedIn = false;
+  const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
   const getProblem = () => get<IProblemDetails>("/problems/" + id);
   const getStatus = () => get<IStatus>("/problems/status");
-  const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: 10 });
+  const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
 
   const queryClient = useQueryClient();
@@ -30,6 +33,11 @@
 
   const problem = useQuery({
     queryFn: getProblem,
+    enabled: false,
+  });
+
+  const me = useQuery({
+    queryFn: getMyInfo,
     enabled: false,
   });
 
@@ -58,6 +66,11 @@
         queryKey: "status",
         queryFn: getStatus,
       });
+      me.setOptions({
+        queryKey: "me",
+        queryFn: getMyInfo,
+        retry: false,
+      });
     }
   }
 </script>
@@ -68,6 +81,9 @@
       <h1>
         <LevelIcon levels={$problem.data.levels} small={true} />
         <span>{$problem.data.title}</span>
+        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
+          <ProblemEditButton {id} float="right" />
+        {/if}
         {#if $problem.data.types & ProblemType.ProblemFileExist}
           <FileLink {id} key={$problem.data.uuid} float="right" />
         {/if}
@@ -77,6 +93,7 @@
     {#if $status.isSuccess}
       <section>
         {#if $status.data.id !== id}
+          <TextInput type="number" bind:value={lifetime}>켜둘 시간 (분)</TextInput>
           <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
             >서버 시작하기</BigButton
           >

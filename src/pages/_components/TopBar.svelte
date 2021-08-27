@@ -4,7 +4,8 @@
   import { getLocalStorage } from "../../libs/utils";
   import Logo from "./Logo.svelte";
   import ProfileImage from "./ProfileImage.svelte";
-  import { IUserPrivateInfo, UserAuth } from "../../types";
+  import { UserAuth } from "../../types";
+  import type { IUserPrivateInfo } from "../../types";
 
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
 
@@ -26,12 +27,13 @@
   const logout = () => $logoutMutation.mutate();
 
   $: {
-    if ((loggedIn = $sessionid.data != null))
+    if ((loggedIn = $sessionid.data != null)) {
       me.setOptions({
         queryKey: "me",
         queryFn: getMyInfo,
         retry: false,
       });
+    }
   }
 </script>
 
@@ -59,9 +61,11 @@
       <ul>
         <li><a href="/">검색</a></li>
         <li><a href="/tags">태그</a></li>
-        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Creator}<li>
+        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Creator}
+          <li>
             <a href={`/problems/create`}>만들기</a>
-          </li>{/if}
+          </li>
+        {/if}
       </ul>
       <ul>
         <li><a href="/contests">목록</a></li>
