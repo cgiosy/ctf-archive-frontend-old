@@ -4,7 +4,7 @@
   export let float: "left" | "right" | undefined = undefined;
 </script>
 
-<a href={`//cdn.ctf-archive.com/ctf/${id}-${key}.zip`} class={float}
+<a href={`//cdn.ctf-archive.com/ctf/${id}-${key}.7z`} class={float}
   ><svg viewBox="0 0 24 24" enable-background="new 0 0 24 24"
     ><g
       ><path
