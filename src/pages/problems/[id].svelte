@@ -14,12 +14,12 @@
   import ProblemEditLink from "../_components/ProblemEditLink.svelte";
 
   let id: number;
-  let lifetime = 10;
+  let lifetime: string = "10";
   let loggedIn = false;
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
   const getProblem = () => get<IProblemDetails>("/problems/" + id);
   const getStatus = () => get<IStatus>("/problems/status");
-  const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime });
+  const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: Number(lifetime) });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
 
   const queryClient = useQueryClient();
