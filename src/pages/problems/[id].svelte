@@ -14,7 +14,7 @@
   import ProblemEditLink from "../_components/ProblemEditLink.svelte";
 
   let id: number;
-  let lifetime: string = "10";
+  let lifetime: string = "120";
   let loggedIn = false;
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
   const getProblem = () => get<IProblemDetails>("/problems/" + id);
@@ -90,7 +90,7 @@
       </h1>
       <p>{$problem.data.content}</p>
     </section>
-    {#if $status.isSuccess}
+    {#if $problem.data.types & ProblemType.BuildFileExist && $status.isSuccess}
       <section>
         {#if $status.data.id !== id}
           <TextInput type="number" bind:value={lifetime}>켜둘 시간 (분)</TextInput>
