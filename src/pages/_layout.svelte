@@ -8,7 +8,10 @@
   // import Footer from "./_components/Footer.svelte";
 
   let allowed: boolean = false;
-  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"));
+  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"), {
+    cacheTime: 0,
+    staleTime: 0,
+  });
   const loggedIn = $sessionid.data != null;
 
   $: {

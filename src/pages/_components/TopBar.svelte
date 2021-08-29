@@ -17,7 +17,10 @@
     },
   });
 
-  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"));
+  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"), {
+    cacheTime: 0,
+    staleTime: 0,
+  });
   const me = useQuery({
     queryFn: getMyInfo,
     enabled: false,
