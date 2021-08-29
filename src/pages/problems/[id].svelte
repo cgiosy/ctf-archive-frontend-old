@@ -14,7 +14,7 @@
   import ProblemEditLink from "../_components/ProblemEditLink.svelte";
 
   let id: number;
-  let lifetime: string = "120";
+  let lifetime: string = "30";
   let loggedIn = false;
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
   const getProblem = () => get<IProblemDetails>("/problems/" + id);
