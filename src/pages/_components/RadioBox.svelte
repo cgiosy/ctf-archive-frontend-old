@@ -1,10 +1,11 @@
 <script lang="ts">
   export let group: string;
   export let value: string;
+  export let equal: (a: string, b: string) => boolean = (a, b) => a === b;
 
   let selected: boolean = false;
   $: {
-    selected = value === group;
+    selected = equal(group, value);
   }
 </script>
 

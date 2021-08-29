@@ -10,13 +10,26 @@
   import { useVars } from "../libs/utils";
   import type { IProblem } from "../types";
 
-  type GetUsersSortKey = "level_desc" | "level_asc" | "solves_asc" | "solves_desc";
+  type GetUsersSortKey =
+    | "solves_asc"
+    | "solves_desc"
+    | "level_desc"
+    | "level_asc"
+    | "id_desc"
+    | "id_asc";
   type GetUsersQueryKey = ["problems", string, GetUsersSortKey];
 
   const toSort = (str: string) =>
-    str === "level_desc" || str === "level_asc" || str === "solves_asc" || str === "solves_desc"
+    str === "solves_asc" ||
+    str === "solves_desc" ||
+    str === "level_desc" ||
+    str === "level_asc" ||
+    str === "id_desc" ||
+    str === "id_asc"
       ? str
       : "solves_desc";
+
+  const equal = (a: string, b: string) => a.split("_")[0] === b.split("_")[0];
 
   // Tag Functions
   const isCategory = (query: string): boolean =>
@@ -107,10 +120,13 @@
         >
       </div>
       <div class="search-options">
-        <RadioBox bind:group={sort} value="solves_desc">문제 수 ↘</RadioBox>
-        <RadioBox bind:group={sort} value="solves_asc">문제 수 ↗</RadioBox>
-        <RadioBox bind:group={sort} value="level_desc">경험치 ↘</RadioBox>
-        <RadioBox bind:group={sort} value="level_asc">경험치 ↗</RadioBox>
+        {#each [{ type: "solves", str: "푼 사람" }, { type: "level", str: "난이도" }, { type: "id", str: "최신 순" }] as { type, str }}
+          <RadioBox
+            bind:group={sort}
+            value={sort !== `${type}_desc` ? `${type}_desc` : `${type}_asc`}
+            {equal}>{str} {equal(sort, type) && sort === `${type}_asc` ? "↗" : "↘"}</RadioBox
+          >
+        {/each}
       </div>
     </div>
   </header>

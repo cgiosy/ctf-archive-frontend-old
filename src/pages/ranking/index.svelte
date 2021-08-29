@@ -18,6 +18,8 @@
       ? str
       : "exp_desc";
 
+  const equal = (a: string, b: string) => a.split("_")[0] === b.split("_")[0];
+
   let query: string;
   let sort: GetUsersSortKey;
   let page: number;
@@ -81,10 +83,13 @@
         >
       </div>
       <div class="search-options">
-        <RadioBox bind:group={sort} value="exp_desc">경험치 ↘</RadioBox>
-        <RadioBox bind:group={sort} value="exp_asc">경험치 ↗</RadioBox>
-        <RadioBox bind:group={sort} value="solves_desc">문제 수 ↘</RadioBox>
-        <RadioBox bind:group={sort} value="solves_asc">문제 수 ↗</RadioBox>
+        {#each [{ type: "exp", str: "경험치" }, { type: "solves", str: "문제 수" }] as { type, str }}
+          <RadioBox
+            bind:group={sort}
+            value={sort !== `${type}_desc` ? `${type}_desc` : `${type}_asc`}
+            {equal}>{str} {equal(sort, type) && sort === `${type}_asc` ? "↗" : "↘"}</RadioBox
+          >
+        {/each}
       </div>
     </div>
   </header>
