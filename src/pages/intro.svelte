@@ -58,7 +58,7 @@
     <h2>디스코드에서 더 많은 얘기를 나눠보세요</h2>
     <p>CTF 문제, 풀이, 잡담 및 사이트 관련 건의 등을 주제로 대화합니다.</p>
     <ul style="padding: 2.5em 0;">
-      <a href="https://discord.gg/3JCgQQfSwj">
+      <a href="https://discord.gg/QhgjPfYy2E">
         <img src="/assets/images/discord-icon.png" alt="Discord Icon" width="96" height="96" />
       </a>
     </ul>
