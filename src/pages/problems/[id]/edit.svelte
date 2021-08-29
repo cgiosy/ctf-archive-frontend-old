@@ -98,6 +98,11 @@
         content = data.content;
         // group = "everyone";
       },
+      cacheTime: 0,
+      staleTime: 0,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      refetchOnWindowFocus: false,
     });
   }
 </script>
