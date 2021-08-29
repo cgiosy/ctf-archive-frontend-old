@@ -64,7 +64,7 @@
       ]
     },
     {
-      "source": "/assets/images/logo-800.png",
+      "source": "/assets/images/logo-256.png",
       "headers": [
         {
           "key": "Cross-Origin-Resource-Policy",
