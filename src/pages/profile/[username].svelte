@@ -29,8 +29,9 @@
   {#if $user.isSuccess}
     <section
       class="first profile-background"
-      style="background-image: linear-gradient(rgba(0, 0, 0, 0.5625), rgba(0, 0, 0, 0.5625)), url('{$user
-        .data.profileBackground}')"
+      style={$user.data.profileBackground
+        ? `background-image: linear-gradient(rgba(0, 0, 0, 0.5625), rgba(0, 0, 0, 0.5625)), url('${$user.data.profileBackground}')`
+        : "background-color: rgba(var(--text-color), calc(var(--background-opacity) * 10))"}
     >
       <div class="wrapper">
         <div class="user">
@@ -73,7 +74,7 @@
     min-height: calc(100vh - 3rem);
   }
   .profile-background {
-    background-position: center center;
+    background-position: 100% 100%;
     background-repeat: no-repeat;
     background-size: cover;
   }

@@ -105,7 +105,7 @@
     pointer-events: none;
   }
   svg {
-    fill: var(--text-color);
+    fill: rgba(var(--text-color), calc(var(--background-opacity) * 25));
     width: 4em;
     height: 4em;
   }

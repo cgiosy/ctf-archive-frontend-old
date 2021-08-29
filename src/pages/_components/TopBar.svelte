@@ -220,7 +220,7 @@
     font-size: 1.5em;
   }
   svg {
-    fill: rgba(var(--text-color), calc(var(--background-opacity) * 17));
+    fill: rgba(var(--text-color), calc(var(--background-opacity) * 16));
     height: 1.666em;
     width: 2.151515em;
   }

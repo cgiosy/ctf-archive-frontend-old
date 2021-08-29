@@ -32,9 +32,9 @@
 <style global>
   :root {
     /* == Light Theme == */
-    --text-color: 21, 32, 43;
+    --text-color: 0, 0, 0;
     --background-color: 255, 255, 255;
-    --background-opacity: 0.05;
+    --background-opacity: 0.046875;
 
     /* == Others == */
     --link-color: 61, 90, 254;
@@ -51,13 +51,14 @@
       /* == Dark Theme == */
       --text-color: 255, 255, 255;
       --background-color: 20, 20, 20;
-      --background-opacity: 0.035;
+      --background-opacity: 0.03515625;
+      /* --background-opacity: 0.0390625; */
 
       /* == Black Theme == */
       /*
       --text-color: 255, 255, 255;
       --background-color: 0, 0, 0;
-      --background-opacity: 0.1;
+      --background-opacity: 0.01171875;
       */
     }
   }
@@ -67,7 +68,6 @@
     vertical-align: middle;
   }
   body {
-    color: rgb(var(--text-color));
     background: rgb(var(--background-color));
     margin: 0;
     overflow-y: scroll;
@@ -83,7 +83,7 @@
   button,
   input,
   textarea {
-    color: rgb(var(--text-color));
+    color: rgba(var(--text-color), calc(var(--background-opacity) * 25));
     font-family: var(--font-family);
     font-size: 1em;
   }

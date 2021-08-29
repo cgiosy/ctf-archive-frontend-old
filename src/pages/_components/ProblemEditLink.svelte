@@ -19,7 +19,7 @@
     height: 1em;
   }
   svg {
-    fill: #000;
+    fill: rgba(var(--text-color), calc(var(--background-opacity) * 25));
     width: 1em;
     height: 1em;
   }
