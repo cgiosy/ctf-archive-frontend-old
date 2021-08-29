@@ -48,9 +48,15 @@
     onSuccess: () => {
       queryClient.invalidateQueries("status");
     },
+    onError: () => {
+      queryClient.invalidateQueries("status");
+    },
   });
   const stopMutation = useMutation(stopServer, {
     onSuccess: () => {
+      queryClient.invalidateQueries("status");
+    },
+    onError: () => {
       queryClient.invalidateQueries("status");
     },
   });
@@ -102,13 +108,17 @@
     </section>
     {#if $problem.data.types & ProblemType.BuildFileExist && $status.isSuccess}
       <section>
+        <div class="warning">
+          서버가 켜지는 데 오래 걸릴 수 있습니다. 로딩이 1분 이상 지속되거나, 서버에 접속이 되지
+          않더라도 2~3분 정도 대기해 주시기 바랍니다.
+        </div>
         {#if $status.data.id !== id}
           <TextInput type="number" bind:value={lifetime}>켜둘 시간 (분)</TextInput>
           <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
             >서버 시작하기</BigButton
           >
         {:else}
-          <div>
+          <div class="address">
             서버 주소: <pre>35.212.179.177:{$status.data.port}</pre>
           </div>
           <BigButton mutation={stopMutation}>서버 종료하기</BigButton>
@@ -159,7 +169,25 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     margin: 1em 0;
+  }
+  .warning {
+    font-size: 0.875em;
+    background: rgba(var(--link-color), calc(var(--background-opacity) * 1.85));
+    padding: 1em 2em;
+    border-radius: 0.25em;
+  }
+  .address {
+    text-align: center;
+  }
+  pre {
+    font-size: 1.25em;
+    background: rgba(var(--text-color), calc(var(--background-opacity) * 2));
+    padding: 0.5em 1em;
+    border-radius: 0.25em;
+    margin: 0;
+    margin-left: 1em;
   }
 
   @media (min-width: 48em) {
