@@ -97,11 +97,11 @@
       <h1>
         <LevelIcon levels={$problem.data.levels} small={true} />
         <span>{$problem.data.title}</span>
-        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
-          <ProblemEditLink {id} float="right" />
-        {/if}
         {#if $problem.data.types & ProblemType.ProblemFileExist}
           <FileLink {id} key={$problem.data.uuid} name={$problem.data.title} float="right" />
+        {/if}
+        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
+          <ProblemEditLink {id} float="right" />
         {/if}
       </h1>
       <p>{$problem.data.content}</p>
