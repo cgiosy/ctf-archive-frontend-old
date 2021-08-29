@@ -2,7 +2,7 @@
   import { params } from "@roxi/routify";
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { get, post } from "../../libs/fetcher";
-  import { getLocalStorage } from "../../libs/utils";
+  import { charsets, escapeAllow, getLocalStorage } from "../../libs/utils";
   import FileLink from "../_components/FileLink.svelte";
   import TextArea from "../_components/TextArea.svelte";
   import BigButton from "../_components/BigButton.svelte";
@@ -76,6 +76,13 @@
       });
     }
   }
+
+  /*
+  escapeAllow(
+    $problem.data.title.replace(new RegExp(`[${charsets.special}]`, "g"), "_"),
+    charsets.alphanumeric
+  )
+  */
 </script>
 
 <main>
@@ -88,7 +95,7 @@
           <ProblemEditLink {id} float="right" />
         {/if}
         {#if $problem.data.types & ProblemType.ProblemFileExist}
-          <FileLink {id} key={$problem.data.uuid} float="right" />
+          <FileLink {id} key={$problem.data.uuid} name={$problem.data.title} float="right" />
         {/if}
       </h1>
       <p>{$problem.data.content}</p>
@@ -101,6 +108,9 @@
             >서버 시작하기</BigButton
           >
         {:else}
+          <div>
+            서버 주소: <pre>35.212.179.177:{$status.data.port}</pre>
+          </div>
           <BigButton mutation={stopMutation}>서버 종료하기</BigButton>
         {/if}
       </section>

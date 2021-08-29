@@ -1,10 +1,11 @@
 <script lang="ts">
   export let id: number;
   export let key: string;
+  export let name: string | undefined = undefined;
   export let float: "left" | "right" | undefined = undefined;
 </script>
 
-<a href={`//cdn.ctf-archive.com/ctf/${id}-${key}.7z`} class={float}
+<a href={`//cdn.ctf-archive.com/ctf/${id}-${key}.7z`} download={name && name + ".7z"} class={float}
   ><svg viewBox="0 0 24 24" enable-background="new 0 0 24 24"
     ><g
       ><path
