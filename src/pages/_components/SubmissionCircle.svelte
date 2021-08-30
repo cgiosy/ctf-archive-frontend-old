@@ -8,6 +8,7 @@
   let style: string;
   let index: ProblemCategory = 0;
   let prevLevels = levels;
+  let inputElm: HTMLInputElement;
 
   const onKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
@@ -19,6 +20,14 @@
       case "d":
         index = index === 5 ? 0 : index + 1;
         break;
+      case "W":
+      case "w":
+        levels[index] = Math.min((Number(levels[index]) || 0) + 1, 30) | 0;
+        break;
+      case "S":
+      case "s":
+        levels[index] = Math.max((Number(levels[index]) || 0) - 1, 0) | 0;
+        break;
     }
   };
 
@@ -29,42 +38,56 @@
     else levels = [...prevLevels];
     */
   }
-  $: style = `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${[
-    ProblemCategory.Pwnable,
-    ProblemCategory.Reversing,
-    ProblemCategory.Crypto,
-    ProblemCategory.Web,
-    ProblemCategory.Forensic,
-    ProblemCategory.Misc,
-  ]
-    .map(
-      (category) =>
-        `${setColorOpacity(categoryColors[category], levels[category] > 0 ? 1 : 1 / 3)} ${
-          60 * category
-        }deg ${60 * (category + 1)}deg`
-    )
-    .join(", ")})`;
 </script>
 
-<input type="number" min="0" max="30" bind:value={levels[index]} on:keydown={onKeyDown} {style} />
+<div>
+  <input
+    type="number"
+    min="0"
+    max="30"
+    bind:value={levels[index]}
+    on:keydown={onKeyDown}
+    bind:this={inputElm}
+    {style}
+  />
+  <svg fill="none" width="192" height="192" viewBox="0 0 192 192">
+    {#each [ProblemCategory.Crypto, ProblemCategory.Reversing, ProblemCategory.Pwnable, ProblemCategory.Misc, ProblemCategory.Forensic, ProblemCategory.Web] as category, i}
+      <circle
+        class={index === category ? "selected" : ""}
+        stroke={setColorOpacity(categoryColors[category], levels[category] > 0 ? 1 : 1 / 3)}
+        stroke-dashoffset={`${i * 40}%`}
+        on:click={() => {
+          index = category;
+          levels[index] = Math.max(levels[index], 1);
+          inputElm.focus();
+        }}
+      />
+    {/each}
+  </svg>
+</div>
 
 <style>
+  div {
+    position: relative;
+    margin: 0.1875em;
+  }
   input {
+    position: absolute;
     display: inline-flex;
-    box-sizing: border-box;
-    width: 3em;
-    height: 3em;
+    top: 24px;
+    left: 24px;
+    width: 144px;
+    height: 144px;
+    z-index: 1;
     align-items: center;
     justify-content: center;
-    border: double 0.1875em transparent;
-    background-origin: border-box;
-    background-clip: content-box, border-box;
+    border: 0;
     border-radius: 50%;
+    background: rgb(var(--background-color));
     font-family: Montserrat;
     font-weight: bold;
     font-size: 4em;
     text-align: center;
-    margin: 0.1875em;
     flex-shrink: 0;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
 
@@ -78,9 +101,22 @@
   input:focus {
     outline: none;
   }
+  circle {
+    cx: 50%;
+    cy: 50%;
+    r: 37.5%;
+    stroke-width: 12.5%;
+    stroke-dasharray: 40% 200%;
+    cursor: pointer;
+    transition: stroke-width 0.05s ease-in-out;
+  }
+  input:focus + svg > circle.selected,
+  circle:hover {
+    stroke-width: 25%;
+  }
 
   @media (min-width: 64em) {
-    input {
+    div {
       margin-right: 1em;
     }
   }

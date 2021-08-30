@@ -1,7 +1,7 @@
 <script lang="ts">
   import { params } from "@roxi/routify";
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
-  import { get, post } from "../../libs/fetcher";
+  import { get, post, put } from "../../libs/fetcher";
   import { charsets, escapeAllow, getLocalStorage } from "../../libs/utils";
   import FileLink from "../_components/FileLink.svelte";
   import TextArea from "../_components/TextArea.svelte";
@@ -9,18 +9,33 @@
   import TextInput from "../_components/TextInput.svelte";
   import LevelIcon from "../_components/LevelIcon.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
-  import { ProblemType, UserAuth } from "../../types";
+  import { Levels, ProblemType, UserAuth } from "../../types";
   import type { IProblemDetails, IUserPrivateInfo, IStatus } from "../../types";
   import ProblemEditLink from "../_components/ProblemEditLink.svelte";
 
   let id: number;
   let lifetime: string = "30";
   let loggedIn = false;
+  let flag: string = "";
+  let levels: Levels = [0, 0, 0, 0, 0, 0];
+  let comment: string = "";
+
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
   const getProblem = () => get<IProblemDetails>("/problems/" + id);
   const getStatus = () => get<IStatus>("/problems/status");
   const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: Number(lifetime) });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
+  const submit = () =>
+    put<{}>(`/problems/${id}/submissions`, {
+      flag,
+      levels,
+      comment,
+    });
+  const edit = () =>
+    post<{}>(`/problems/${id}/submissions`, {
+      levels,
+      comment,
+    });
 
   const queryClient = useQueryClient();
 
@@ -60,7 +75,22 @@
       queryClient.invalidateQueries("status");
     },
   });
-  const submitMutation = useMutation(async () => 1);
+  const submitMutation = useMutation(submit, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("me");
+      if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
+      queryClient.invalidateQueries("problems");
+      queryClient.invalidateQueries(["problem", id]);
+    },
+  });
+  const editMutation = useMutation(edit, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("me");
+      if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
+      queryClient.invalidateQueries("problems");
+      queryClient.invalidateQueries(["problem", id]);
+    },
+  });
 
   $: {
     id = Number($params.id);
@@ -127,10 +157,10 @@
     {/if}
     {#if $sessionid.data != null}
       <section>
-        <TextInput>플래그</TextInput>
+        <TextInput bind:value={flag}>플래그</TextInput>
         <div>
-          <SubmissionCircle />
-          <TextArea rows={8}>댓글</TextArea>
+          <SubmissionCircle bind:levels />
+          <TextArea rows={8} bind:value={comment}>댓글</TextArea>
         </div>
         <BigButton mutation={submitMutation}>제출</BigButton>
       </section>
