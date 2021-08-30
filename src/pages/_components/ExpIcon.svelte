@@ -6,31 +6,42 @@
   export let exps: Exps = [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity];
   export let small: boolean = false;
 
+  let expSum: number;
+  let categories: { sum: number; exp: number; category: ProblemCategory }[];
+  let style: string;
+  let level: number;
+  let remain: number;
+  let percentage: number;
+
   const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
 
-  let expSum = 0;
-  const categories = exps
-    .map((exp, category: ProblemCategory) => ({ exp, category }))
-    .filter(({ exp }) => exp > 0)
-    .map(({ exp, category }) => ({
-      sum: (expSum += exp),
-      exp,
-      category,
-    }));
-  const { level, remain, percentage } = expToLevel(expSum);
+  $: {
+    expSum = 0;
 
-  const deg = 360 / expSum;
-  const style =
-    categories.length === 0
-      ? toBorder("rgb(var(--text-color))")
-      : categories.length === 1
-      ? toBorder(categoryColors[categories[0].category])
-      : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${categories
-          .map(
-            ({ sum, exp, category }) =>
-              `${categoryColors[category]} ${deg * (sum - exp)}deg ${deg * sum}deg`
-          )
-          .join(", ")})`;
+    categories = exps
+      .map((exp, category: ProblemCategory) => ({ exp, category }))
+      .filter(({ exp }) => exp > 0)
+      .map(({ exp, category }) => ({
+        sum: (expSum += exp),
+        exp,
+        category,
+      }));
+
+    const deg = 360 / expSum;
+    ({ level, remain, percentage } = expToLevel(expSum));
+
+    style =
+      categories.length === 0
+        ? toBorder("rgb(var(--text-color))")
+        : categories.length === 1
+        ? toBorder(categoryColors[categories[0].category])
+        : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${categories
+            .map(
+              ({ sum, exp, category }) =>
+                `${categoryColors[category]} ${deg * (sum - exp)}deg ${deg * sum}deg`
+            )
+            .join(", ")})`;
+  }
 </script>
 
 <a
@@ -48,6 +59,8 @@
     align-items: center;
     justify-content: center;
     border-radius: 50%;
+    background: rgb(var(--background-color));
+    color: rgb(var(--text-color));
     font-family: Montserrat;
     font-weight: bold;
     font-size: 1.1em;

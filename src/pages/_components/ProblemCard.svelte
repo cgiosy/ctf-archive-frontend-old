@@ -12,7 +12,9 @@
     wallpaperPos = Math.max(0, Math.min(100, wallpaperPos + (e.deltaY / Math.abs(e.deltaY)) * 1));
   };
 
-  let style: string =
+  let style: string;
+
+  $: style =
     wallpaper === ""
       ? ""
       : `background-position: top ${wallpaperPos}%, center;` +

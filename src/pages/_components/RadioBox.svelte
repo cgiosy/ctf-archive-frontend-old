@@ -4,6 +4,7 @@
   export let equal: (a: string, b: string) => boolean = (a, b) => a === b;
 
   let selected: boolean = false;
+
   $: {
     selected = equal(group, value);
   }

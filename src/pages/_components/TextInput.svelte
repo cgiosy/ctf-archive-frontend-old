@@ -4,13 +4,17 @@
   export let value: string | number | string[] | null | undefined = "";
   export let onEnter: Function | undefined = undefined;
 
+  let classes: string[];
+
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" && onEnter !== undefined) onEnter();
   };
 
-  const classes: string[] = [];
-  if (large) classes.push("large");
-  if (monospace) classes.push("monospace");
+  $: {
+    classes = [];
+    if (large) classes.push("large");
+    if (monospace) classes.push("monospace");
+  }
 </script>
 
 <label class={classes.join(" ")}>

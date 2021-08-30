@@ -5,6 +5,11 @@
   export let height: string = "0.125rem";
   export let inset: boolean = false;
 
+  const colors = ["rgb(255, 0, 80)", "rgb(255, 0, 32)"];
+
+  let level: number;
+  let percentage: number;
+
   const mixedColors = (colors: string[]): string => {
     const percentage = 100 / colors.length;
     return `linear-gradient(to right, ${colors
@@ -12,8 +17,7 @@
       .join(", ")})`;
   };
 
-  const { level, percentage } = expToLevel(exp);
-  const colors = ["rgb(255, 0, 80)", "rgb(255, 0, 32)"];
+  $: ({ level, percentage } = expToLevel(exp));
 </script>
 
 <div class="bar" style={`height: ${height}; ${false && inset ? "overflow: hidden" : ""}`}>

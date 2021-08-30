@@ -147,7 +147,7 @@ export const levelsToExp = (levels: Levels): number =>
   (1 << levels[4]) +
   (1 << levels[5]);
 
-export const levelsToLevel = (levels: Levels) => expToLevel(levelsToExp(levels));
+export const levelsToLevel = (levels: Levels) => Math.floor(Math.log2(levelsToExp(levels)));
 
 // Local Storage
 
