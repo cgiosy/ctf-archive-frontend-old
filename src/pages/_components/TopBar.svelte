@@ -11,6 +11,10 @@
 
   const queryClient = useQueryClient();
   const logoutMutation = useMutation(() => post<{}>("/logout"), {
+    onSuccess: () => {
+      localStorage.removeItem("sessionid");
+      queryClient.invalidateQueries();
+    },
     onMutate: () => {
       localStorage.removeItem("sessionid");
       queryClient.invalidateQueries();
