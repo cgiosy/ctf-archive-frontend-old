@@ -28,12 +28,12 @@
   const submit = () =>
     put<{}>(`/problems/${id}/submissions`, {
       flag,
-      levels,
+      levels: levels.map((level) => Math.min(30, Math.max(0, Number(level) || 0))),
       comment,
     });
   const edit = () =>
     post<{}>(`/problems/${id}/submissions`, {
-      levels,
+      levels: levels.map((level) => Math.min(30, Math.max(0, Number(level) || 0))),
       comment,
     });
 
