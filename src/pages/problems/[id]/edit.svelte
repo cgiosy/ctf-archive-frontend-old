@@ -112,6 +112,7 @@
     <section>
       <TextInput type="text" bind:value={title}>제목</TextInput>
       <TextInput type="text" bind:value={source}>출처</TextInput>
+      <TextInput type="text" bind:value={group}>공개할 그룹</TextInput>
       <TextInput type="text" bind:value={flag} monospace={true}>플래그</TextInput>
       <TextArea bind:value={content} rows={15}>디스크립션</TextArea>
       <FileUpload bind:file={problemFile}>문제 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
