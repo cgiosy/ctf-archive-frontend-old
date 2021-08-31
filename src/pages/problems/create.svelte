@@ -2,14 +2,14 @@
   import { goto } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { put } from "../../libs/fetcher";
-  import { proxyStream } from "../../libs/utils";
+  import { proxyStream, getLocalStorage, setLocalStorage } from "../../libs/utils";
   import BigButton from "../_components/BigButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import TextArea from "../_components/TextArea.svelte";
   import FileUpload from "../_components/FileUpload.svelte";
 
   let title: string = "";
-  let source: string = "";
+  let source: string = getLocalStorage<string>("lastSource")() ?? "";
   let flag: string = "";
   let content: string = "";
   let group: string = "everyone";
@@ -22,13 +22,18 @@
 
   const queryClient = useQueryClient();
 
+  const setLastSource = setLocalStorage<string>("lastSource");
+
   const upload = useMutation(
     () => put<{ id: number }>("/problems", { title, source, flag, content, group }),
     {
       onSuccess: async (data) => {
         const { id } = data;
+        console.log(id, source);
         Promise.all([
           queryClient.invalidateQueries("problems"),
+          setLastSource(source),
+
           problemFile &&
             put<{}>(
               `/problems/${id}/files`,
