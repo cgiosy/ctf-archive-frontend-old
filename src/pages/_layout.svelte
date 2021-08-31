@@ -44,7 +44,7 @@
     --font-family: "Apple SD Gothic Neo", "Noto Sans CJK KR", "Noto Sans KR", "본고딕", "KoPubDotum",
       "나눔바른고딕", "나눔고딕", "NanumBarunGothic", "NanumGothic", sans-serif;
     --font-family-monospace: "Menlo", "Noto Sans Mono CJK KR", "Monaco", "Hack", "Courier",
-      "Courier New", "D2Coding ligature", "D2Coding", monospace;
+      "Courier New", "D2Coding ligature", "D2Coding", var(--font-family), monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root {
