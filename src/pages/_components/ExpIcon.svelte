@@ -7,6 +7,7 @@
   export let small: boolean = false;
 
   let expSum: number;
+  let expSum2: number;
   let categories: { sum: number; exp: number; category: ProblemCategory }[];
   let style: string;
   let level: number;
@@ -16,13 +17,15 @@
   const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
 
   $: {
-    expSum = 0;
+    const tempCategories = exps.map((exp, category: ProblemCategory) => ({ exp, category }));
 
-    categories = exps
-      .map((exp, category: ProblemCategory) => ({ exp, category }))
-      .filter(({ exp }) => exp > 0)
+    expSum = tempCategories.reduce((sum, { exp }) => sum + exp, 0);
+    expSum2 = 0;
+
+    categories = tempCategories
+      .filter(({ exp }) => exp > expSum / 25)
       .map(({ exp, category }) => ({
-        sum: (expSum += exp),
+        sum: (expSum2 += exp),
         exp,
         category,
       }));
