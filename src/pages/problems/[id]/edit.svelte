@@ -52,7 +52,7 @@
               */
             ),
           buildFile &&
-            post<{}>(
+            put<{}>(
               `/problems/${id}/buildfile`,
               buildFile
               /*
