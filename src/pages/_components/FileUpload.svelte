@@ -1,7 +1,6 @@
 <script lang="ts">
   export let value: string = "";
   export let file: File | null | undefined;
-  export let mimes: string[] = ["application/zip", "application/x-7z-compressed"];
 
   type LabelDragEvent = DragEvent & {
     currentTarget: EventTarget & HTMLLabelElement;
@@ -29,13 +28,24 @@
 
   const onDrop = (e: LabelDragEvent) => {
     e.preventDefault();
-    const items = e?.dataTransfer?.items;
-    if (items === undefined) return;
-    const files = Array.from(items).filter(
-      (item) => item.kind === "file" && mimes.includes(item.type)
-    );
-    if (files.length === 0) return;
-    file = files[0].getAsFile();
+    const { dataTransfer } = e;
+    if (dataTransfer === null) return;
+    const items = dataTransfer.files;
+    for (const item of items) {
+      let tempFile: File | null = null;
+      if (item instanceof DataTransferItem) {
+        if (item.kind !== "file") continue;
+        tempFile = item.getAsFile();
+      } else {
+        tempFile = item;
+      }
+      if (tempFile === null) continue;
+      const { name } = tempFile;
+      if (name.endsWith(".7z") || name.endsWith(".zip")) {
+        file = tempFile;
+        break;
+      }
+    }
   };
 
   const onChange = (
