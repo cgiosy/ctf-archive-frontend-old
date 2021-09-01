@@ -139,13 +139,15 @@ export const expToLevel = (exp: number, precision: number = 1) => {
   return { level, remain, percentage };
 };
 
+export const levelToExp = (level: number): number => (level > 0 ? 1 << level : 0);
+
 export const levelsToExp = (levels: Levels): number =>
-  (1 << levels[0]) +
-  (1 << levels[1]) +
-  (1 << levels[2]) +
-  (1 << levels[3]) +
-  (1 << levels[4]) +
-  (1 << levels[5]);
+  levelToExp(levels[0]) +
+  levelToExp(levels[1]) +
+  levelToExp(levels[2]) +
+  levelToExp(levels[3]) +
+  levelToExp(levels[4]) +
+  levelToExp(levels[5]);
 
 export const levelsToLevel = (levels: Levels) => Math.floor(Math.log2(levelsToExp(levels)));
 
