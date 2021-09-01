@@ -202,6 +202,10 @@
     justify-content: center;
     margin: 1em 0;
   }
+  p {
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
   .warning {
     font-size: 0.875em;
     background: rgba(var(--link-color), calc(var(--background-opacity) * 1.85));
