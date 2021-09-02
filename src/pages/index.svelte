@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { tick } from "svelte";
   import { useInfiniteQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { goto, params } from "@roxi/routify";
   import { dequal } from "dequal/lite";
@@ -58,9 +59,11 @@
     });
 
   let scrollY = 0;
+  let innerHeight = 0;
+  let clientHeight = 0;
+  let isPending = false;
   let query: string = "";
   let sort: GetUsersSortKey = "solves_desc";
-  let page = 1;
   const pageSize = 25;
 
   let count = -1;
@@ -69,8 +72,6 @@
   const problems = useInfiniteQuery({
     queryFn: getProblems,
     enabled: false,
-    // getNextPageParam: (lastGroup) => lastGroup.nextId || undefined,
-    // staleTime: 1000 * 60 * 1
   });
   const queryClient = useQueryClient();
 
@@ -90,21 +91,44 @@
       "problems",
       (query = typeof $params.query === "string" ? $params.query : ""),
       (sort = toSort($params.sort)),
-      // (page = Math.max(Number($params.page), 1) || 1),
+      // (page = Math.max(Number($params.page) || 1, 1)),
     ];
     if (queryKey !== undefined) await queryClient.cancelQueries(queryKey);
     queryKey = newQueryKey;
-    problems.setOptions({ queryKey, queryFn: getProblems, staleTime: 1000 * 60 * 5 });
+    problems.setOptions({
+      queryKey,
+      queryFn: getProblems,
+      getNextPageParam: (lastGroup, pages) =>
+        lastGroup.count > (pages.length - 1) * pageSize + pages[pages.length - 1].problems.length
+          ? pages.length + 1
+          : undefined,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+    });
   };
 
   // $: count = $problems.data?.count ?? count;
   $: useVars(query, sort), onQueryChanged();
   $: useVars($params), onParamsChanged();
+  $: {
+    if (
+      !isPending &&
+      !$problems.isFetching &&
+      $problems.hasNextPage &&
+      scrollY >= clientHeight - innerHeight - 48 * 6
+    ) {
+      isPending = true;
+      $problems.fetchNextPage().then(() => {
+        isPending = false;
+      });
+    }
+  }
 </script>
 
-<svelte:window bind:scrollY />
+<svelte:window bind:scrollY bind:innerHeight />
 
-<main>
+<main bind:clientHeight>
   <header>
     <div class="search-logo">
       <Logo />
