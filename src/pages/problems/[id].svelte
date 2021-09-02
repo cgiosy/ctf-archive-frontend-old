@@ -7,6 +7,7 @@
   import TextArea from "../_components/TextArea.svelte";
   import BigButton from "../_components/BigButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
+  import ColorList from "../_components/ColorList.svelte";
   import LevelIcon from "../_components/LevelIcon.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import { Levels, ProblemType, UserAuth } from "../../types";
@@ -162,6 +163,7 @@
           <SubmissionCircle bind:levels />
           <TextArea rows={8} bind:value={comment}>댓글</TextArea>
         </div>
+        <ColorList />
         <BigButton mutation={submitMutation}>제출</BigButton>
       </section>
     {/if}

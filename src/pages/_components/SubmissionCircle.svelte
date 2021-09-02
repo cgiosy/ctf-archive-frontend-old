@@ -53,12 +53,12 @@
   <svg fill="none" width="192" height="192" viewBox="0 0 192 192">
     {#each [ProblemCategory.Crypto, ProblemCategory.Reversing, ProblemCategory.Pwnable, ProblemCategory.Misc, ProblemCategory.Forensic, ProblemCategory.Web] as category, i}
       <circle
-        class={index === category ? "selected" : ""}
-        stroke={setColorOpacity(categoryColors[category], levels[category] > 0 ? 1 : 1 / 3)}
+        class="{index === category ? 'focused' : ''} {levels[category] > 0 ? 'selected' : ''}"
+        stroke={categoryColors[category]}
         stroke-dashoffset={`${i * 40}%`}
         on:click={() => {
           index = category;
-          levels[index] = Math.max(levels[index], 1);
+          levels[index] = levels[index] !== 1 ? Math.max(levels[index], 1) : 0;
           inputElm.focus();
         }}
       />
@@ -108,11 +108,18 @@
     stroke-width: 12.5%;
     stroke-dasharray: 40% 200%;
     cursor: pointer;
-    transition: stroke-width 0.05s ease-in-out;
+    opacity: 0.5;
+    transition: stroke-width 0.05s ease-in-out, opacity 0.1s;
   }
-  input:focus + svg > circle.selected,
+  input:focus + svg > circle.focused,
   circle:hover {
     stroke-width: 25%;
+  }
+  circle:hover {
+    opacity: 0.75;
+  }
+  circle.selected {
+    opacity: 1;
   }
 
   @media (min-width: 64em) {

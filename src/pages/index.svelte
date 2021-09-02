@@ -6,6 +6,7 @@
   import Logo from "./_components/Logo.svelte";
   import RadioBox from "./_components/RadioBox.svelte";
   import TextInput from "./_components/TextInput.svelte";
+  import ColorList from "./_components/ColorList.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
   import { get } from "../libs/fetcher";
   import { useVars } from "../libs/utils";
@@ -143,6 +144,7 @@
           onEnter={() => onQueryChanged(true)}>검색어</TextInput
         >
       </div>
+      <ColorList />
       <div class="search-options">
         {#each [{ type: "solves", str: "푼 사람" }, { type: "level", str: "난이도" }, { type: "id", str: "최신 순" }] as { type, str }}
           <RadioBox
@@ -189,6 +191,14 @@
   }
   ul {
     list-style-type: none;
+  }
+  .search {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .search-bar {
+    width: 100%;
   }
   .search-logo {
     font-size: 3rem;
