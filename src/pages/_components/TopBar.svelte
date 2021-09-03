@@ -15,7 +15,7 @@
       localStorage.removeItem("sessionid");
       queryClient.invalidateQueries();
     },
-    onMutate: () => {
+    onError: () => {
       localStorage.removeItem("sessionid");
       queryClient.invalidateQueries();
     },
