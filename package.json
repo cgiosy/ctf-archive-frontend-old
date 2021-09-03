@@ -14,7 +14,7 @@
     "build:app": "routify -b && rollup -c",
     "nollup": "nollup -c",
     "routify": "routify",
-    "serve": "run-s build:* && find dist -type f -not -name '*.woff2' -not -name '*.jpg' -not -name '*.png' -not -name '*.webp' | xargs brotli && scp -r dist ubuntu@api.ctf-archive.com:dist",
+    "serve": "run-s build:* && find dist -type f -not -name '*.woff2' -not -name '*.jpg' -not -name '*.png' -not -name '*.webp' | xargs brotli && ssh ubuntu@ctf-archive.com rm -rf dist && scp -r dist ubuntu@ctf-archive.com:",
     "validate": "svelte-check"
   },
   "devDependencies": {
