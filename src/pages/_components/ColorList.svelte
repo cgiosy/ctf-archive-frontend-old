@@ -20,7 +20,7 @@
 
 <style>
   ul {
-    display: flex;
+    display: block;
     list-style-type: none;
     /* margin: 1em 0 0 -1em; */
     margin: 1em;
@@ -30,7 +30,8 @@
     /* font-size: 0.875em; */
   }
   li {
-    padding: 0 1em;
+    display: inline-block;
+    padding: 0.5em 1em;
     line-height: 0;
     margin-right: 0.25em;
   }
