@@ -187,10 +187,11 @@
   .problems {
     width: 100%;
     max-width: var(--content-max-width);
-    padding: 2rem 1rem;
+    padding: 1rem;
   }
   ul {
     list-style-type: none;
+    margin: 0;
   }
   .search {
     display: flex;
