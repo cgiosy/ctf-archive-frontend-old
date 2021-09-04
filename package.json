@@ -23,6 +23,8 @@
     "@rollup/plugin-typescript": "^8.2.5",
     "@roxi/routify": "^2.18.3",
     "@tsconfig/svelte": "^2.0.1",
+    "@types/dompurify": "^2.2.3",
+    "@types/marked": "^3.0.0",
     "cross-env": "^7.0.3",
     "fs-extra": "^10.0.0",
     "nollup": "^0.18.3",
@@ -51,6 +53,8 @@
   "dependencies": {
     "@sveltestack/svelte-query": "^1.4.1",
     "dequal": "^2.0.2",
-    "fflate": "^0.7.1"
+    "dompurify": "^2.3.1",
+    "fflate": "^0.7.1",
+    "marked": "^3.0.2"
   }
 }

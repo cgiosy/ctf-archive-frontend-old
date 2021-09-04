@@ -24,7 +24,6 @@ export type Exps = [number, number, number, number, number, number];
 
 export interface IProblem {
   id: number;
-  level: number;
   levels: Levels;
   title: string;
   source: string;
@@ -39,14 +38,8 @@ export interface IProblemDetails {
   content: string;
   solves: number;
   types: number;
-}
-
-export interface IProblemEdit {
-  title: string;
-  source: string;
-  flag: string;
-  content: string;
   group: string;
+  flag?: string;
 }
 
 export interface IStatus {

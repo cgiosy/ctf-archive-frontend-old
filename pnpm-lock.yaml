@@ -7,10 +7,14 @@ specifiers:
   '@roxi/routify': ^2.18.3
   '@sveltestack/svelte-query': ^1.4.1
   '@tsconfig/svelte': ^2.0.1
+  '@types/dompurify': ^2.2.3
+  '@types/marked': ^3.0.0
   cross-env: ^7.0.3
   dequal: ^2.0.2
+  dompurify: ^2.3.1
   fflate: ^0.7.1
   fs-extra: ^10.0.0
+  marked: ^3.0.2
   nollup: ^0.18.3
   npm-run-all: ^4.1.5
   postcss: ^8.3.6
@@ -34,7 +38,9 @@ specifiers:
 dependencies:
   '@sveltestack/svelte-query': 1.4.1
   dequal: 2.0.2
+  dompurify: 2.3.1
   fflate: 0.7.1
+  marked: 3.0.2
 
 devDependencies:
   '@rollup/plugin-commonjs': 20.0.0_rollup@2.56.3
@@ -42,6 +48,8 @@ devDependencies:
   '@rollup/plugin-typescript': 8.2.5_8754c399402d2a4ab87d1a1f1d76b7ed
   '@roxi/routify': 2.18.3
   '@tsconfig/svelte': 2.0.1
+  '@types/dompurify': 2.2.3
+  '@types/marked': 3.0.0
   cross-env: 7.0.3
   fs-extra: 10.0.0
   nollup: 0.18.3_rollup@2.56.3
@@ -1381,12 +1389,22 @@ packages:
     resolution: {integrity: sha512-aqkICXbM1oX5FfgZd2qSSAGdyo/NRxjWCamxoyi3T8iVQnzGge19HhDYzZ6NrVOW7bhcWNSq9XexWFtMzbB24A==}
     dev: true
 
+  /@types/dompurify/2.2.3:
+    resolution: {integrity: sha512-CLtc2mZK8+axmrz1JqtpklO/Kvn38arGc8o1l3UVopZaXXuer9ONdZwJ/9f226GrhRLtUmLr9WrvZsRSNpS8og==}
+    dependencies:
+      '@types/trusted-types': 2.0.2
+    dev: true
+
   /@types/estree/0.0.39:
     resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
     dev: true
 
   /@types/estree/0.0.48:
     resolution: {integrity: sha512-LfZwXoGUDo0C3me81HXgkBg5CTQYb6xzEl+fNmbO4JdRiSKQ8A0GD1OBBvKAIsbCUgoyAty7m99GqqMQe784ew==}
+    dev: true
+
+  /@types/marked/3.0.0:
+    resolution: {integrity: sha512-vof90OIWT+Tzq3MBRXgV9fsH8PC3WZ4OQg9Qa04vOtP0TcyiNfl7BTonYCmTapHZ5lRZh6ihUYkAy7St1hmk/A==}
     dev: true
 
   /@types/node/12.20.15:
@@ -1929,6 +1947,10 @@ packages:
     dependencies:
       webidl-conversions: 5.0.0
     dev: true
+
+  /dompurify/2.3.1:
+    resolution: {integrity: sha512-xGWt+NHAQS+4tpgbOAI08yxW0Pr256Gu/FNE2frZVTbgrBUn8M7tz7/ktS/LZ2MHeGqz6topj0/xY+y8R5FBFw==}
+    dev: false
 
   /dotenv/8.6.0:
     resolution: {integrity: sha512-IrPdXQsk2BbzvCBGBOTmmSH5SodmqZNt4ERAZDmW4CT+tL8VtvinqywuANaFu4bOMWki16nqf0e4oC0QIaDr/g==}
@@ -2689,6 +2711,12 @@ packages:
     dependencies:
       sourcemap-codec: 1.4.8
     dev: true
+
+  /marked/3.0.2:
+    resolution: {integrity: sha512-TMJQQ79Z0e3rJYazY0tIoMsFzteUGw9fB3FD+gzuIT3zLuG9L9ckIvUfF51apdJkcqc208jJN2KbtPbOvXtbjA==}
+    engines: {node: '>= 12'}
+    hasBin: true
+    dev: false
 
   /media-typer/0.3.0:
     resolution: {integrity: sha1-hxDXrwqmJvj/+hzgAWhUUmMlV0g=}

@@ -1,7 +1,11 @@
+import marked from "marked/lib/marked.esm";
+import DOMPurify from "dompurify/dist/purify.es";
 import { ProblemCategory } from "../types";
 import type { Exps, Levels } from "../types";
 
 export const useVars = (...args: unknown[]) => {};
+
+export const markdown = (text: string) => DOMPurify.sanitize(marked(text));
 
 // Charsets
 

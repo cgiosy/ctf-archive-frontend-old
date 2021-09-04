@@ -2,7 +2,7 @@
   import { params } from "@roxi/routify";
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { get, post, put } from "../../libs/fetcher";
-  import { charsets, escapeAllow, getLocalStorage } from "../../libs/utils";
+  import { charsets, escapeAllow, getLocalStorage, markdown } from "../../libs/utils";
   import FileLink from "../_components/FileLink.svelte";
   import TextArea from "../_components/TextArea.svelte";
   import BigButton from "../_components/BigButton.svelte";
@@ -135,7 +135,7 @@
           <ProblemEditLink {id} float="right" />
         {/if}
       </h1>
-      <p>{$problem.data.content}</p>
+      <p class="markdown">{@html markdown($problem.data.content)}</p>
     </section>
     {#if $problem.data.types & ProblemType.BuildFileExist && $status.isSuccess}
       <section>
@@ -220,7 +220,7 @@
   pre {
     font-size: 1.25em;
     background: rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    padding: 0.5em 1em;
+    padding: 0.5em 1.5em;
     border-radius: 0.25em;
     margin: 0;
     margin-left: 1em;

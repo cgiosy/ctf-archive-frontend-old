@@ -79,6 +79,13 @@
     color: inherit;
     text-decoration: none;
   }
+  .markdown a {
+    color: rgb(var(--link-color));
+    vertical-align: unset;
+  }
+  .markdown a:hover {
+    text-decoration: underline;
+  }
   body,
   button,
   input,
