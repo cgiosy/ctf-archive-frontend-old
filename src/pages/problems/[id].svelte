@@ -3,9 +3,11 @@
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { get, post, put } from "../../libs/fetcher";
   import { charsets, escapeAllow, getLocalStorage, markdown } from "../../libs/utils";
+  import Link from "../_components/Link.svelte";
   import FileLink from "../_components/FileLink.svelte";
   import TextArea from "../_components/TextArea.svelte";
   import BigButton from "../_components/BigButton.svelte";
+  import BigLinkButton from "../_components/BigLinkButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import ColorList from "../_components/ColorList.svelte";
   import LevelIcon from "../_components/LevelIcon.svelte";
@@ -137,8 +139,8 @@
       </h1>
       <p class="markdown">{@html markdown($problem.data.content)}</p>
     </section>
-    {#if $problem.data.types & ProblemType.BuildFileExist && $status.isSuccess}
-      <section>
+    <section>
+      {#if $problem.data.types & ProblemType.BuildFileExist && $status.isSuccess}
         <div class="warning">
           서버가 켜지는 데 오래 걸릴 수 있습니다. 로딩이 1분 이상 지속되거나, 서버에 접속이 되지
           않더라도 2~3분 정도 대기해 주시기 바랍니다.
@@ -154,19 +156,26 @@
           </div>
           <BigButton mutation={stopMutation}>서버 종료하기</BigButton>
         {/if}
-      </section>
-    {/if}
-    {#if $sessionid.data != null}
-      <section>
-        <TextInput bind:value={flag}>플래그</TextInput>
-        <div>
-          <SubmissionCircle bind:levels />
-          <TextArea rows={8} bind:value={comment}>댓글</TextArea>
+      {:else}
+        <div class="warning">
+          서버가 필요한 문제입니다.&nbsp;<Link href="/login">로그인</Link>하여 서버를 사용할 수
+          있습니다.
         </div>
-        <ColorList />
+      {/if}
+    </section>
+    <section>
+      <TextInput bind:value={flag}>플래그</TextInput>
+      <div>
+        <SubmissionCircle bind:levels />
+        <TextArea rows={8} bind:value={comment}>댓글</TextArea>
+      </div>
+      <ColorList />
+      {#if $sessionid.data != null}
         <BigButton mutation={submitMutation}>제출</BigButton>
-      </section>
-    {/if}
+      {:else}
+        <BigLinkButton href="/login">로그인 필요</BigLinkButton>
+      {/if}
+    </section>
   {/if}
 </main>
 
