@@ -140,8 +140,8 @@
       </h1>
       <p class="markdown">{@html markdown($problem.data.content)}</p>
     </section>
-    <section>
-      {#if $problem.data.types & ProblemType.BuildFileExist}
+    {#if $problem.data.types & ProblemType.BuildFileExist}
+      <section>
         {#if $status.isSuccess}
           <div class="warning">{$_("server.notice")}</div>
           {#if $status.data.id !== id}
@@ -163,8 +163,8 @@
             )}
           </div>
         {/if}
-      {/if}
-    </section>
+      </section>
+    {/if}
     <section>
       <TextInput bind:value={flag}>{$_("problem.flag")}</TextInput>
       <div>
