@@ -32,6 +32,7 @@ export default {
     level: "난이도",
     id: "등록일",
     comment: "댓글",
+    comments: "댓글",
     problemFile: "문제 파일 (zip or 7z / 드래그 앤 드롭 가능)",
     buildFile: "빌드 파일 (zip or 7z / 드래그 앤 드롭 가능)",
     search: "검색",
