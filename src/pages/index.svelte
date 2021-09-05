@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { tick } from "svelte";
+  import { _ } from "svelte-i18n";
   import { useInfiniteQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { goto, params } from "@roxi/routify";
   import { dequal } from "dequal/lite";
@@ -141,16 +141,18 @@
           monospace={true}
           bind:value={query}
           large={true}
-          onEnter={() => onQueryChanged(true)}>검색어</TextInput
+          onEnter={() => onQueryChanged(true)}>{$_("problem.searchQuery")}</TextInput
         >
       </div>
       <ColorList />
       <div class="search-options">
-        {#each [{ type: "solves", str: "푼 사람" }, { type: "level", str: "난이도" }, { type: "id", str: "최신 순" }] as { type, str }}
+        {#each ["solves", "level", "id"] as type}
           <RadioBox
             bind:group={sort}
             value={sort !== `${type}_desc` ? `${type}_desc` : `${type}_asc`}
-            {equal}>{str} {equal(sort, type) && sort === `${type}_asc` ? "↗" : "↘"}</RadioBox
+            {equal}
+            >{$_(`problem.${type}`)}
+            {equal(sort, type) && sort === `${type}_asc` ? "↗" : "↘"}</RadioBox
           >
         {/each}
       </div>

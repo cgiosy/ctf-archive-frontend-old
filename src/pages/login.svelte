@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { goto } from "@roxi/routify";
   import { useQueryClient, useMutation } from "@sveltestack/svelte-query";
   import { post } from "../libs/fetcher";
@@ -64,22 +65,22 @@
     <h1>Sign in</h1>
     <br />
     {#if step === 0}
-      <TextInput type="text" bind:value={text}>아이디 / 이메일</TextInput>
-      <TextInput type="password" bind:value={password}>비밀번호</TextInput>
+      <TextInput type="text" bind:value={text}>{$_("auth.idOrEmail")}</TextInput>
+      <TextInput type="password" bind:value={password}>{$_("auth.password")}</TextInput>
       <br />
-      <BigButton mutation={signin}>로그인</BigButton>
-      <BigButton mutation={signup}>가입</BigButton>
+      <BigButton mutation={signin}>{$_("auth.login")}</BigButton>
+      <BigButton mutation={signup}>{$_("auth.signup")}</BigButton>
     {:else}
-      <TextInput type="text" bind:value={username}>아이디</TextInput>
-      <TextInput type="text" bind:value={email}>이메일</TextInput>
-      <TextInput type="password" bind:value={password}>비밀번호</TextInput>
+      <TextInput type="text" bind:value={username}>{$_("user.id")}</TextInput>
+      <TextInput type="text" bind:value={email}>{$_("user.email")}</TextInput>
+      <TextInput type="password" bind:value={password}>{$_("user.password")}</TextInput>
       {#if step === 1}
         <br />
-        <BigButton mutation={authEmail}>다음</BigButton>
+        <BigButton mutation={authEmail}>{$_("auth.nextStep")}</BigButton>
       {:else}
-        <TextInput type="text" bind:value={code}>이메일 인증 코드</TextInput>
+        <TextInput type="text" bind:value={code}>{$_("auth.verificationCode")}</TextInput>
         <br />
-        <BigButton mutation={register}>가입</BigButton>
+        <BigButton mutation={register}>{$_("auth.signup")}</BigButton>
       {/if}
     {/if}
   </section>

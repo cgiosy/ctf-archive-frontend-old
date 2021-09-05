@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { goto, params } from "@roxi/routify";
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { get, del, put, post } from "../../../libs/fetcher";
@@ -110,21 +111,21 @@
 <main>
   {#if $problem.isSuccess}
     <section>
-      <TextInput type="text" bind:value={title}>제목</TextInput>
-      <TextInput type="text" bind:value={source}>출처</TextInput>
-      <TextInput type="text" bind:value={flag} monospace={true}>플래그</TextInput>
-      <TextInput type="text" bind:value={group}>공개할 그룹</TextInput>
-      <TextArea bind:value={content} rows={15}>디스크립션</TextArea>
-      <FileUpload bind:file={problemFile}>문제 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
-      <FileUpload bind:file={buildFile}>빌드 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
-      <BigButton mutation={edit}>변경</BigButton>
+      <TextInput type="text" bind:value={title}>{$_("problem.title")}</TextInput>
+      <TextInput type="text" bind:value={source}>{$_("problem.source")}</TextInput>
+      <TextInput type="text" bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
+      <TextInput type="text" bind:value={group}>{$_("problem.group")}</TextInput>
+      <TextArea bind:value={content} rows={15}>{$_("problem.description")}</TextArea>
+      <FileUpload bind:file={problemFile}>{$_("problem.problemFile")}</FileUpload>
+      <FileUpload bind:file={buildFile}>{$_("problem.buildFile")}</FileUpload>
+      <BigButton mutation={edit}>{$_("problem.edit")}</BigButton>
       {#if step === 0}
-        <BigButton mutation={next}>삭제</BigButton>
+        <BigButton mutation={next}>{$_("problem.delete")}</BigButton>
       {:else}
         <TextInput type="string" bind:value={removeId} monospace={true}
-          >문제 번호를 입력해 주세요!</TextInput
+          >{$_("problem.inputProblemId")}</TextInput
         >
-        <BigButton mutation={remove}>삭제</BigButton>
+        <BigButton mutation={remove}>{$_("problem.delete")}</BigButton>
       {/if}
     </section>
   {/if}

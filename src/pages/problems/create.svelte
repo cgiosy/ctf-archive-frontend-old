@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { goto } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { put } from "../../libs/fetcher";
@@ -66,14 +67,14 @@
 
 <main>
   <section>
-    <TextInput type="text" bind:value={title}>제목</TextInput>
-    <TextInput type="text" bind:value={source}>출처</TextInput>
-    <TextInput type="text" bind:value={flag} monospace={true}>플래그</TextInput>
-    <TextInput type="text" bind:value={group}>공개할 그룹</TextInput>
-    <TextArea bind:value={content} rows={15}>디스크립션</TextArea>
-    <FileUpload bind:file={problemFile}>문제 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
-    <FileUpload bind:file={buildFile}>빌드 파일 (zip or 7z / 드래그 앤 드롭 가능)</FileUpload>
-    <BigButton mutation={upload}>업로드</BigButton>
+    <TextInput type="text" bind:value={title}>{$_("problem.title")}</TextInput>
+    <TextInput type="text" bind:value={source}>{$_("problem.source")}</TextInput>
+    <TextInput type="text" bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
+    <TextInput type="text" bind:value={group}>{$_("problem.group")}</TextInput>
+    <TextArea bind:value={content} rows={15}>{$_("problem.description")}</TextArea>
+    <FileUpload bind:file={problemFile}>{$_("problem.problemFile")}</FileUpload>
+    <FileUpload bind:file={buildFile}>{$_("problem.buildFile")}</FileUpload>
+    <BigButton mutation={upload}>{$_("problem.upload")}</BigButton>
   </section>
 </main>
 

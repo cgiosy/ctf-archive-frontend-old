@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { register, init, getLocaleFromNavigator } from "svelte-i18n";
   import { Router } from "@roxi/routify";
   import {
     QueryClient,
@@ -33,6 +34,12 @@
   }).then(() => {
     // persistent cache bug?
     queryClient.removeQueries("problems");
+  });
+
+  register("ko", () => import("./constants/ko"));
+  init({
+    fallbackLocale: "ko",
+    initialLocale: getLocaleFromNavigator(),
   });
 </script>
 

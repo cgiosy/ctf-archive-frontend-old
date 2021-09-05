@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { params } from "@roxi/routify";
   import { useQuery } from "@sveltestack/svelte-query";
   import { get } from "../../libs/fetcher";
@@ -48,8 +49,11 @@
           </div>
         </div>
         <div class="info">
-          <p><b>{new Intl.NumberFormat().format($user.data.solves)}</b> 개의 맞은 문제</p>
-          <p><b>{new Intl.NumberFormat().format(expsSum($user.data.exps))}</b> 경험치</p>
+          <p><b>{new Intl.NumberFormat().format($user.data.solves)}</b> {$_("profile.solves")}</p>
+          <p>
+            <b>{new Intl.NumberFormat().format(expsSum($user.data.exps))}</b>
+            {$_("profile.exp")}
+          </p>
         </div>
       </div>
       <div class="solves" />

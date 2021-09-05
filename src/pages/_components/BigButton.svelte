@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import type { MutationStoreResult } from "@sveltestack/svelte-query";
-  import { toLocaleErrorMessage } from "../../libs/error_message";
 
   import CircleSpinner from "./CircleSpinner.svelte";
   import ErrorMessage from "./ErrorMessage.svelte";
@@ -12,6 +12,11 @@
   const mutate = () => {
     $mutation.mutate(args);
   };
+
+  const errorMessage = (error: unknown) =>
+    $_(`error.${error instanceof Error ? error.message : "default"}`, {
+      default: $_("error.default") || "Error occurred!",
+    });
 </script>
 
 <button on:click={mutate} class={$mutation.status} disabled={disabled || $mutation.isLoading}>
@@ -19,7 +24,7 @@
     <CircleSpinner />
   {:else}
     {#if $mutation.isError === true}
-      <ErrorMessage fadeout={true}>{toLocaleErrorMessage($mutation.error)}</ErrorMessage>
+      <ErrorMessage fadeout={true}>{errorMessage($mutation.error)}</ErrorMessage>
     {/if}
     <div><slot /></div>
   {/if}

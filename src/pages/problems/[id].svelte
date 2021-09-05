@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { params } from "@roxi/routify";
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { get, post, put } from "../../libs/fetcher";
@@ -140,40 +141,41 @@
       <p class="markdown">{@html markdown($problem.data.content)}</p>
     </section>
     <section>
-      {#if $problem.data.types & ProblemType.BuildFileExist && $status.isSuccess}
-        <div class="warning">
-          서버가 켜지는 데 오래 걸릴 수 있습니다. 로딩이 1분 이상 지속되거나, 서버에 접속이 되지
-          않더라도 2~3분 정도 대기해 주시기 바랍니다.
-        </div>
-        {#if $status.data.id !== id}
-          <TextInput type="number" bind:value={lifetime}>켜둘 시간 (분)</TextInput>
-          <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
-            >서버 시작하기</BigButton
-          >
+      {#if $problem.data.types & ProblemType.BuildFileExist}
+        {#if $status.isSuccess}
+          <div class="warning">{$_("server.notice")}</div>
+          {#if $status.data.id !== id}
+            <TextInput type="number" bind:value={lifetime}>{$_("server.lifetime")}</TextInput>
+            <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
+              >{$_("server.start")}</BigButton
+            >
+          {:else}
+            <div class="address">
+              {$_("server.address")}:
+              <pre>35.212.179.177:{$status.data.port}</pre>
+            </div>
+            <BigButton mutation={stopMutation}>{$_("server.stop")}</BigButton>
+          {/if}
         {:else}
-          <div class="address">
-            서버 주소: <pre>35.212.179.177:{$status.data.port}</pre>
+          <div class="warning">
+            {$_("server.required")}&nbsp;<Link href="/login">{$_("auth.login")}</Link>{$_(
+              "server.login"
+            )}
           </div>
-          <BigButton mutation={stopMutation}>서버 종료하기</BigButton>
         {/if}
-      {:else}
-        <div class="warning">
-          서버가 필요한 문제입니다.&nbsp;<Link href="/login">로그인</Link>하여 서버를 사용할 수
-          있습니다.
-        </div>
       {/if}
     </section>
     <section>
-      <TextInput bind:value={flag}>플래그</TextInput>
+      <TextInput bind:value={flag}>{$_("problem.flag")}</TextInput>
       <div>
         <SubmissionCircle bind:levels />
-        <TextArea rows={8} bind:value={comment}>댓글</TextArea>
+        <TextArea rows={8} bind:value={comment}>{$_("problem.comment")}</TextArea>
       </div>
       <ColorList />
       {#if $sessionid.data != null}
-        <BigButton mutation={submitMutation}>제출</BigButton>
+        <BigButton mutation={submitMutation}>{$_("problem.submit")}</BigButton>
       {:else}
-        <BigLinkButton href="/login">로그인 필요</BigLinkButton>
+        <BigLinkButton href="/login">{$_("auth.required")}</BigLinkButton>
       {/if}
     </section>
   {/if}

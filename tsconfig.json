@@ -3,6 +3,8 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules/*", "assets/*"],
   "compilerOptions": {
+    "module": "ESNext",
+    "resolveJsonModule": true,
     "strict": true
   }
 }

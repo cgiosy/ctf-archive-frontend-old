@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { get, post } from "../../libs/fetcher";
   import { getLocalStorage } from "../../libs/utils";
@@ -49,9 +50,9 @@
     <div class="links">
       <ul>
         <li class="logo-link"><a href="/"><Logo /></a></li>
-        <li><a href="/">문제</a></li>
-        <li><a href="/contests">대회</a></li>
-        <li><a href="/ranking">랭킹</a></li>
+        <li><a href="/">{$_("problem.problem")}</a></li>
+        <li><a href="/contests">{$_("contest.contest")}</a></li>
+        <li><a href="/ranking">{$_("ranking.ranking")}</a></li>
         <li class="discord-link">
           <a href="https://discord.gg/QhgjPfYy2E"
             ><svg viewBox="0 0 71 55"
@@ -69,7 +70,7 @@
               class="profile-link"
               href={`/profile/${$me.data.username}`}
               ><ProfileImage src={$me.data.profileImage} size="xs" alt={$me.data.username} /></a
-            >{:else if $sessionid.data == null}<a href="/login">로그인</a>{/if}
+            >{:else if $sessionid.data == null}<a href="/login">{$_("auth.login")}</a>{/if}
         </li>
       </ul>
     </div>
@@ -78,29 +79,29 @@
     <div class="details-links">
       <ul class="empty-list" />
       <ul>
-        <li><a href="/">검색</a></li>
-        <li><a href="/tags">태그</a></li>
+        <li><a href="/">{$_("problem.search")}</a></li>
+        <li><a href="/tags">{$_("problem.tags")}</a></li>
         {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Creator}
           <li>
-            <a href={`/problems/create`}>만들기</a>
+            <a href={`/problems/create`}>{$_("problem.create")}</a>
           </li>
         {/if}
       </ul>
       <ul>
-        <li><a href="/contests">목록</a></li>
+        <li><a href="/contests">{$_("contest.all")}</a></li>
       </ul>
       <ul>
-        <li><a href="/ranking">전체</a></li>
-        <li><a href="/ranking/friends">친구</a></li>
-        <li><a href="/ranking/contribution">기여</a></li>
+        <li><a href="/ranking">{$_("ranking.all")}</a></li>
+        <li><a href="/ranking/friends">{$_("ranking.friends")}</a></li>
+        <li><a href="/ranking/contribution">{$_("ranking.contribution")}</a></li>
       </ul>
       <ul class="user-links">
         {#if loggedIn && me !== null && $me.isSuccess}<li>
-            <a href={`/profile/${$me.data.username}`}>프로필</a>
+            <a href={`/profile/${$me.data.username}`}>{$_("user.profile")}</a>
           </li>{/if}
-        <li><a href="/notifications">알림</a></li>
-        <li><a href="/settings">설정</a></li>
-        {#if loggedIn}<li><a href={"/intro"} on:click={logout}>로그아웃</a></li>{/if}
+        <li><a href="/notifications">{$_("user.notifications")}</a></li>
+        <li><a href="/settings">{$_("user.settings")}</a></li>
+        {#if loggedIn}<li><a href={"/intro"} on:click={logout}>{$_("auth.logout")}</a></li>{/if}
       </ul>
     </div>
   </div>

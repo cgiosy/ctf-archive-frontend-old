@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { goto, params } from "@roxi/routify";
   import { useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { dequal } from "dequal/lite";
@@ -79,15 +80,17 @@
           type="text"
           monospace={true}
           bind:value={query}
-          onEnter={() => onQueryChanged(true)}>검색어</TextInput
+          onEnter={() => onQueryChanged(true)}>{$_("ranking.searchQuery")}</TextInput
         >
       </div>
       <div class="search-options">
-        {#each [{ type: "exp", str: "경험치" }, { type: "solves", str: "문제 수" }] as { type, str }}
+        {#each ["exp", "solves"] as type}
           <RadioBox
             bind:group={sort}
             value={sort !== `${type}_desc` ? `${type}_desc` : `${type}_asc`}
-            {equal}>{str} {equal(sort, type) && sort === `${type}_asc` ? "↗" : "↘"}</RadioBox
+            {equal}
+            >{$_(`user.${type}`)}
+            {equal(sort, type) && sort === `${type}_asc` ? "↗" : "↘"}</RadioBox
           >
         {/each}
       </div>
@@ -95,11 +98,11 @@
   </header>
   <table>
     <tr>
-      <th>순위</th>
-      <th>핸들</th>
-      <th>설명</th>
-      <th>경험치</th>
-      <th>문제 수</th>
+      <th>{$_("user.ranking")}</th>
+      <th>{$_("user.id")}</th>
+      <th>{$_("user.description")}</th>
+      <th>{$_("user.exp")}</th>
+      <th>{$_("user.solves")}</th>
     </tr>
     {#if $usersQuery.isSuccess}
       {#each $usersQuery.data.users as user, index}
