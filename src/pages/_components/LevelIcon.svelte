@@ -11,67 +11,77 @@
   let categories: { sum: number; level: number; category: ProblemCategory }[];
   let style: string;
 
-  const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
-
   $: {
-    levelSum = 0;
-
     categories = levels
       .map((level, category: ProblemCategory) => ({
-        sum: (levelSum += level),
-        level,
         category,
+        level,
+        sum: 0,
       }))
       .filter(({ level }) => level > 0);
 
-    const deg = 360 / levelSum;
+    categories.sort(({ level: level1 }, { level: level2 }) => level2 - level1);
 
-    style =
-      categories.length === 0
-        ? toBorder("rgba(var(--text-color), calc(var(--background-opacity) * 25))")
-        : categories.length === 1
-        ? toBorder(categoryColors[categories[0].category])
-        : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${categories
-            .map(
-              ({ sum, level, category }) =>
-                `${categoryColors[category]} ${deg * (sum - level)}deg ${deg * sum}deg`
-            )
-            .join(", ")})`;
+    levelSum = 0;
+    categories.forEach((val) => {
+      val.sum = levelSum += val.level;
+    });
   }
 </script>
 
-<a
-  href={url}
-  class={`${categories.length >= 2 ? "mixed " : ""}${solved ? "solved " : ""}${
-    small ? "small " : ""
-  }`}
-  {style}>{levelSum > 0 ? levelsToLevel(levels) : levelSum >= 0 ? 0 : ""}</a
->
+<a href={url} class={`${solved ? "solved " : ""}${small ? "small " : ""}`} {style}>
+  <span>{levelSum > 0 ? levelsToLevel(levels) : levelSum >= 0 ? 0 : ""}</span>
+  <svg fill="none" viewBox="0 0 48 48">
+    {#if categories.length > 0}
+      {#each categories as { category, level, sum }, i}
+        <circle
+          stroke={categoryColors[category]}
+          stroke-dashoffset={-((sum - level) / levelSum) * (40 * Math.PI)}
+          stroke-dasharray="{(level / levelSum) * (40 * Math.PI)} {40 * Math.PI}"
+        />
+      {/each}
+    {:else}
+      <circle stroke="#000" />
+    {/if}
+  </svg>
+</a>
 
 <style>
   a {
+    position: relative;
     display: inline-flex;
     box-sizing: border-box;
-    width: 2.5em;
-    height: 2.5em;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+    width: 3em;
+    height: 3em;
     font-family: Montserrat;
     font-weight: bold;
-    font-size: 1.125em;
     margin: 0.25rem;
-    flex-shrink: 0;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
   }
   a:hover {
     transform: scale(1.15);
     /* text-decoration: underline; */
   }
-  .mixed {
-    border: double 0.25em transparent;
-    background-origin: border-box;
-    background-clip: content-box, border-box;
+  span {
+    position: absolute;
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    font-size: 1.125em;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  circle {
+    cx: 24;
+    cy: 24;
+    r: 20;
+    stroke-width: 4;
+    transform: rotate(90deg);
+    transform-origin: center;
+    cursor: pointer;
   }
   .solved {
     opacity: 0.375;

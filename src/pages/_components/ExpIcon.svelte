@@ -7,7 +7,6 @@
   export let small: boolean = false;
 
   let expSum: number;
-  let expSum2: number;
   let categories: { sum: number; exp: number; category: ProblemCategory }[];
   let style: string;
   let level: number;
@@ -17,71 +16,82 @@
   const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
 
   $: {
-    const tempCategories = exps.map((exp, category: ProblemCategory) => ({ exp, category }));
+    const tempCategories = exps.map((exp, category: ProblemCategory) => ({
+      category,
+      exp,
+      sum: 0,
+    }));
 
     expSum = tempCategories.reduce((sum, { exp }) => sum + exp, 0);
-    expSum2 = 0;
+    categories = tempCategories.filter(({ exp }) => exp > expSum / 25);
 
-    categories = tempCategories
-      .filter(({ exp }) => exp > expSum / 25)
-      .map(({ exp, category }) => ({
-        sum: (expSum2 += exp),
-        exp,
-        category,
-      }));
+    categories.sort(({ exp: exp1 }, { exp: exp2 }) => exp2 - exp1);
 
-    const deg = 360 / expSum;
+    let expSum2 = 0;
+    categories.forEach((val) => {
+      val.sum = expSum2 += val.exp;
+    });
+
     ({ level, remain, percentage } = expToLevel(expSum));
-
-    style =
-      categories.length === 0
-        ? toBorder("rgb(var(--text-color))")
-        : categories.length === 1
-        ? toBorder(categoryColors[categories[0].category])
-        : `background-image: linear-gradient(rgb(var(--background-color)), rgb(var(--background-color))), conic-gradient(${categories
-            .map(
-              ({ sum, exp, category }) =>
-                `${categoryColors[category]} ${deg * (sum - exp)}deg ${deg * sum}deg`
-            )
-            .join(", ")})`;
   }
 </script>
 
-<a
-  href={url}
-  class={`${categories.length >= 2 ? "mixed " : ""}${small ? "small " : ""}circle`}
-  {style}>{expSum >= 0 ? level : ""}</a
->
+<a href={url} class={`${small ? "small " : ""}circle`} {style}>
+  <span>{expSum >= 0 ? level : ""}</span>
+  <svg fill="none" viewBox="0 0 48 48">
+    {#if categories.length > 0}
+      {#each categories as { category, exp, sum }, i}
+        <circle
+          stroke={categoryColors[category]}
+          stroke-dashoffset={-((sum - exp) / expSum) * (40 * Math.PI)}
+          stroke-dasharray="{(exp / expSum) * (40 * Math.PI)} {40 * Math.PI}"
+        />
+      {/each}
+    {:else}
+      <circle stroke="#000" />
+    {/if}
+  </svg>
+</a>
 
 <style>
-  .circle {
+  a {
+    position: relative;
     display: inline-flex;
     box-sizing: border-box;
-    width: 2.5em;
-    height: 2.5em;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgb(var(--background-color));
-    color: rgb(var(--text-color));
+    width: 3em;
+    height: 3em;
     font-family: Montserrat;
     font-weight: bold;
-    font-size: 1.1em;
     margin: 0.25rem;
-    flex-shrink: 0;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
   }
-  .circle:hover {
+  a:hover {
     transform: scale(1.15);
     /* text-decoration: underline; */
   }
-  .mixed {
-    border: double 0.25em transparent;
-    background-origin: border-box;
-    background-clip: content-box, border-box;
+  span {
+    position: absolute;
+    display: inline-flex;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    font-size: 1.125em;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  circle {
+    cx: 24;
+    cy: 24;
+    r: 20;
+    stroke-width: 4;
+    transform: rotate(90deg);
+    transform-origin: center;
+    cursor: pointer;
   }
   .small {
-    font-size: 0.9em;
+    font-size: 0.875em;
     /* font-size: 0.9375em; */
   }
 </style>

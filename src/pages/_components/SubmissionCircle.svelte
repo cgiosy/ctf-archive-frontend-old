@@ -50,7 +50,7 @@
     bind:this={inputElm}
     {style}
   />
-  <svg fill="none" width="192" height="192" viewBox="0 0 192 192">
+  <svg fill="none" viewBox="0 0 192 192">
     {#each [ProblemCategory.Crypto, ProblemCategory.Reversing, ProblemCategory.Pwnable, ProblemCategory.Misc, ProblemCategory.Forensic, ProblemCategory.Web] as category, i}
       <circle
         class="{index === category ? 'focused' : ''} {levels[category] > 0 ? 'selected' : ''}"
@@ -74,10 +74,10 @@
   input {
     position: absolute;
     display: inline-flex;
-    top: 24px;
-    left: 24px;
-    width: 144px;
-    height: 144px;
+    top: 0.375em;
+    left: 0.375em;
+    width: 2.25em;
+    height: 2.25em;
     z-index: 1;
     align-items: center;
     justify-content: center;
@@ -100,6 +100,10 @@
   }
   input:focus {
     outline: none;
+  }
+  svg {
+    width: 12em;
+    height: 12em;
   }
   circle {
     cx: 50%;

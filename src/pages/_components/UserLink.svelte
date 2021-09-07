@@ -15,4 +15,7 @@
 >
 
 <style>
+  a {
+    display: block;
+  }
 </style>
