@@ -31,6 +31,7 @@
     queryClient,
     maxAge: cacheTime,
     persistor: localStoragePersistor,
+    buster: "0.0.1",
   }).then(() => {
     // persistent cache bug?
     queryClient.removeQueries("problems");
