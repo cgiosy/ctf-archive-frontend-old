@@ -31,6 +31,7 @@
     categories.forEach((val) => {
       val.sum = expSum2 += val.exp;
     });
+    expSum = expSum2;
 
     ({ level, remain, percentage } = expToLevel(expSum));
   }
