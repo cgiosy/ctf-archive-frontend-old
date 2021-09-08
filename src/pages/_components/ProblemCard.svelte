@@ -3,6 +3,7 @@
   import type { IProblem } from "../../types";
 
   export let problem: IProblem | undefined = undefined;
+  export let solved: boolean = false;
   export let wallpaper: string = "";
   export let wallpaperPos: number = 50;
 
@@ -25,7 +26,7 @@
 
 {#if problem !== undefined}
   <a href={`/problems/${problem.id}`} class="problem" {style}>
-    <LevelIcon levels={problem.levels} />
+    <LevelIcon levels={problem.levels} {solved} />
     <section>
       <h3 class="title">{problem.title}</h3>
       <div class="info">

@@ -60,6 +60,7 @@
   let isPending = false;
   let query: string = "";
   let sort: GetUsersSortKey = "solves_desc";
+  const solvedSet: Set<number> = new Set();
   const pageSize = 25;
 
   let count = -1;
@@ -67,7 +68,7 @@
   let timeoutId: NodeJS.Timeout;
 
   const getProblems = ({ pageParam }: any) =>
-    get<{ count: number; problems: IProblem[] }>("/problems", {
+    get<{ count: number; solves: number; problems: IProblem[]; solved: number[] }>("/problems", {
       query: query
         .split(/\s+/)
         .map((s) => `%${s}%`)
@@ -108,6 +109,10 @@
         lastGroup.count > (pages.length - 1) * pageSize + pages[pages.length - 1].problems.length
           ? pages.length + 1
           : undefined,
+      onSuccess: (data) => {
+        if (data !== undefined)
+          data.pages.forEach(({ solved }) => solved.forEach((id) => solvedSet.add(id)));
+      },
       refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
@@ -125,7 +130,7 @@
       scrollY >= clientHeight - innerHeight - 48 * 6
     ) {
       isPending = true;
-      $problems.fetchNextPage().then(() => {
+      $problems.fetchNextPage().then((data) => {
         isPending = false;
       });
     }
@@ -167,7 +172,7 @@
     {#if $problems.status === "success"}
       {#each $problems.data.pages as page}
         {#each page.problems as problem}
-          <li><ProblemCard {problem} /></li>
+          <li><ProblemCard {problem} solved={solvedSet.has(problem.id)} /></li>
         {/each}
       {/each}
     {/if}

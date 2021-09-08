@@ -16,6 +16,7 @@ export enum UserAuth {
 export enum ProblemType {
   BuildFileExist = 1 << 0,
   ProblemFileExist = 1 << 1,
+  Solved = 1 << 2,
 }
 
 export type Levels = [number, number, number, number, number, number];
