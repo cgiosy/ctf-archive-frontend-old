@@ -10,6 +10,8 @@
   let prevLevels = levels;
   let inputElm: HTMLInputElement;
 
+  const numberToLevel = (x: number) => Math.min(Math.max(x, 0), 30) | 0;
+
   const onKeyDown = (e: KeyboardEvent) => {
     switch (e.key) {
       case "A":
@@ -32,33 +34,35 @@
   };
 
   const onScroll = (e: WheelEvent) => {
-    levels[index] = Math.min(Math.max((Number(levels[index]) || 0) - Math.sign(e.deltaY), 0)) | 0;
+    levels[index] = numberToLevel((Number(levels[index]) || 0) - Math.sign(e.deltaY));
   };
 
-  const initIndex = () => {
-    const indexes = levels
-      .map((level, index) => ({ level, index }))
-      .filter(({ level }) => level > 0);
-    if (indexes.length === 1) ({ index } = indexes[0]);
+  const selectedLevels = (levels: Levels) =>
+    levels.map((level, index) => ({ level, index })).filter(({ level }) => level > 0);
+
+  const onChange = () => {
+    let eq = true;
+    for (let i = 0; i < 6; i++) {
+      levels[i] = numberToLevel(levels[i]);
+      eq = eq && levels[i] === prevLevels[i];
+    }
+    const indexes = selectedLevels(levels);
+    const prevIndexes = selectedLevels(prevLevels);
+    if (indexes.length === 1 && prevIndexes.length <= 1) ({ index } = indexes[0]);
+    if (inputElm != null) inputElm.value = levels[index].toString();
+    if (!eq) prevLevels = [...levels];
   };
 
-  $: useVars(levels), initIndex();
-
-  $: {
-    if (levels.every((level) => 0 <= level && level <= 30 && Number.isInteger(level)))
-      prevLevels = [...levels];
-    else levels = [...prevLevels];
-  }
+  $: useVars(levels), onChange();
 </script>
 
-<div>
+<div on:wheel|preventDefault={onScroll}>
   <input
     type="number"
     min="0"
     max="30"
     bind:value={levels[index]}
     on:keydown={onKeyDown}
-    on:wheel|preventDefault={onScroll}
     bind:this={inputElm}
     {style}
   />
