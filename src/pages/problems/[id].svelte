@@ -101,6 +101,9 @@
     problem.setOptions({
       queryKey: ["problem", id],
       queryFn: getProblem,
+      onSuccess: (data) => {
+        if (data.submission != null) ({ levels, comment } = data.submission);
+      },
     });
   }
   $: {
