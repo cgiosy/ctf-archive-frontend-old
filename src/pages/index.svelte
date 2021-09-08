@@ -52,12 +52,7 @@
     return "";
   };
 
-  const getProblems = ({ pageParam }: any) =>
-    get<{ count: number; problems: IProblem[] }>("/problems", {
-      query,
-      sort,
-      page: String(Number(pageParam) || 1),
-    });
+  const queryClient = useQueryClient();
 
   let scrollY = 0;
   let innerHeight = 0;
@@ -70,11 +65,21 @@
   let count = -1;
   let queryKey: GetUsersQueryKey;
   let timeoutId: NodeJS.Timeout;
+
+  const getProblems = ({ pageParam }: any) =>
+    get<{ count: number; problems: IProblem[] }>("/problems", {
+      query: query
+        .split(/\s+/)
+        .map((s) => `%${s}%`)
+        .join("\n"),
+      sort,
+      page: String(Number(pageParam) || 1),
+    });
+
   const problems = useInfiniteQuery({
     queryFn: getProblems,
     enabled: false,
   });
-  const queryClient = useQueryClient();
 
   const onQueryChanged = async (immediate: boolean = false) => {
     clearTimeout(timeoutId);

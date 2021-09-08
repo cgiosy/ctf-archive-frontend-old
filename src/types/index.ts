@@ -30,6 +30,11 @@ export interface IProblem {
   solves: number;
 }
 
+export interface ISubmission {
+  levels: Levels;
+  comment: string;
+}
+
 export interface IProblemDetails {
   levels: Levels;
   title: string;
@@ -40,6 +45,7 @@ export interface IProblemDetails {
   types: number;
   group: string;
   flag?: string;
+  submission?: ISubmission;
 }
 
 export interface IStatus {

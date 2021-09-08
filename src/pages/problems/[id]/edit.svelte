@@ -39,33 +39,41 @@
     () => post<{}>("/problems/" + id, { title, source, flag, content, group }),
     {
       onSuccess: async (data) => {
-        Promise.all([
-          queryClient.invalidateQueries(["problem", id]),
-          problemFile &&
-            put<{}>(
-              `/problems/${id}/files`,
-              problemFile
-              /*
+        try {
+          Promise.all([
+            queryClient.invalidateQueries(["problem", id]),
+            problemFile &&
+              put<{}>(
+                `/problems/${id}/files`,
+                problemFile
+                /*
               proxyStream<any>(problemFile.stream(), ({ done, value }) => {
                 if (done) uploadedProblemFileSize = Infinity;
                 else uploadedProblemFileSize += value.length;
               })
               */
-            ),
-          buildFile &&
-            put<{}>(
-              `/problems/${id}/buildfile`,
-              buildFile
-              /*
+              ),
+            buildFile &&
+              put<{}>(
+                `/problems/${id}/buildfile`,
+                buildFile
+                /*
               proxyStream<any>(buildFile.stream(), ({ done, value }) => {
                 if (done) uploadedBuildFileSize = Infinity;
                 else uploadedBuildFileSize += value.length;
               })
               */
-            ),
-        ]).then(() => {
-          $goto(`/problems/${id}`);
-        });
+              ),
+          ])
+            .then(() => {
+              $goto(`/problems/${id}`);
+            })
+            .catch(() => {
+              $goto(`/problems/${id}/edit`);
+            });
+        } catch (e) {
+          $goto(`/problems/${id}/edit`);
+        }
       },
     }
   );
@@ -97,7 +105,8 @@
         title = data.title;
         source = data.source;
         content = data.content;
-        // group = "everyone";
+        flag = data.flag ?? "";
+        group = "everyone";
       },
       cacheTime: 0,
       staleTime: 0,
