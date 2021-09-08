@@ -176,7 +176,11 @@
       </div>
       <ColorList />
       {#if $sessionid.data != null}
-        <BigButton mutation={submitMutation}>{$_("problem.submit")}</BigButton>
+        {#if $problem.data.types & ProblemType.Solved}
+          <BigButton mutation={editMutation}>{$_("problem.submit")}</BigButton>
+        {:else}
+          <BigButton mutation={submitMutation}>{$_("problem.submit")}</BigButton>
+        {/if}
       {:else}
         <BigLinkButton href="/login">{$_("auth.required")}</BigLinkButton>
       {/if}
