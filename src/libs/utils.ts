@@ -84,6 +84,28 @@ export const proxyStream = <T>(
   });
 };
 
+// Copy
+
+export const fallbackCopyTextToClipboard = (text: string) => {};
+export const copyToClipboard = (text: string) => {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+  } else {
+    const elm = document.createElement("textarea");
+    elm.value = text;
+
+    elm.style.top = "0";
+    elm.style.left = "0";
+    elm.style.position = "fixed";
+
+    document.body.appendChild(elm);
+    elm.focus();
+    elm.select();
+    document.execCommand("copy");
+    document.body.removeChild(elm);
+  }
+};
+
 // Escape
 
 export const escapeEmpty = (c: string) => "";

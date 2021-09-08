@@ -3,7 +3,13 @@
   import { params } from "@roxi/routify";
   import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { get, post, put } from "../../libs/fetcher";
-  import { charsets, escapeAllow, getLocalStorage, markdown } from "../../libs/utils";
+  import {
+    charsets,
+    copyToClipboard,
+    escapeAllow,
+    getLocalStorage,
+    markdown,
+  } from "../../libs/utils";
   import Link from "../_components/Link.svelte";
   import ProblemEditLink from "../_components/ProblemEditLink.svelte";
   import Notice from "../_components/Notice.svelte";
@@ -13,6 +19,8 @@
   import TextArea from "../_components/TextArea.svelte";
   import BigButton from "../_components/BigButton.svelte";
   import BigLinkButton from "../_components/BigLinkButton.svelte";
+  import IconButton from "../_components/IconButton.svelte";
+  import IconLinkButton from "../_components/IconLinkButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import { Levels, ProblemType, UserAuth } from "../../types";
@@ -120,14 +128,18 @@
   }
   $: {
     if ((loggedIn = $sessionid.data != null)) {
-      status.setOptions({
-        queryKey: "status",
-        queryFn: getStatus,
-      });
       me.setOptions({
         queryKey: "me",
         queryFn: getMyInfo,
         retry: false,
+      });
+    }
+  }
+  $: {
+    if (loggedIn && $problem.isSuccess && $problem.data.types & ProblemType.BuildFileExist) {
+      status.setOptions({
+        queryKey: "status",
+        queryFn: getStatus,
       });
     }
   }
@@ -168,6 +180,30 @@
             <div class="address">
               {$_("server.address")}:
               <pre>35.212.179.177:{$status.data.port}</pre>
+              <IconButton onClick={() => copyToClipboard("35.212.179.177:" + $status.data?.port)}
+                ><svg
+                  width="1em"
+                  height="1em"
+                  viewBox="0 0 24 24"
+                  style="fill: rgb(var(--text-color))"
+                  ><path d="M0 0h24v24H0V0z" fill="none" /><path
+                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                  /></svg
+                ></IconButton
+              >
+              <IconLinkButton href="http://35.212.179.177:{$status.data.port}"
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  enable-background="new 0 0 24 24"
+                  height="24px"
+                  viewBox="0 0 24 24"
+                  width="24px"
+                  fill="#000000"
+                  ><rect fill="none" height="24" width="24" /><path
+                    d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z"
+                  /></svg
+                ></IconLinkButton
+              >
             </div>
             <BigButton mutation={stopMutation}>{$_("server.stop")}</BigButton>
           {/if}
@@ -257,8 +293,7 @@
     background: rgba(var(--text-color), calc(var(--background-opacity) * 2));
     padding: 0.5em 1.5em;
     border-radius: 0.25em;
-    margin: 0;
-    margin-left: 1em;
+    margin: 0 1em;
   }
 
   @media (min-width: 48em) {
