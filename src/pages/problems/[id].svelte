@@ -23,6 +23,7 @@
   let flag: string = "";
   let levels: Levels = [0, 0, 0, 0, 0, 0];
   let comment: string = "";
+  let isInvalidLevels: boolean = true;
 
   const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
   const getProblem = () => get<IProblemDetails>("/problems/" + id);
@@ -97,6 +98,9 @@
     },
   });
 
+  $: isInvalidLevels = !(
+    levels.every((x) => 0 <= x && x <= 30 && Number.isInteger(x)) && levels.some((x) => x > 0)
+  );
   $: {
     id = Number($params.id);
     problem.setOptions({
@@ -179,13 +183,16 @@
       </div>
       <ColorList />
       {#if $sessionid.data != null}
-        {#if levels.some((x) => 1 <= x && x <= 30 && Number.isInteger(x))}
-          {#if $problem.data.types & ProblemType.Solved}
-            <BigButton mutation={editMutation}>{$_("problem.submit")}</BigButton>
-          {:else}
-            <BigButton mutation={submitMutation}>{$_("problem.submit")}</BigButton>
-          {/if}
+        {#if $problem.data.types & ProblemType.Solved}
+          <BigButton mutation={editMutation} hidden={isInvalidLevels}
+            >{$_("problem.submit")}</BigButton
+          >
         {:else}
+          <BigButton mutation={submitMutation} hidden={isInvalidLevels}
+            >{$_("problem.submit")}</BigButton
+          >
+        {/if}
+        {#if isInvalidLevels}
           <div class="warning">
             {$_("problem.levelsRequired")}
           </div>
