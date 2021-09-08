@@ -44,7 +44,7 @@ export default {
     delete: "삭제",
     inputProblemId: "문제 번호를 입력해 주세요!",
     levelsRequired:
-      "문제에 티어를 매겨야 제출할 수 있습니다. 원을 클릭하고 수를 입력하거나, wasd 키로도 조작 가능합니다.",
+      "문제에 티어를 매겨야 제출할 수 있습니다. 원을 클릭한 뒤, 스크롤하거나 wasd 키 등을 통해 조작 가능합니다.",
   },
   server: {
     address: "서버 주소",
@@ -76,6 +76,6 @@ export default {
   },
   error: {
     default: "오류 발생!",
-    WRONG_ANSWER: "틀렸습니다!",
+    WRONG_ANSWER: "잘못된 플래그입니다.",
   },
 };

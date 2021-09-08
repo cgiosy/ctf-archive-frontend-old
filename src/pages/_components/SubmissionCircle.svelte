@@ -31,6 +31,10 @@
     }
   };
 
+  const onScroll = (e: WheelEvent) => {
+    levels[index] = Math.min(Math.max((Number(levels[index]) || 0) - Math.sign(e.deltaY), 0)) | 0;
+  };
+
   const initIndex = () => {
     const indexes = levels
       .map((level, index) => ({ level, index }))
@@ -54,6 +58,7 @@
     max="30"
     bind:value={levels[index]}
     on:keydown={onKeyDown}
+    on:wheel|preventDefault={onScroll}
     bind:this={inputElm}
     {style}
   />

@@ -5,17 +5,18 @@
   import { get, post, put } from "../../libs/fetcher";
   import { charsets, escapeAllow, getLocalStorage, markdown } from "../../libs/utils";
   import Link from "../_components/Link.svelte";
+  import ProblemEditLink from "../_components/ProblemEditLink.svelte";
+  import Notice from "../_components/Notice.svelte";
+  import LevelIcon from "../_components/LevelIcon.svelte";
+  import ColorList from "../_components/ColorList.svelte";
   import FileLink from "../_components/FileLink.svelte";
   import TextArea from "../_components/TextArea.svelte";
   import BigButton from "../_components/BigButton.svelte";
   import BigLinkButton from "../_components/BigLinkButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
-  import ColorList from "../_components/ColorList.svelte";
-  import LevelIcon from "../_components/LevelIcon.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import { Levels, ProblemType, UserAuth } from "../../types";
   import type { IProblemDetails, IUserPrivateInfo, IStatus } from "../../types";
-  import ProblemEditLink from "../_components/ProblemEditLink.svelte";
 
   let id: number;
   let lifetime: string = "30";
@@ -107,7 +108,13 @@
       queryKey: ["problem", id],
       queryFn: getProblem,
       onSuccess: (data) => {
-        if (data.submission != null) ({ levels, comment } = data.submission);
+        if (data.submission != null) {
+          if (isInvalidLevels) {
+            isInvalidLevels = false;
+            levels = data.submission.levels;
+          }
+          if (comment === "") comment = data.submission.comment;
+        }
       },
     });
   }
@@ -151,7 +158,7 @@
     {#if $problem.data.types & ProblemType.BuildFileExist}
       <section>
         {#if $status.isSuccess}
-          <div class="warning">{$_("server.notice")}</div>
+          <Notice>{$_("server.notice")}</Notice>
           {#if $status.data.id !== id}
             <TextInput type="number" bind:value={lifetime}>{$_("server.lifetime")}</TextInput>
             <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
@@ -165,11 +172,11 @@
             <BigButton mutation={stopMutation}>{$_("server.stop")}</BigButton>
           {/if}
         {:else}
-          <div class="warning">
+          <Notice>
             {$_("server.required")}&nbsp;<Link href="/login">{$_("auth.login")}</Link>{$_(
               "server.login"
             )}
-          </div>
+          </Notice>
         {/if}
       </section>
     {/if}
@@ -193,9 +200,9 @@
           >
         {/if}
         {#if isInvalidLevels}
-          <div class="warning">
+          <Notice>
             {$_("problem.levelsRequired")}
-          </div>
+          </Notice>
         {/if}
       {:else}
         <BigLinkButton href="/login">{$_("auth.required")}</BigLinkButton>
@@ -241,12 +248,6 @@
   p {
     word-break: break-all;
     white-space: pre-wrap;
-  }
-  .warning {
-    font-size: 0.875em;
-    background: rgba(var(--link-color), calc(var(--background-opacity) * 1.85));
-    padding: 1em 2em;
-    border-radius: 0.25em;
   }
   .address {
     text-align: center;
