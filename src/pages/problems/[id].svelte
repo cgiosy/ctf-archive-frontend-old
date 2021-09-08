@@ -30,7 +30,7 @@
   const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: Number(lifetime) });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
   const submit = () =>
-    put<{}>(`/problems/${id}/submissions`, {
+    put<{ correct: boolean; time: string }>(`/problems/${id}/submissions`, {
       flag,
       levels: levels.map((level) => Math.min(30, Math.max(0, Number(level) || 0))),
       comment,
@@ -80,7 +80,8 @@
     },
   });
   const submitMutation = useMutation(submit, {
-    onSuccess: () => {
+    onSuccess: ({ correct }) => {
+      if (correct === false) throw new Error("WRONG_ANSWER");
       if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
       queryClient.invalidateQueries("me");
       queryClient.invalidateQueries("problems");
@@ -184,6 +185,10 @@
           {:else}
             <BigButton mutation={submitMutation}>{$_("problem.submit")}</BigButton>
           {/if}
+        {:else}
+          <div class="warning">
+            {$_("problem.levelsRequired")}
+          </div>
         {/if}
       {:else}
         <BigLinkButton href="/login">{$_("auth.required")}</BigLinkButton>
