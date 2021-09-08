@@ -81,16 +81,16 @@
   });
   const submitMutation = useMutation(submit, {
     onSuccess: () => {
-      queryClient.invalidateQueries("me");
       if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
+      queryClient.invalidateQueries("me");
       queryClient.invalidateQueries("problems");
       queryClient.invalidateQueries(["problem", id]);
     },
   });
   const editMutation = useMutation(edit, {
     onSuccess: () => {
-      queryClient.invalidateQueries("me");
       if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
+      queryClient.invalidateQueries("me");
       queryClient.invalidateQueries("problems");
       queryClient.invalidateQueries(["problem", id]);
     },
@@ -169,17 +169,21 @@
       </section>
     {/if}
     <section>
-      <TextInput bind:value={flag}>{$_("problem.flag")}</TextInput>
+      {#if !($problem.data.types & ProblemType.Solved)}
+        <TextInput bind:value={flag}>{$_("problem.flag")}</TextInput>
+      {/if}
       <div>
         <SubmissionCircle bind:levels />
         <TextArea rows={8} bind:value={comment}>{$_("problem.comment")}</TextArea>
       </div>
       <ColorList />
       {#if $sessionid.data != null}
-        {#if $problem.data.types & ProblemType.Solved}
-          <BigButton mutation={editMutation}>{$_("problem.submit")}</BigButton>
-        {:else}
-          <BigButton mutation={submitMutation}>{$_("problem.submit")}</BigButton>
+        {#if levels.some((x) => 1 <= x && x <= 30 && Number.isInteger(x))}
+          {#if $problem.data.types & ProblemType.Solved}
+            <BigButton mutation={editMutation}>{$_("problem.submit")}</BigButton>
+          {:else}
+            <BigButton mutation={submitMutation}>{$_("problem.submit")}</BigButton>
+          {/if}
         {/if}
       {:else}
         <BigLinkButton href="/login">{$_("auth.required")}</BigLinkButton>

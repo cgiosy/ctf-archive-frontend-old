@@ -32,8 +32,9 @@
   };
 
   const initIndex = () => {
+    let prevIndex = index;
     for (index = 0; index < 6; index++) if (levels[index] !== 0) break;
-    if (index >= 6) index = 0;
+    if (index >= 6) index = prevIndex;
   };
 
   $: useVars(levels), initIndex();
