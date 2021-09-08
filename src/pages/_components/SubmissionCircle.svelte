@@ -46,11 +46,13 @@
       levels[i] = numberToLevel(levels[i]);
       eq = eq && levels[i] === prevLevels[i];
     }
-    const indexes = selectedLevels(levels);
-    const prevIndexes = selectedLevels(prevLevels);
-    if (indexes.length === 1 && prevIndexes.length <= 1) ({ index } = indexes[0]);
     if (inputElm != null) inputElm.value = levels[index].toString();
-    if (!eq) prevLevels = [...levels];
+    if (!eq) {
+      const indexes = selectedLevels(levels);
+      const prevIndexes = selectedLevels(prevLevels);
+      if (indexes.length === 1 && prevIndexes.length <= 1) ({ index } = indexes[0]);
+      prevLevels = [...levels];
+    }
   };
 
   $: useVars(levels), onChange();
