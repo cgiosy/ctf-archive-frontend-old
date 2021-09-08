@@ -32,19 +32,18 @@
   };
 
   const initIndex = () => {
-    let prevIndex = index;
-    for (index = 0; index < 6; index++) if (levels[index] !== 0) break;
-    if (index >= 6) index = prevIndex;
+    const indexes = levels
+      .map((level, index) => ({ level, index }))
+      .filter(({ level }) => level > 0);
+    if (indexes.length === 1) ({ index } = indexes[0]);
   };
 
   $: useVars(levels), initIndex();
 
   $: {
-    /*
     if (levels.every((level) => 0 <= level && level <= 30 && Number.isInteger(level)))
       prevLevels = [...levels];
     else levels = [...prevLevels];
-    */
   }
 </script>
 
