@@ -44,8 +44,8 @@ export interface IProblemDetails {
   solves: number;
   types: number;
   group: string;
-  flag?: string;
-  submission?: ISubmission;
+  flag?: string | null;
+  submission?: ISubmission | null;
 }
 
 export interface IStatus {
