@@ -85,10 +85,12 @@
   }
   .markdown a {
     color: rgb(var(--link-color));
-    vertical-align: unset;
   }
   .markdown a:hover {
     text-decoration: underline;
+  }
+  .markdown * {
+    vertical-align: unset;
   }
   body,
   button,
