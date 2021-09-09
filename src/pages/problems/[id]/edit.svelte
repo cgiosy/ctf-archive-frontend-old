@@ -106,7 +106,7 @@
         source = data.source;
         content = data.content;
         flag = data.flag ?? "";
-        group = "everyone";
+        group = data.group;
       },
       cacheTime: 0,
       staleTime: 0,
