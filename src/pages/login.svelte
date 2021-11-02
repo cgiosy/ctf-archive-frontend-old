@@ -66,7 +66,7 @@
     <br />
     {#if step === 0}
       <TextInput type="text" bind:value={text}>{$_("auth.idOrEmail")}</TextInput>
-      <TextInput type="password" bind:value={password}>{$_("auth.password")}</TextInput>
+      <TextInput type="password" bind:value={password}>{$_("user.password")}</TextInput>
       <br />
       <BigButton mutation={signin}>{$_("auth.login")}</BigButton>
       <BigButton mutation={signup}>{$_("auth.signup")}</BigButton>
