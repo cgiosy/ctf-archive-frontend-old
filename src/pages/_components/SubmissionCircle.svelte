@@ -55,6 +55,8 @@
     }
   };
 
+  index = selectedLevels(levels)[0]?.index ?? 0;
+
   $: useVars(levels), onChange();
 </script>
 
