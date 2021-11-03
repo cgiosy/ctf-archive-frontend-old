@@ -10,6 +10,7 @@
 
   let username: string;
   let profileImageFile: File | null | undefined;
+  let profileBackgroundFile: File | null | undefined;
 
   const queryClient = useQueryClient();
 
@@ -26,6 +27,19 @@
     profileImageFile = files[0];
   };
 
+  const onChangeProfileBackground = (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement;
+    }
+  ) => {
+    const { files } = e.currentTarget;
+    if (files === null || files.length === 0) {
+      profileBackgroundFile = undefined;
+      return;
+    }
+    profileBackgroundFile = files[0];
+  };
+
   const reloadProfile = () => {
     queryClient.invalidateQueries("users");
     queryClient.invalidateQueries(["user", username]);
@@ -34,6 +48,13 @@
 
   const uploadProfileImage = useMutation(
     (file: File) => post<{ id: number }>(`/users/${username}/profile_image`, file),
+    {
+      onSuccess: reloadProfile,
+    }
+  );
+
+  const uploadProfileBackground = useMutation(
+    (file: File) => post<{ id: number }>(`/users/${username}/profile_background`, file),
     {
       onSuccess: reloadProfile,
     }
@@ -52,20 +73,24 @@
     $uploadProfileImage.mutate(profileImageFile);
     profileImageFile = null;
   }
+  $: if (profileBackgroundFile != null) {
+    $uploadProfileBackground.mutate(profileBackgroundFile);
+    profileBackgroundFile = null;
+  }
 </script>
 
 <main>
   {#if $user.isSuccess}
     <section
       class="first profile-background"
-      style={$user.data.profileBackground
-        ? `background-image: linear-gradient(rgba(0, 0, 0, 0.5625), rgba(0, 0, 0, 0.5625)), url('${$user.data.profileBackground}')`
+      style={$user.data.profileBackground !== "00000000-0000-0000-0000-000000000000"
+        ? `background-image: linear-gradient(rgba(0, 0, 0, 0.5625), rgba(0, 0, 0, 0.5625)), url('//cdn.ctf-archive.com/images/${$user.data.profileBackground}')`
         : "background-color: rgba(var(--text-color), calc(var(--background-opacity) * 10))"}
     >
       <div class="wrapper">
         <div class="user">
           {#if loggedIn && me !== null && $me.isSuccess && $me.data.username === $user.data.username}
-            <label>
+            <label class="profile-image-button">
               <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onChangeProfileImage} />
               <ProfileImage src={$user.data.profileImage} size="lg" alt={$user.data.username} />
             </label>
@@ -92,6 +117,14 @@
         </div>
       </div>
       <div class="solves" />
+      <label class="profile-background-button">
+        <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onChangeProfileBackground} />
+        <svg viewBox="0 0 24 24"
+          ><path
+            d="M21 6h-3.17L16 4h-6v2h5.12l1.83 2H21v12H5v-9H3v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM8 14c0 2.76 2.24 5 5 5s5-2.24 5-5-2.24-5-5-5-5 2.24-5 5zm5-3c1.65 0 3 1.35 3 3s-1.35 3-3 3-3-1.35-3-3 1.35-3 3-3zM5 6h3V4H5V1H3v3H0v2h3v3h2z"
+          /></svg
+        >
+      </label>
     </section>
   {/if}
 </main>
@@ -183,6 +216,29 @@
   }
   input {
     display: none;
+  }
+  label {
+    cursor: pointer;
+  }
+  .profile-image-button {
+    transition: filter 0.125s;
+  }
+  .profile-image-button:hover {
+    filter: brightness(0.5);
+  }
+  .profile-background-button {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    top: 1.5em;
+    right: 1.5em;
+    width: 2.5em;
+    height: 2.5em;
+    padding: 0.375em;
+    fill: rgba(255, 255, 255, 0.825);
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.625);
   }
 
   @media (min-width: 48em) {
