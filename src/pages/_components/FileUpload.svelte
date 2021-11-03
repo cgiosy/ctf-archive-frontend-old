@@ -1,5 +1,4 @@
 <script lang="ts">
-  export let value: string = "";
   export let file: File | null | undefined;
 
   type LabelDragEvent = DragEvent & {
@@ -69,7 +68,7 @@
   on:dragleave={onDragLeave}
   on:drop={onDrop}
 >
-  <input type="file" accept=".zip,.7z" bind:value on:change={onChange} {...$$restProps} />
+  <input type="file" accept=".zip,.7z" on:change={onChange} {...$$restProps} />
   {#if file == null}
     <svg viewBox="0 0 24 24" enable-background="new 0 0 24 24"
       ><g
