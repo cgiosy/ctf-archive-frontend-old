@@ -54,7 +54,7 @@
     queryClient.invalidateQueries(statusKey());
   };
   const reloadUserAndProblem = () => {
-    if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
+    if ($me.isSuccess) queryClient.invalidateQueries(["user", $me.data.username]);
     queryClient.invalidateQueries(myInfoKey());
     queryClient.invalidateQueries("problems");
     queryClient.invalidateQueries(problemKey());

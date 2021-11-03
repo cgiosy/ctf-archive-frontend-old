@@ -50,12 +50,12 @@ export const useSessionid = use(
 export const useMyInfo = use("me", () => get<IUserPrivateInfo>("/users/-"), { retry: false });
 
 export const useUser = use(
-  (username: string) => ["users", username] as const,
+  (username: string) => ["user", username] as const,
   ({ queryKey: [, username] }) => get<IUserPublicInfo>("/users/" + username)
 );
 
 export const useUsers = use(
-  (query: string, sort: string, page: number) => ["users", query, sort, page] as const,
+  (query: string, sort: string, page: number) => ["user", query, sort, page] as const,
   ({ queryKey: [, query, sort, page] }) =>
     get<{
       count: number;

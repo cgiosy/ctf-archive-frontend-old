@@ -32,7 +32,7 @@
   const onQueryChanged = async (immediate: boolean = false) => {
     clearTimeout(timeoutId);
     const queryKey = usersKey();
-    if (queryKey !== undefined && !dequal(queryKey, ["users", query, sort, page])) {
+    if (queryKey !== undefined && !dequal(queryKey, ["user", query, sort, page])) {
       timeoutId = setTimeout(
         () => {
           $goto(undefined, { query, sort, page });

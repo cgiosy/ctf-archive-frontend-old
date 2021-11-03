@@ -4,7 +4,11 @@
   export let alt: string = "";
 </script>
 
-<img src={src || `/assets/images/default-profile-image-${size}.png`} class={size} {alt} />
+<img
+  src={`//cdn.ctf-archive.com/images/${src}` || `/assets/images/default-profile-image-${size}.png`}
+  class={size}
+  {alt}
+/>
 
 <style>
   img {

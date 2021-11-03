@@ -1,28 +1,57 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { params } from "@roxi/routify";
   import ExpIcon from "../_components/ExpIcon.svelte";
   import ProfileImage from "../_components/ProfileImage.svelte";
   import { expsSum } from "../../libs/utils";
+  import { post } from "../../libs/fetcher";
   import { useMyInfo, useSessionid, useUser } from "../../queries";
 
   let username: string;
-  let editing: boolean = false;
+  let profileImageFile: File | null | undefined;
 
-  const goEdit = () => {
-    editing = true;
+  const queryClient = useQueryClient();
+
+  const onChangeProfileImage = (
+    e: Event & {
+      currentTarget: EventTarget & HTMLInputElement;
+    }
+  ) => {
+    const { files } = e.currentTarget;
+    if (files === null || files.length === 0) {
+      profileImageFile = undefined;
+      return;
+    }
+    profileImageFile = files[0];
   };
 
+  const reloadProfile = () => {
+    queryClient.invalidateQueries("users");
+    queryClient.invalidateQueries(["user", username]);
+    queryClient.invalidateQueries("me");
+  };
+
+  const uploadProfileImage = useMutation(
+    (file: File) => post<{ id: number }>(`/users/${username}/profile_image`, file),
+    {
+      onSuccess: reloadProfile,
+    }
+  );
+
   const [sessionid] = useSessionid();
-  const [user, getUser, userKey] = useUser();
+  const [user, getUser] = useUser();
   const [me, getMyInfo] = useMyInfo();
   const ranking: number = 0;
   let loggedIn = false;
 
   $: username = $params.username;
-  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
   $: getUser(username);
-  $: console.log(userKey(), $user);
+  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
+  $: if (profileImageFile != null) {
+    $uploadProfileImage.mutate(profileImageFile);
+    profileImageFile = null;
+  }
 </script>
 
 <main>
@@ -36,12 +65,10 @@
       <div class="wrapper">
         <div class="user">
           {#if loggedIn && me !== null && $me.isSuccess && $me.data.username === $user.data.username}
-            <ProfileImage
-              src={$user.data.profileImage}
-              size="lg"
-              alt={$user.data.username}
-              on:click={goEdit}
-            />
+            <label>
+              <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onChangeProfileImage} />
+              <ProfileImage src={$user.data.profileImage} size="lg" alt={$user.data.username} />
+            </label>
           {:else}
             <ProfileImage src={$user.data.profileImage} size="lg" alt={$user.data.username} />
           {/if}
@@ -153,6 +180,9 @@
   p {
     display: flex;
     align-items: center;
+  }
+  input {
+    display: none;
   }
 
   @media (min-width: 48em) {
