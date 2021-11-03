@@ -5,7 +5,9 @@
 </script>
 
 <img
-  src={`//cdn.ctf-archive.com/images/${src}` || `/assets/images/default-profile-image-${size}.png`}
+  src={src !== "00000000-0000-0000-0000-000000000000"
+    ? `//cdn.ctf-archive.com/images/${src}`
+    : `/assets/images/default-profile-image-${size}.png`}
   class={size}
   {alt}
 />
