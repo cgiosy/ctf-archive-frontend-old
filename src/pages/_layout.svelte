@@ -1,20 +1,17 @@
 <!-- routify:options preload="proximity" -->
 <script lang="ts">
   import { isLoading } from "svelte-i18n";
-  import { goto, url } from "@roxi/routify";
-  import { useQuery } from "@sveltestack/svelte-query";
+  import { goto } from "@roxi/routify";
   import Config from "../config";
-  import { getLocalStorage } from "../libs/utils";
   import TopBar from "./_components/TopBar.svelte";
+  import { useSessionid } from "../queries";
   // import Footer from "./_components/Footer.svelte";
 
   let allowed: boolean = false;
-  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"), {
-    cacheTime: 0,
-    staleTime: 0,
-  });
-  const loggedIn = $sessionid.data != null;
+  const [sessionid] = useSessionid();
+  let loggedIn = false;
 
+  $: loggedIn = !!$sessionid.data;
   $: {
     const path = location.pathname;
     if (path !== "login" && path !== "/login") sessionStorage.setItem("lastPage", path);

@@ -1,14 +1,14 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { goto, params } from "@roxi/routify";
-  import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
-  import { get, del, put, post } from "../../../libs/fetcher";
-  import { proxyStream } from "../../../libs/utils";
+  import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
+  import { del, put, post } from "../../../libs/fetcher";
+  // import { proxyStream } from "../../../libs/utils";
   import BigButton from "../../_components/BigButton.svelte";
   import TextInput from "../../_components/TextInput.svelte";
   import TextArea from "../../_components/TextArea.svelte";
   import FileUpload from "../../_components/FileUpload.svelte";
-  import type { IProblemDetails } from "../../../types";
+  import { useProblemDetails } from "../../../queries";
 
   let id: number;
   let title: string = "";
@@ -20,20 +20,14 @@
   let problemFile: File | null = null;
   let buildFile: File | null = null;
 
-  let uploadedProblemFileSize = 0;
-  let uploadedBuildFileSize = 0;
+  // let uploadedProblemFileSize = 0;
+  // let uploadedBuildFileSize = 0;
 
   let step = 0;
   let removeId = "";
 
-  const getProblem = () => get<IProblemDetails>("/problems/" + id);
-
   const queryClient = useQueryClient();
-
-  const problem = useQuery({
-    queryFn: getProblem,
-    enabled: false,
-  });
+  const [problem, getProblem, problemKey] = useProblemDetails();
 
   const edit = useMutation(
     () => post<{}>("/problems/" + id, { title, source, flag, content, group }),
@@ -41,7 +35,7 @@
       onSuccess: async (data) => {
         try {
           Promise.all([
-            queryClient.invalidateQueries(["problem", id]),
+            queryClient.invalidateQueries(problemKey()),
             problemFile &&
               put<{}>(
                 `/problems/${id}/files`,
@@ -96,24 +90,14 @@
     step = 1;
   });
 
-  $: {
-    id = Number($params.id);
-    problem.setOptions({
-      queryKey: ["problemEdit", id],
-      queryFn: getProblem,
-      onSuccess: (data) => {
-        title = data.title;
-        source = data.source;
-        content = data.content;
-        flag = data.flag ?? "";
-        group = data.group;
-      },
-      cacheTime: 0,
-      staleTime: 0,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      refetchOnWindowFocus: false,
-    });
+  $: getProblem((id = Number($params.id)));
+  $: if ($problem.isSuccess) {
+    const data = $problem.data;
+    title = data.title;
+    source = data.source;
+    content = data.content;
+    group = data.group;
+    flag = data.flag ?? "";
   }
 </script>
 

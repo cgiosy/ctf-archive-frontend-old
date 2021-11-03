@@ -1,14 +1,11 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
-  import { get, post } from "../../libs/fetcher";
-  import { getLocalStorage } from "../../libs/utils";
+  import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
+  import { post } from "../../libs/fetcher";
   import Logo from "./Logo.svelte";
   import ProfileImage from "./ProfileImage.svelte";
   import { UserAuth } from "../../types";
-  import type { IUserPrivateInfo } from "../../types";
-
-  const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
+  import { useMyInfo, useSessionid } from "../../queries";
 
   const queryClient = useQueryClient();
   const logoutMutation = useMutation(() => post<{}>("/logout"), {
@@ -22,27 +19,13 @@
     },
   });
 
-  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"), {
-    cacheTime: 0,
-    staleTime: 0,
-  });
-  const me = useQuery({
-    queryFn: getMyInfo,
-    enabled: false,
-  });
+  const [sessionid] = useSessionid();
+  const [me, getMyInfo] = useMyInfo();
   let loggedIn = false;
 
   const logout = () => $logoutMutation.mutate();
 
-  $: {
-    if ((loggedIn = $sessionid.data != null)) {
-      me.setOptions({
-        queryKey: "me",
-        queryFn: getMyInfo,
-        retry: false,
-      });
-    }
-  }
+  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
 </script>
 
 <nav>

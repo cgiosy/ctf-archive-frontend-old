@@ -1,29 +1,28 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { params } from "@roxi/routify";
-  import { useQuery } from "@sveltestack/svelte-query";
-  import { get } from "../../libs/fetcher";
   import ExpIcon from "../_components/ExpIcon.svelte";
   import ProfileImage from "../_components/ProfileImage.svelte";
-  import type { IUserPublicInfo } from "../../types";
   import { expsSum } from "../../libs/utils";
+  import { useMyInfo, useSessionid, useUser } from "../../queries";
 
   let username: string;
-  const getUserProfile = () => get<IUserPublicInfo>("/users/" + username);
+  let editing: boolean = false;
 
-  const user = useQuery({
-    queryFn: getUserProfile,
-    enabled: false,
-  });
+  const goEdit = () => {
+    editing = true;
+  };
+
+  const [sessionid] = useSessionid();
+  const [user, getUser, userKey] = useUser();
+  const [me, getMyInfo] = useMyInfo();
   const ranking: number = 0;
+  let loggedIn = false;
 
-  $: {
-    username = String($params.username);
-    user.setOptions({
-      queryKey: ["users", username],
-      queryFn: getUserProfile,
-    });
-  }
+  $: username = $params.username;
+  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
+  $: getUser(username);
+  $: console.log(userKey(), $user);
 </script>
 
 <main>
@@ -36,7 +35,16 @@
     >
       <div class="wrapper">
         <div class="user">
-          <ProfileImage src={$user.data.profileImage} size="lg" alt={$user.data.username} />
+          {#if loggedIn && me !== null && $me.isSuccess && $me.data.username === $user.data.username}
+            <ProfileImage
+              src={$user.data.profileImage}
+              size="lg"
+              alt={$user.data.username}
+              on:click={goEdit}
+            />
+          {:else}
+            <ProfileImage src={$user.data.profileImage} size="lg" alt={$user.data.username} />
+          {/if}
           <div class="wrapper2">
             <div class="wrapper3">
               <ExpIcon exps={$user.data.exps} />

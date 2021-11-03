@@ -1,15 +1,9 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { params } from "@roxi/routify";
-  import { useMutation, useQuery, useQueryClient } from "@sveltestack/svelte-query";
-  import { get, post, put } from "../../libs/fetcher";
-  import {
-    charsets,
-    copyToClipboard,
-    escapeAllow,
-    getLocalStorage,
-    markdown,
-  } from "../../libs/utils";
+  import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
+  import { post, put } from "../../libs/fetcher";
+  import { copyToClipboard, markdown } from "../../libs/utils";
   import Link from "../_components/Link.svelte";
   import ProblemEditLink from "../_components/ProblemEditLink.svelte";
   import Notice from "../_components/Notice.svelte";
@@ -23,8 +17,9 @@
   import IconLinkButton from "../_components/IconLinkButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
+  import Submissions from "../_components/Submissions.svelte";
   import { Levels, ProblemType, UserAuth } from "../../types";
-  import type { IProblemDetails, IUserPrivateInfo, IStatus } from "../../types";
+  import { useMyInfo, useProblem, useSessionid, useStatus } from "../../queries";
 
   let id: number;
   let lifetime: string = "30";
@@ -34,9 +29,6 @@
   let comment: string = "";
   let isInvalidLevels: boolean = true;
 
-  const getMyInfo = () => get<IUserPrivateInfo>("/users/-");
-  const getProblem = () => get<IProblemDetails>("/problems/" + id);
-  const getStatus = () => get<IStatus>("/problems/status");
   const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: Number(lifetime) });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
   const submit = () =>
@@ -53,96 +45,53 @@
 
   const queryClient = useQueryClient();
 
-  const sessionid = useQuery("sessionid", getLocalStorage<string>("sessionid"), {
-    cacheTime: 0,
-    staleTime: 0,
-  });
+  const [sessionid] = useSessionid();
+  const [status, getStatus, statusKey] = useStatus();
+  const [problem, getProblem, problemKey] = useProblem();
+  const [me, getMyInfo, myInfoKey] = useMyInfo();
 
-  const status = useQuery({
-    queryFn: getStatus,
-    enabled: false,
-  });
-
-  const problem = useQuery({
-    queryFn: getProblem,
-    enabled: false,
-  });
-
-  const me = useQuery({
-    queryFn: getMyInfo,
-    enabled: false,
-  });
+  const reloadStatus = () => {
+    queryClient.invalidateQueries(statusKey());
+  };
+  const reloadUserAndProblem = () => {
+    if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
+    queryClient.invalidateQueries(myInfoKey());
+    queryClient.invalidateQueries("problems");
+    queryClient.invalidateQueries(problemKey());
+  };
 
   const startMutation = useMutation(startServer, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("status");
-    },
-    onError: () => {
-      queryClient.invalidateQueries("status");
-    },
+    onSuccess: reloadStatus,
+    onError: reloadStatus,
   });
   const stopMutation = useMutation(stopServer, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("status");
-    },
-    onError: () => {
-      queryClient.invalidateQueries("status");
-    },
+    onSuccess: reloadStatus,
+    onError: reloadStatus,
   });
   const submitMutation = useMutation(submit, {
     onSuccess: ({ correct }) => {
       if (correct === false) throw new Error("WRONG_ANSWER");
-      if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
-      queryClient.invalidateQueries("me");
-      queryClient.invalidateQueries("problems");
-      queryClient.invalidateQueries(["problem", id]);
+      reloadUserAndProblem();
     },
   });
   const editMutation = useMutation(edit, {
-    onSuccess: () => {
-      if ($me.isSuccess) queryClient.invalidateQueries(["users", $me.data.username]);
-      queryClient.invalidateQueries("me");
-      queryClient.invalidateQueries("problems");
-      queryClient.invalidateQueries(["problem", id]);
-    },
+    onSuccess: reloadUserAndProblem,
   });
 
   $: isInvalidLevels = !(
     levels.every((x) => 0 <= x && x <= 30 && Number.isInteger(x)) && levels.some((x) => x > 0)
   );
-  $: {
-    id = Number($params.id);
-    problem.setOptions({
-      queryKey: ["problem", id],
-      queryFn: getProblem,
-      onSuccess: (data) => {
-        if (data.submission != null) {
-          if (isInvalidLevels) {
-            isInvalidLevels = false;
-            levels = data.submission.levels;
-          }
-          if (comment === "") comment = data.submission.comment;
-        }
-      },
-    });
-  }
-  $: {
-    if ((loggedIn = $sessionid.data != null)) {
-      me.setOptions({
-        queryKey: "me",
-        queryFn: getMyInfo,
-        retry: false,
-      });
+  $: getProblem((id = Number($params.id)));
+  $: if ($problem.isSuccess && $problem.data.submission != null) {
+    if (isInvalidLevels) {
+      isInvalidLevels = false;
+      levels = $problem.data.submission.levels;
     }
+    if (comment === "") comment = $problem.data.submission.comment;
   }
-  $: {
-    if (loggedIn && $problem.isSuccess && $problem.data.types & ProblemType.BuildFileExist) {
-      status.setOptions({
-        queryKey: "status",
-        queryFn: getStatus,
-      });
-    }
-  }
+  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
+  $: if (loggedIn && $problem.isSuccess && $problem.data.types & ProblemType.BuildFileExist)
+    getStatus();
 
   /*
   escapeAllow(
@@ -180,7 +129,7 @@
             <div class="address">
               {$_("server.address")}:
               <pre>35.212.179.177:{$status.data.port}</pre>
-              <IconButton onClick={() => copyToClipboard("35.212.179.177:" + $status.data?.port)}
+              <IconButton onClick={() => copyToClipboard("nc 35.212.179.177 " + $status.data?.port)}
                 ><svg
                   width="1em"
                   height="1em"
@@ -244,6 +193,9 @@
         <BigLinkButton href="/login">{$_("auth.required")}</BigLinkButton>
       {/if}
     </section>
+    {#if $problem.data.types & ProblemType.Solved}
+      <Submissions {id} />
+    {/if}
   {/if}
 </main>
 

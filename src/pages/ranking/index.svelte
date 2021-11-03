@@ -1,18 +1,16 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { goto, params } from "@roxi/routify";
-  import { useQuery, useQueryClient } from "@sveltestack/svelte-query";
+  import { useQueryClient } from "@sveltestack/svelte-query";
   import { dequal } from "dequal/lite";
   import Logo from "../_components/Logo.svelte";
   import UserLink from "../_components/UserLink.svelte";
   import RadioBox from "../_components/RadioBox.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import { useVars, expsSum } from "../../libs/utils";
-  import { get } from "../../libs/fetcher";
-  import type { IUserMiniInfo } from "../../types";
+  import { useUsers } from "../../queries";
 
   type GetUsersSortKey = "exp_desc" | "exp_asc" | "solves_asc" | "solves_desc";
-  type GetUsersQueryKey = ["users", string, GetUsersSortKey, number];
 
   const toSort = (str: string) =>
     str === "exp_desc" || str === "exp_asc" || str === "solves_asc" || str === "solves_desc"
@@ -25,24 +23,15 @@
   let sort: GetUsersSortKey;
   let page: number;
   const pageSize = 50;
-  const getUsers = () =>
-    get<{
-      count: number;
-      users: IUserMiniInfo[];
-    }>("/users", {
-      query,
-      sort,
-      page: page.toString(),
-    });
 
   let count = -1;
-  let queryKey: GetUsersQueryKey;
   let timeoutId: NodeJS.Timeout;
-  const usersQuery = useQuery({ queryFn: getUsers, enabled: false });
+  const [users, getUsers, usersKey] = useUsers();
   const queryClient = useQueryClient();
 
   const onQueryChanged = async (immediate: boolean = false) => {
     clearTimeout(timeoutId);
+    const queryKey = usersKey();
     if (queryKey !== undefined && !dequal(queryKey, ["users", query, sort, page])) {
       timeoutId = setTimeout(
         () => {
@@ -53,18 +42,15 @@
     }
   };
   const onParamsChanged = async () => {
-    const newQueryKey: GetUsersQueryKey = [
-      "users",
-      (query = typeof $params.query === "string" ? $params.query : ""),
-      (sort = toSort($params.sort)),
-      (page = Math.max(Number($params.page), 1) || 1),
-    ];
+    const queryKey = usersKey();
     if (queryKey !== undefined) await queryClient.cancelQueries(queryKey);
-    queryKey = newQueryKey;
-    usersQuery.setOptions({ queryKey, queryFn: getUsers });
+    query = typeof $params.query === "string" ? $params.query : "";
+    sort = toSort($params.sort);
+    page = Math.max(Number($params.page), 1) || 1;
+    getUsers(query, sort, page);
   };
 
-  $: count = $usersQuery.data?.count ?? count;
+  $: count = $users.data?.count ?? count;
   $: useVars(query, sort, page), onQueryChanged();
   $: useVars($params), onParamsChanged();
 </script>
@@ -104,8 +90,8 @@
       <th>{$_("user.exp")}</th>
       <th>{$_("user.solves")}</th>
     </tr>
-    {#if $usersQuery.isSuccess}
-      {#each $usersQuery.data.users as user, index}
+    {#if $users.isSuccess}
+      {#each $users.data.users as user, index}
         <tr>
           <td>#{(page - 1) * pageSize + index + 1}</td>
           <td><UserLink {user} /></td>
