@@ -32,8 +32,13 @@ export interface IProblem {
 }
 
 export interface ISubmission {
+  username: string;
+  profileImage: string;
+  exps: Exps;
   levels: Levels;
   comment: string;
+  time: string;
+  commentTime: string;
 }
 
 export interface IProblemDetails {

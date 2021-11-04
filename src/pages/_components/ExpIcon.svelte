@@ -5,6 +5,7 @@
   export let url: string | undefined = undefined;
   export let exps: Exps = [-Infinity, -Infinity, -Infinity, -Infinity, -Infinity, -Infinity];
   export let small: boolean = false;
+  export let stopped: boolean = false;
 
   let expSum: number;
   let categories: { sum: number; exp: number; category: ProblemCategory }[];
@@ -37,7 +38,7 @@
   }
 </script>
 
-<a href={url} class={`${small ? "small " : ""}circle`} {style}>
+<a href={url} class={`${small ? "small " : ""}${stopped ? "stopped " : ""}circle`} {style}>
   <span>{expSum >= 0 ? level : ""}</span>
   <svg fill="none" viewBox="0 0 48 48">
     {#if categories.length > 0}
@@ -66,7 +67,7 @@
     margin: 0.25rem;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
   }
-  a:hover {
+  a:not(.stopped):hover {
     transform: scale(1.15);
     /* text-decoration: underline; */
   }
