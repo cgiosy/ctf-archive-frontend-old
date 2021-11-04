@@ -13,6 +13,7 @@
   let id: number;
   let title: string = "";
   let source: string = "";
+  let license: string = "";
   let flag: string = "";
   let content: string = "";
   let group: string = "everyone";
@@ -30,7 +31,7 @@
   const [problem, getProblem, problemKey] = useProblemDetails();
 
   const edit = useMutation(
-    () => post<{}>("/problems/" + id, { title, source, flag, content, group }),
+    () => post<{}>("/problems/" + id, { title, source, license, flag, content, group }),
     {
       onSuccess: async (data) => {
         try {
@@ -95,6 +96,7 @@
     const data = $problem.data;
     title = data.title;
     source = data.source;
+    license = data.license;
     content = data.content;
     group = data.group;
     flag = data.flag ?? "";
@@ -106,6 +108,7 @@
     <section>
       <TextInput type="text" bind:value={title}>{$_("problem.title")}</TextInput>
       <TextInput type="text" bind:value={source}>{$_("problem.source")}</TextInput>
+      <TextInput type="text" bind:value={license}>{$_("problem.license")}</TextInput>
       <TextInput type="text" bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
       <TextInput type="text" bind:value={group}>{$_("problem.group")}</TextInput>
       <TextArea bind:value={content} rows={15}>{$_("problem.description")}</TextArea>

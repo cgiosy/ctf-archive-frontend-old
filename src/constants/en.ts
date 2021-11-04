@@ -24,6 +24,7 @@ export default {
     problem: "Problems",
     title: "Title",
     source: "Source",
+    license: "License",
     flag: "Flag",
     tags: "Tags",
     group: "Group",

@@ -24,6 +24,7 @@ export default {
     problem: "문제",
     title: "제목",
     source: "출처",
+    license: "라이센스",
     flag: "플래그",
     tags: "태그",
     group: "공개할 그룹",

@@ -45,6 +45,7 @@ export interface IProblemDetails {
   levels: Levels;
   title: string;
   source: string;
+  license: string;
   uuid: string;
   content: string;
   solves: number;

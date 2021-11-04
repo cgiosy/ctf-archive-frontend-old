@@ -6,6 +6,7 @@
   import { copyToClipboard, markdown } from "../../libs/utils";
   import Link from "../_components/Link.svelte";
   import ProblemEditLink from "../_components/ProblemEditLink.svelte";
+  import ProblemLicenseLink from "../_components/ProblemLicenseLink.svelte";
   import Notice from "../_components/Notice.svelte";
   import LevelIcon from "../_components/LevelIcon.svelte";
   import ColorList from "../_components/ColorList.svelte";
@@ -112,6 +113,9 @@
         {/if}
         {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
           <ProblemEditLink {id} float="right" />
+        {/if}
+        {#if $problem.data.license}
+          <ProblemLicenseLink url={$problem.data.license} float="right" />
         {/if}
       </h1>
       <p class="markdown">{@html markdown($problem.data.content)}</p>

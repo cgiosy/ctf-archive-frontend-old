@@ -11,6 +11,7 @@
 
   let title: string = "";
   let source: string = getLocalStorage<string>("lastSource")() ?? "";
+  let license: string = getLocalStorage<string>("lastLicense")() ?? "";
   let flag: string = "";
   let content: string = "";
   let group: string = "everyone";
@@ -24,9 +25,10 @@
   const queryClient = useQueryClient();
 
   const setLastSource = setLocalStorage<string>("lastSource");
+  const setLastLicense = setLocalStorage<string>("lastLicense");
 
   const upload = useMutation(
-    () => put<{ id: number }>("/problems", { title, source, flag, content, group }),
+    () => put<{ id: number }>("/problems", { title, source, license, flag, content, group }),
     {
       onSuccess: async (data) => {
         const { id } = data;
@@ -34,6 +36,7 @@
           Promise.all([
             queryClient.invalidateQueries("problems"),
             setLastSource(source),
+            setLastLicense(license),
 
             problemFile &&
               put<{}>(
@@ -76,6 +79,7 @@
   <section>
     <TextInput type="text" bind:value={title}>{$_("problem.title")}</TextInput>
     <TextInput type="text" bind:value={source}>{$_("problem.source")}</TextInput>
+    <TextInput type="text" bind:value={license}>{$_("problem.license")}</TextInput>
     <TextInput type="text" bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
     <TextInput type="text" bind:value={group}>{$_("problem.group")}</TextInput>
     <TextArea bind:value={content} rows={15}>{$_("problem.description")}</TextArea>
