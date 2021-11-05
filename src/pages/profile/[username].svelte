@@ -4,7 +4,7 @@
   import { params } from "@roxi/routify";
   import ExpIcon from "../_components/ExpIcon.svelte";
   import ProfileImage from "../_components/ProfileImage.svelte";
-  import { expsSum } from "../../libs/utils";
+  import { emptyImageUrl, expsSum, getImageUrl, style } from "../../libs/utils";
   import { post } from "../../libs/fetcher";
   import { useMyInfo, useSessionid, useUser } from "../../queries";
 
@@ -83,9 +83,9 @@
   {#if $user.isSuccess}
     <section
       class="first profile-background"
-      style={$user.data.profileBackground !== "00000000-0000-0000-0000-000000000000"
-        ? `background-image: linear-gradient(rgba(0, 0, 0, 0.5625), rgba(0, 0, 0, 0.5625)), url('//cdn.ctf-archive.com/images/${$user.data.profileBackground}')`
-        : "background-color: rgba(var(--text-color), calc(var(--background-opacity) * 10))"}
+      style={style({
+        "--background": `url('${getImageUrl($user.data.profileBackground) ?? emptyImageUrl}')`,
+      })}
     >
       <div class="wrapper">
         <div class="user">
@@ -148,7 +148,9 @@
     min-height: calc(100vh - 3rem);
   }
   .profile-background {
-    background-position: 100% 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5625), rgba(0, 0, 0, 0.5625)),
+      var(--background);
+    background-position: 50% 25%;
     background-repeat: no-repeat;
     background-size: cover;
   }

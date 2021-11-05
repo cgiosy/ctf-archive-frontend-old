@@ -7,6 +7,39 @@ export const useVars = (...args: unknown[]) => {};
 
 export const markdown = (text: string) => DOMPurify.sanitize(marked(text));
 
+export const style = (styles: { [key: string]: string }) =>
+  Object.entries(styles)
+    .map((arr) => arr[0] + ":" + arr[1])
+    .join(";");
+
+export const getImageUrl = (uuid: string) =>
+  uuid !== "00000000-0000-0000-0000-000000000000" &&
+  uuid.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)
+    ? "//cdn.ctf-archive.com/images/" + uuid
+    : null;
+
+export const emptyImageUrl =
+  "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22/%3E";
+
+const flooredHalf = (x: number, eps: number = 1) => {
+  x /= 2;
+  return x - Math.abs(x % eps);
+};
+
+export const binSearch = (
+  pred: (i: number) => boolean,
+  r: number,
+  l: number = 0,
+  eps: number = 1
+) => {
+  while (r - l >= eps) {
+    const m = flooredHalf(l + r, eps);
+    if (pred(m)) r = m;
+    else l = m + eps;
+  }
+  return r;
+};
+
 // Charsets
 
 const numeric = "0123456789";
@@ -30,12 +63,12 @@ export const charsets = {
 // Colors
 
 export const categoryColors: { readonly [key in ProblemCategory]: string } = {
-  [ProblemCategory.Pwnable]: "rgb(240, 98, 146)",
-  [ProblemCategory.Reversing]: "rgb(179, 136, 255)",
-  [ProblemCategory.Crypto]: "rgb(255, 112, 67)",
-  [ProblemCategory.Web]: "rgb(100, 181, 246)",
-  [ProblemCategory.Forensic]: "rgb(67, 160, 71)",
-  [ProblemCategory.Misc]: "rgb(97, 97, 97)",
+  [ProblemCategory.Pwnable]: "rgb(252, 40, 157)",
+  [ProblemCategory.Reversing]: "rgb(78, 224, 174)",
+  [ProblemCategory.Crypto]: "rgb(247, 147, 7)",
+  [ProblemCategory.Web]: "rgb(66, 198, 220)",
+  [ProblemCategory.Forensic]: "rgb(241, 222, 64)",
+  [ProblemCategory.Misc]: "rgb(164, 109, 254)",
 };
 
 export const setColorOpacity = (color: string, opacity: number) =>
@@ -130,6 +163,39 @@ export const escapeAllow = (
 
 // Exp
 
+export const expTable = [
+  10,
+  20,
+  39,
+  75,
+  139, // 5
+  252,
+  447,
+  774,
+  1309,
+  2160, // 10
+  3500,
+  5565,
+  8682,
+  13284,
+  19926, // 15
+  29491,
+  43057,
+  62003,
+  88045,
+  123263, // 20
+  171336,
+  236444,
+  323929,
+  440544,
+  594735, // 25
+  796945,
+  1059937,
+  1399117,
+  1832844,
+  2382698, // 30
+] as const;
+
 export const levelsSum = (levels: Exps): number =>
   levels[0] + levels[1] + levels[2] + levels[3] + levels[4] + levels[5];
 
@@ -159,13 +225,16 @@ export const expsToCategories = (exps: Exps): ProblemCategory[] => {
 };
 
 export const expToLevel = (exp: number, precision: number = 1) => {
-  const level = Math.max(Math.floor(Math.log2(exp)) - 3, 0);
-  const remain = Math.pow(2, level + 3) - exp;
-  const percentage = Math.floor((exp / Math.pow(2, level + 3) - 1) * (precision * 100)) / precision;
+  const level = binSearch((i) => exp < expTable[i] * 10, expTable.length);
+  const curLevelExp = level === expTable.length ? Infinity : expTable[level];
+  const prvLevelExp = level === 0 ? 0 : expTable[level - 1];
+  const remain = curLevelExp - exp;
+  const percentage =
+    Math.floor((remain / (curLevelExp - prvLevelExp)) * (precision * 100)) / precision;
   return { level, remain, percentage };
 };
 
-export const levelToExp = (level: number): number => (level > 0 ? 1 << level : 0);
+export const levelToExp = (level: number): number => (level > 0 ? expTable[level - 1] : 0);
 
 export const levelsToExp = (levels: Levels): number =>
   levelToExp(levels[0]) +
@@ -175,7 +244,10 @@ export const levelsToExp = (levels: Levels): number =>
   levelToExp(levels[4]) +
   levelToExp(levels[5]);
 
-export const levelsToLevel = (levels: Levels) => Math.floor(Math.log2(levelsToExp(levels)));
+export const levelsToLevel = (levels: Levels) => {
+  const exp = levelsToExp(levels);
+  return binSearch((i) => exp < expTable[i], expTable.length);
+};
 
 // Local Storage
 

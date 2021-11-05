@@ -1,13 +1,13 @@
 <script lang="ts">
+  import { getImageUrl } from "../../libs/utils";
+
   export let src: string = "";
   export let size: "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl" = "sm";
   export let alt: string = "";
 </script>
 
 <img
-  src={src !== "00000000-0000-0000-0000-000000000000"
-    ? `//cdn.ctf-archive.com/images/${src}`
-    : `/assets/images/default-profile-image-${size}.png`}
+  src={getImageUrl(src) ?? `/assets/images/default-profile-image-${size}.png`}
   class={size}
   {alt}
 />
