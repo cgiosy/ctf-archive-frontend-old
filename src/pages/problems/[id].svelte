@@ -144,7 +144,7 @@
                   /></svg
                 ></IconButton
               >
-              <IconLinkButton href="http://35.212.179.177:{$status.data.port}"
+              <IconLinkButton href="http://35.212.179.177:{$status.data.port}" target="_blank"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
                   enable-background="new 0 0 24 24"
@@ -171,7 +171,7 @@
     {/if}
     <section>
       {#if !($problem.data.types & ProblemType.Solved)}
-        <TextInput bind:value={flag}>{$_("problem.flag")}</TextInput>
+        <TextInput bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
       {/if}
       <div>
         <SubmissionCircle bind:levels />
