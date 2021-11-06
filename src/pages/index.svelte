@@ -199,7 +199,7 @@
   .problems {
     width: 100%;
     max-width: var(--content-max-width);
-    padding: 1rem;
+    padding: 2rem 1rem 0 1rem;
   }
   ul {
     list-style-type: none;
