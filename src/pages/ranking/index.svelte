@@ -4,10 +4,11 @@
   import { useQueryClient } from "@sveltestack/svelte-query";
   import { dequal } from "dequal/lite";
   import Logo from "../_components/Logo.svelte";
+  import ColorList from "../_components/ColorList.svelte";
   import UserLink from "../_components/UserLink.svelte";
   import RadioBox from "../_components/RadioBox.svelte";
   import TextInput from "../_components/TextInput.svelte";
-  import { useVars, expsSum } from "../../libs/utils";
+  import { useVars, expsSum, style } from "../../libs/utils";
   import { useUsers } from "../../queries";
 
   type GetUsersSortKey = "exp_desc" | "exp_asc" | "solves_asc" | "solves_desc";
@@ -81,6 +82,13 @@
         {/each}
       </div>
     </div>
+    <ColorList
+      style={style({
+        "margin-top": "1.5em",
+        "margin-bottom": 0,
+        float: "right",
+      })}
+    />
   </header>
   <table>
     <tr>
