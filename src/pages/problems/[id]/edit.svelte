@@ -9,6 +9,7 @@
   import TextArea from "../../_components/TextArea.svelte";
   import FileUpload from "../../_components/FileUpload.svelte";
   import { useProblemDetails } from "../../../queries";
+  import type { IProblemDetails } from "../../../types";
 
   let id: number;
   let title: string = "";
@@ -87,20 +88,21 @@
     }
   );
 
-  const next = useMutation(async () => {
-    step = 1;
-  });
-
-  $: getProblem((id = Number($params.id)));
-  $: if ($problem.isSuccess) {
-    const data = $problem.data;
+  const setData = (data: IProblemDetails) => {
     title = data.title;
     source = data.source;
     license = data.license;
     content = data.content;
     group = data.group;
     flag = data.flag ?? "";
-  }
+  };
+
+  const next = useMutation(async () => {
+    step = 1;
+  });
+
+  $: getProblem((id = Number($params.id)));
+  $: if ($problem.isSuccess) setData($problem.data);
 </script>
 
 <main>
