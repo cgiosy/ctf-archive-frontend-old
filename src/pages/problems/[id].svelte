@@ -16,6 +16,8 @@
   import BigLinkButton from "../_components/BigLinkButton.svelte";
   import IconButton from "../_components/IconButton.svelte";
   import IconLinkButton from "../_components/IconLinkButton.svelte";
+  import Tag from "../_components/Tag.svelte";
+  import ChipTag from "../_components/ChipTag.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import Submissions from "../_components/Submissions.svelte";
@@ -27,6 +29,9 @@
   let loggedIn = false;
   let flag: string = "";
   let levels: Levels = [0, 0, 0, 0, 0, 0];
+  let tags: number[] = [];
+  let newTag: number | undefined = undefined;
+  let showTags: boolean = false;
   let comment: string = "";
   let isInvalidLevels: boolean = true;
 
@@ -43,6 +48,7 @@
       levels: levels.map((level) => Math.min(30, Math.max(0, Number(level) || 0))),
       comment,
     });
+  const editTags = () => put<{}>(`/problems/${id}/tags`, { tags });
 
   const queryClient = useQueryClient();
 
@@ -78,6 +84,21 @@
   const editMutation = useMutation(edit, {
     onSuccess: reloadUserAndProblem,
   });
+  const editTagsMutation = useMutation(editTags, {
+    onSuccess: reloadUserAndProblem,
+  });
+  const mergeTags = (newTags: number[]) => {
+    if (tags.length === 0) return newTags;
+    return tags;
+  };
+  const removeUnusedTags = ({ detail: { tid, tag } }: any) => {
+    if (!tag) tags = tags.filter((x) => x !== tid);
+  };
+  const addNewTag = ({ detail: { tid, tag } }: any) => {
+    newTag = undefined;
+    if (!tag || tags.includes(tid)) return;
+    tags = [...tags, tid];
+  };
 
   $: isInvalidLevels = !(
     levels.every((x) => 0 <= x && x <= 30 && Number.isInteger(x)) && levels.some((x) => x > 0)
@@ -91,8 +112,10 @@
     if (comment === "") comment = $problem.data.submission.comment;
   }
   $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
-  $: if (loggedIn && $problem.isSuccess && $problem.data.types & ProblemType.BuildFileExist)
-    getStatus();
+  $: if (loggedIn && $problem.isSuccess) {
+    tags = mergeTags($problem.data.tags);
+    if ($problem.data.types & ProblemType.BuildFileExist) getStatus();
+  }
 
   /*
   escapeAllow(
@@ -107,7 +130,7 @@
     <section>
       <h1>
         <LevelIcon levels={$problem.data.levels} small={true} />
-        <span>{$problem.data.title}</span>
+        <span class="title">{$problem.data.title}</span>
         {#if $problem.data.types & ProblemType.ProblemFileExist}
           <FileLink {id} key={$problem.data.uuid} name={$problem.data.title} float="right" />
         {/if}
@@ -118,6 +141,24 @@
           <ProblemLicenseLink url={$problem.data.license} float="right" />
         {/if}
       </h1>
+      <div class="tags-small">
+        {#if showTags || $problem.data.types & ProblemType.Solved}
+          {#each $problem.data.tags as tid, i}
+            {i ? " | " : ""}
+            <Tag {tid} />
+          {/each}
+          {#if $problem.data.tags.length === 0}
+            ?
+          {/if}
+        {:else}
+          <span
+            class="showTags"
+            on:click={() => {
+              showTags = true;
+            }}>...</span
+          >
+        {/if}
+      </div>
       <p class="markdown">{@html markdown($problem.data.content)}</p>
     </section>
     {#if $problem.data.types & ProblemType.BuildFileExist}
@@ -198,6 +239,15 @@
       {/if}
     </section>
     {#if $problem.data.types & ProblemType.Solved}
+      <section class="tags">
+        <div>
+          {#each tags as tid}
+            <ChipTag bind:tid on:inputend={removeUnusedTags} />
+          {/each}
+          <ChipTag bind:tid={newTag} on:inputend={addNewTag} />
+        </div>
+        <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>
+      </section>
       <Submissions {id} />
     {/if}
   {/if}
@@ -226,6 +276,7 @@
   }
   h1 {
     width: 100%;
+    margin-top: 0;
   }
   span {
     margin-left: 0.5em;
@@ -237,9 +288,33 @@
     justify-content: center;
     margin: 1em 0;
   }
-  p {
+  .title {
+    vertical-align: baseline;
+  }
+  .showTags {
+    cursor: pointer;
+  }
+  .markdown {
+    margin: 0.75em 0 -1.75em 0;
+    border-top: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
+    line-height: 187.5%;
     word-break: break-all;
     white-space: pre-wrap;
+  }
+  .tags-small::before {
+    content: "# ";
+  }
+  .tags-small {
+    display: block;
+    margin: -2.125em 0 0.75em 5.375em;
+    height: 1em;
+    padding: 0 1.5em;
+    font-size: 0.825em;
+    font-family: var(--font-family-monospace);
+  }
+  .tags {
+    display: flex;
+    font-size: 0.875em;
   }
   .address {
     text-align: center;

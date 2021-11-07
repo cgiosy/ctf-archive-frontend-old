@@ -40,6 +40,27 @@ export const binSearch = (
   return r;
 };
 
+export const llcs = (a: string, b: string) => {
+  const n = a.length;
+  const m = b.length;
+  const dp = [new Uint32Array(m + 1), new Uint32Array(m + 1)] as const;
+  for (let i = 0; i < n; i++) {
+    const prv = dp[i & 1];
+    const cur = dp[~i & 1];
+    for (let j = 0; j < m; j++)
+      cur[j + 1] = Math.max(Math.max(prv[j + 1], cur[j]), a[i] == b[j] ? (prv[j] + 1) | 0 : 0);
+  }
+  return dp[n & 1][m];
+};
+
+const alphaNumericalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+export const editDistance = (from: string, to: string, delCost = 1, insCost = 1) =>
+  from.length * delCost + to.length * insCost - llcs(from, to) * (delCost + insCost);
+
+export const tagEditDistance = (from: string, to: string, delCost = 2, insCost = 1) =>
+  editDistance(alphaNumericalize(from), alphaNumericalize(to), delCost, insCost);
+
 // Charsets
 
 const numeric = "0123456789";

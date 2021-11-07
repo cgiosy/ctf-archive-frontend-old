@@ -10,9 +10,10 @@
     { code: categoryColors[ProblemCategory.Forensic], text: "Forensic" },
     { code: categoryColors[ProblemCategory.Misc], text: "Misc" },
   ];
+  export let style: string | undefined = undefined;
 </script>
 
-<ul>
+<ul {style}>
   {#each colors as color}
     <li><i style="background: {color.code}" /> {color.text}</li>
   {/each}

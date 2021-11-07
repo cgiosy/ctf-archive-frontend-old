@@ -39,6 +39,7 @@ export default {
     search: "Search",
     searchQuery: "Search Here...",
     submit: "Submit",
+    editTags: "Edit Tags",
     create: "Create",
     upload: "Upload",
     edit: "Edit",

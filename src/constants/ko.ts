@@ -39,6 +39,7 @@ export default {
     search: "검색",
     searchQuery: "검색어",
     submit: "제출",
+    editTags: "태그 수정",
     create: "만들기",
     upload: "업로드",
     edit: "변경",
