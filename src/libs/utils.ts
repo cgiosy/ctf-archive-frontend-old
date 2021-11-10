@@ -7,8 +7,9 @@ export const useVars = (...args: unknown[]) => {};
 
 export const markdown = (text: string) => DOMPurify.sanitize(marked(text));
 
-export const style = (styles: { [key: string]: string | number }) =>
+export const style = (styles: { [key: string]: string | number | boolean | null | undefined }) =>
   Object.entries(styles)
+    .filter((arr) => arr[1])
     .map((arr) => arr[0] + ":" + arr[1])
     .join(";");
 
