@@ -1,4 +1,8 @@
-<a {...$$props}><slot /></a>
+<script lang="ts">
+  export let href: string | undefined = undefined;
+</script>
+
+<a {href} {...$$restProps}><slot /></a>
 
 <style>
   a {
