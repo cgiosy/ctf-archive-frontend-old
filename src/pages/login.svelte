@@ -72,7 +72,7 @@
       <BigButton mutation={signup}>{$_("auth.signup")}</BigButton>
     {:else}
       <TextInput type="text" bind:value={username}>{$_("user.id")}</TextInput>
-      <TextInput type="text" bind:value={email}>{$_("user.email")}</TextInput>
+      <TextInput type="text" bind:value={email}>{$_("auth.email")}</TextInput>
       <TextInput type="password" bind:value={password}>{$_("user.password")}</TextInput>
       {#if step === 1}
         <br />

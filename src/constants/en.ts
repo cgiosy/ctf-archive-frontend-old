@@ -4,6 +4,7 @@ export default {
     logout: "Logout",
     signup: "Sign Up",
     idOrEmail: "ID / E-mail",
+    email: "이메일 (ONLY gmail, naver, kakao)",
     nextStep: "Next",
     verificationCode: "Verification Code",
     required: "Login Required",
