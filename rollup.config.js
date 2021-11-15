@@ -34,9 +34,11 @@ export default {
     dir: buildDir,
     // for performance, disabling filename hashing in development
     chunkFileNames: `[name]${(production && "-[hash]") || ""}.js`,
+    /*
     manualChunks() {
       return "main";
     },
+    */
   },
   plugins: [
     svelte({
