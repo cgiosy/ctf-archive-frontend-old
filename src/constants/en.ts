@@ -35,7 +35,7 @@ export default {
     comment: "Comment",
     comments: "Comments",
     problemFile: "Distributions (zip or 7z / Drag and Drop Available)",
-    buildFile: "Build File (zip or 7z / Drag and Drop Available)",
+    buildFile: "Build File (7z only / Drag and Drop Available)",
     search: "Search",
     searchQuery: "Search Here...",
     submit: "Submit",

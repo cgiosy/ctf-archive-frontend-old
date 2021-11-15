@@ -1,5 +1,6 @@
 <script lang="ts">
   export let file: File | null | undefined;
+  export let accepts: string[] = [".zip", ".7z"];
 
   type LabelDragEvent = DragEvent & {
     currentTarget: EventTarget & HTMLLabelElement;
@@ -40,7 +41,7 @@
       }
       if (tempFile === null) continue;
       const { name } = tempFile;
-      if (name.endsWith(".7z") || name.endsWith(".zip")) {
+      if (accepts.some((accept) => name.endsWith(accept))) {
         file = tempFile;
         break;
       }
@@ -68,7 +69,7 @@
   on:dragleave={onDragLeave}
   on:drop={onDrop}
 >
-  <input type="file" accept=".zip,.7z" on:change={onChange} {...$$restProps} />
+  <input type="file" accept={accepts.join(",")} on:change={onChange} {...$$restProps} />
   {#if file == null}
     <svg viewBox="0 0 24 24" enable-background="new 0 0 24 24"
       ><g
