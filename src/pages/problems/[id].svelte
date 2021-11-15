@@ -17,8 +17,8 @@
   import IconButton from "../_components/IconButton.svelte";
   import IconLinkButton from "../_components/IconLinkButton.svelte";
   import Tag from "../_components/Tag.svelte";
-  import ChipTag from "../_components/ChipTag.svelte";
   import TextInput from "../_components/TextInput.svelte";
+  import Search from "../_components/Search.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import Submissions from "../_components/Submissions.svelte";
   import { Levels, ProblemType, UserAuth } from "../../types";
@@ -30,7 +30,6 @@
   let flag: string = "";
   let levels: Levels = [0, 0, 0, 0, 0, 0];
   let tags: number[] = [];
-  let newTag: number | undefined = undefined;
   let showTags: boolean = false;
   let comment: string = "";
   let isInvalidLevels: boolean = true;
@@ -90,14 +89,6 @@
   const mergeTags = (newTags: number[]) => {
     if (tags.length === 0) return newTags;
     return tags;
-  };
-  const removeUnusedTags = ({ detail: { tid, tag } }: any) => {
-    if (!tag) tags = tags.filter((x) => x !== tid);
-  };
-  const addNewTag = ({ detail: { tid, tag } }: any) => {
-    newTag = undefined;
-    if (!tag || tags.includes(tid)) return;
-    tags = [...tags, tid];
   };
 
   $: isInvalidLevels = !(
@@ -240,12 +231,7 @@
     </section>
     {#if $problem.data.types & ProblemType.Solved}
       <section class="tags">
-        <div>
-          {#each tags as tid}
-            <ChipTag bind:tid on:inputend={removeUnusedTags} />
-          {/each}
-          <ChipTag bind:tid={newTag} on:inputend={addNewTag} />
-        </div>
+        <Search bind:tags />
         <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>
       </section>
       <Submissions {id} />
@@ -295,11 +281,15 @@
     cursor: pointer;
   }
   .markdown {
-    margin: 0.75em 0 -1.75em 0;
+    margin: 0.75em 0 -2.5em 0;
+    padding: 1.25em 0;
     border-top: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
     line-height: 187.5%;
     word-break: break-all;
     white-space: pre-wrap;
+  }
+  .markdown :global(p) {
+    margin: 0;
   }
   .tags-small::before {
     content: "# ";
@@ -315,6 +305,7 @@
   .tags {
     display: flex;
     font-size: 0.875em;
+    contain: unset;
   }
   .address {
     text-align: center;
