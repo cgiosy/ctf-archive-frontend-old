@@ -52,26 +52,6 @@ const randomLevels = () => {
   return { level: levelsToExp(levels), levels };
 };
 
-const randomExps = () => {
-  const exps: Exps = [0, 0, 0, 0, 0, 0];
-  do exps[randomInt(20) ? randomInt(4) : randomInt(2, 4)] = randomInt(1 << 30, 0);
-  while (!randomInt(20));
-  return { exp: expsSum(exps), exps };
-};
-
-export const randomProblems = (
-  count: number,
-  titleCharset: string = charsets.alphabet + "      ",
-  sourceCharset: string = charsets.alphanumeric
-): IProblem[] =>
-  Array.from(new Array(count), (x, i) => ({
-    id: i + 1,
-    title: randomString(randomInt(24, 8), titleCharset),
-    source: randomContestTitle(sourceCharset),
-    solves: randomInt(1000),
-    ...randomLevels(),
-  }));
-
 export const randomProblemsWithCategory = (
   count: number,
   category: number,
@@ -94,17 +74,6 @@ export const randomContests = (count: number): IContest[] =>
       .reduce((prv, cur) => [...prv, ...cur])
       .sort(compProblem),
     title: randomContestTitle(),
-  }));
-
-export const randomUsers = (count: number): IUserPublicInfo[] =>
-  Array.from(new Array(count), (x, i) => ({
-    username: randomString(randomInt(7, 3), charsets.lowercase + charsets.numeric),
-    problems: Array.from(new Array(randomInt(1000)), (x, i) => i),
-    achievements: [],
-    description: randomString(randomInt(50), charsets.alphanumeric + "                  "),
-    profileImage: "",
-    profileBackground: "",
-    ...randomExps(),
   }));
 
 // 디버깅용
