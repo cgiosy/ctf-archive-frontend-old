@@ -43,8 +43,8 @@
 
     --font-family: "Apple SD Gothic Neo", "Noto Sans CJK KR", "Noto Sans KR", "본고딕", "KoPubDotum",
       "나눔바른고딕", "나눔고딕", "NanumBarunGothic", "NanumGothic", sans-serif;
-    --font-family-monospace: "Menlo", "Noto Sans Mono CJK KR", "Monaco", "Hack", "Courier",
-      "Courier New", "D2Coding ligature", "D2 Coding ligature", "D2Coding", "D2 Coding", "Consolas",
+    --font-family-monospace: "Menlo", "Noto Sans Mono CJK KR", "Monaco", "Hack",
+      "D2Coding ligature", "D2 Coding ligature", "D2Coding", "D2 Coding", "Consolas",
       var(--font-family), monospace;
   }
   @media (prefers-color-scheme: dark) {
