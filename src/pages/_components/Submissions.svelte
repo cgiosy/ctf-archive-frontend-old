@@ -29,7 +29,7 @@
   const calcLevel = Math.max;
 
   const getSubmissions = ({ pageParam }: any) =>
-    get<{ count: number; submissions: ISubmission[] }>(`/problems/${id}/submissions`, {
+    get<{ total: number; submissions: ISubmission[] }>(`/problems/${id}/submissions`, {
       sort,
       page: String(Number(pageParam) || 1),
     });
@@ -53,7 +53,7 @@
       queryKey,
       queryFn: getSubmissions,
       getNextPageParam: (lastGroup, pages) =>
-        lastGroup.count > (pages.length - 1) * pageSize + pages[pages.length - 1].submissions.length
+        lastGroup.total > (pages.length - 1) * pageSize + pages[pages.length - 1].submissions.length
           ? pages.length + 1
           : undefined,
       refetchOnMount: false,
@@ -140,7 +140,7 @@
           {/each}
         {/each}
       </svg>
-      {#each $submissions.data.pages as { count, submissions }}
+      {#each $submissions.data.pages as { total, submissions }}
         {#each submissions as { username, profileImage, levels, exps, comment, time, commentTime }}
           <div
             class="submission"

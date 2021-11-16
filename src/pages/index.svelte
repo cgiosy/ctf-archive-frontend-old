@@ -68,7 +68,7 @@
   let timeoutId: NodeJS.Timeout;
 
   const getProblems = ({ pageParam }: any) =>
-    get<{ count: number; solves: number; problems: IProblem[]; solved: number[] }>("/problems", {
+    get<{ total: number; solves: number; problems: IProblem[]; solved: number[] }>("/problems", {
       query: query
         .split(/\s+/)
         .map((s) => `%${s}%`)
@@ -106,7 +106,7 @@
       queryKey,
       queryFn: getProblems,
       getNextPageParam: (lastGroup, pages) =>
-        lastGroup.count > (pages.length - 1) * pageSize + pages[pages.length - 1].problems.length
+        lastGroup.total > (pages.length - 1) * pageSize + pages[pages.length - 1].problems.length
           ? pages.length + 1
           : undefined,
       onSuccess: (data) => {
@@ -119,7 +119,7 @@
     });
   };
 
-  // $: count = $problems.data?.count ?? count;
+  // $: total = $problems.data?.total ?? total;
   $: useVars(query, sort), onQueryChanged();
   $: useVars($params), onParamsChanged();
   $: {

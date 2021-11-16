@@ -58,7 +58,7 @@ export const useUsers = use(
   (query: string, sort: string, page: number) => ["user", query, sort, page] as const,
   ({ queryKey: [, query, sort, page] }) =>
     get<{
-      count: number;
+      total: number;
       users: IUserMiniInfo[];
     }>("/users", {
       query,

@@ -25,7 +25,7 @@
   let page: number;
   const pageSize = 50;
 
-  let count = -1;
+  let total = -1;
   let timeoutId: NodeJS.Timeout;
   const [users, getUsers, usersKey] = useUsers();
   const queryClient = useQueryClient();
@@ -51,7 +51,7 @@
     getUsers(query, sort, page);
   };
 
-  $: count = $users.data?.count ?? count;
+  $: total = $users.data?.total ?? total;
   $: useVars(query, sort, page), onQueryChanged();
   $: useVars($params), onParamsChanged();
 </script>
@@ -109,7 +109,7 @@
         </tr>
       {/each}
     {:else}
-      {#each new Array(count >= 0 ? Math.max(count - (page - 1) * pageSize, 0) : pageSize) as _, index}
+      {#each new Array(total >= 0 ? Math.max(total - (page - 1) * pageSize, 0) : pageSize) as _, index}
         <tr>
           <td>#{(page - 1) * pageSize + index + 1}</td>
           <td />
