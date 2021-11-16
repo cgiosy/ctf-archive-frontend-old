@@ -69,10 +69,12 @@
 
   const getProblems = ({ pageParam }: any) =>
     get<{ total: number; solves: number; problems: IProblem[]; solved: number[] }>("/problems", {
-      query: query
-        .split(/\s+/)
-        .map((s) => `%${s}%`)
-        .join("\n"),
+      queries: JSON.stringify(
+        query.split(/\s+/).map((s) => ({
+          types: 0,
+          query: `${s}`,
+        }))
+      ),
       sort,
       page: String(Number(pageParam) || 1),
     });
