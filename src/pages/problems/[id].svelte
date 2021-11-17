@@ -18,7 +18,7 @@
   import IconLinkButton from "../_components/IconLinkButton.svelte";
   import Tag from "../_components/Tag.svelte";
   import TextInput from "../_components/TextInput.svelte";
-  import Search from "../_components/TagSearch.svelte";
+  import TagSearch from "../_components/TagSearch.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import Submissions from "../_components/Submissions.svelte";
   import { Levels, ProblemType, UserAuth } from "../../types";
@@ -229,7 +229,7 @@
     </section>
     {#if $problem.data.types & ProblemType.Solved}
       <section class="tags">
-        <Search bind:tags bind:modified={isModifiedTags} />
+        <TagSearch bind:tags bind:modified={isModifiedTags} />
         <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>
       </section>
       <Submissions {id} />

@@ -102,13 +102,13 @@
   {/each}
   <input
     type="text"
-    placeholder="태그 입력"
+    placeholder="Input Tag"
     bind:this={tagInput}
     bind:value={tag}
     on:input={suggest}
     on:keydown={keyEvent}
     maxlength="63"
-    style={style({ "--width": 1 + tag.length + "ch" })}
+    style={style({ "--width": 1 + Math.max(tag.length, 10) + "ch" })}
   />
   <ul>
     {#each suggestions as suggestion, i}
