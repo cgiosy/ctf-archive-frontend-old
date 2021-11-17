@@ -10,6 +10,7 @@
 
   export let tags: number[];
   export let suggestions: ISuggestion[] = [];
+  export let modified: boolean = false;
   let tag: string = "";
   let tagInput: HTMLInputElement;
   let selectedSuggestionId = -1;
@@ -45,6 +46,7 @@
     suggestions = [];
     tag = "";
     tags = [...tags, tid];
+    modified = true;
     tagInput.focus();
   };
 
@@ -65,6 +67,7 @@
         if (tag !== "") return;
         tags.pop();
         tags = tags;
+        modified = true;
         break;
       case "ArrowUp":
         if (suggestions.length > 0)
@@ -84,6 +87,7 @@
     const tid = e.detail;
     tags = tags.filter((tag) => tag !== tid);
     tag = tidToTag[tid][0];
+    modified = true;
     tagInput.focus();
     setTimeout(() => {
       tagInput.focus();
@@ -140,6 +144,8 @@
   }
   ul {
     position: absolute;
+    pointer-events: none;
+    opacity: 0;
     width: 100%;
     top: 100%;
     left: 0;
@@ -151,6 +157,14 @@
     background: rgb(var(--background-color));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
     z-index: 1;
+    transition: opacity 0.175s;
+  }
+  input:focus + ul,
+  input:active + ul,
+  ul:hover,
+  ul:active {
+    opacity: 1;
+    pointer-events: all;
   }
   li {
     padding: 0.5em 1em;

@@ -33,6 +33,7 @@
   let showTags: boolean = false;
   let comment: string = "";
   let isInvalidLevels: boolean = true;
+  let isModifiedTags: boolean = false;
 
   const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: Number(lifetime) });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
@@ -86,10 +87,7 @@
   const editTagsMutation = useMutation(editTags, {
     onSuccess: reloadUserAndProblem,
   });
-  const mergeTags = (newTags: number[]) => {
-    if (tags.length === 0) return newTags;
-    return tags;
-  };
+  const mergeTags = (newTags: number[]) => (isModifiedTags ? tags : newTags);
 
   $: isInvalidLevels = !(
     levels.every((x) => 0 <= x && x <= 30 && Number.isInteger(x)) && levels.some((x) => x > 0)
@@ -231,7 +229,7 @@
     </section>
     {#if $problem.data.types & ProblemType.Solved}
       <section class="tags">
-        <Search bind:tags />
+        <Search bind:tags bind:modified={isModifiedTags} />
         <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>
       </section>
       <Submissions {id} />
