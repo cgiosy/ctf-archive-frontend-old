@@ -18,7 +18,7 @@
   import IconLinkButton from "../_components/IconLinkButton.svelte";
   import Tag from "../_components/Tag.svelte";
   import TextInput from "../_components/TextInput.svelte";
-  import Search from "../_components/Search.svelte";
+  import Search from "../_components/TagSearch.svelte";
   import SubmissionCircle from "../_components/SubmissionCircle.svelte";
   import Submissions from "../_components/Submissions.svelte";
   import { Levels, ProblemType, UserAuth } from "../../types";
@@ -295,7 +295,7 @@
   .tags-small {
     display: block;
     margin: -2.125em 0 0.75em 5.375em;
-    height: 1em;
+    min-height: 1em;
     padding: 0 1.5em;
     font-size: 0.825em;
     font-family: var(--font-family-monospace);
