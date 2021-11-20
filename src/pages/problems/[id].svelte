@@ -289,6 +289,9 @@
   .markdown :global(p) {
     margin: 0;
   }
+  .markdown :global(img) {
+    background: white;
+  }
   .tags-small::before {
     content: "# ";
   }
