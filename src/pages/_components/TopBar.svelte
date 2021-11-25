@@ -8,7 +8,7 @@
   import { useMyInfo, useSessionid } from "../../queries";
 
   const queryClient = useQueryClient();
-  const logoutMutation = useMutation(() => post<{}>("/logout"), {
+  const signoutMutation = useMutation(() => post<{}>("/signout"), {
     onSuccess: () => {
       localStorage.removeItem("sessionid");
       queryClient.invalidateQueries();
@@ -21,11 +21,11 @@
 
   const [sessionid] = useSessionid();
   const [me, getMyInfo] = useMyInfo();
-  let loggedIn = false;
+  let signedIn = false;
 
-  const logout = () => $logoutMutation.mutate();
+  const signout = () => $signoutMutation.mutate();
 
-  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
+  $: if ((signedIn = !!$sessionid.data)) getMyInfo();
 </script>
 
 <nav>
@@ -49,11 +49,11 @@
           >
         </li>
         <li class="user-link">
-          {#if loggedIn && me !== null && $me.isSuccess}<a
+          {#if signedIn && me !== null && $me.isSuccess}<a
               class="profile-link"
               href={`/profile/${$me.data.username}`}
               ><ProfileImage src={$me.data.profileImage} size="xs" alt={$me.data.username} /></a
-            >{:else if $sessionid.data == null}<a href="/login">{$_("auth.login")}</a>{/if}
+            >{:else if $sessionid.data == null}<a href="/signin">{$_("auth.signin")}</a>{/if}
         </li>
       </ul>
     </div>
@@ -64,9 +64,9 @@
       <ul>
         <li><a href="/">{$_("problem.search")}</a></li>
         <li><a href="/tags">{$_("problem.tags")}</a></li>
-        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Creator}
+        {#if signedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Creator}
           <li>
-            <a href={`/problems/create`}>{$_("problem.create")}</a>
+            <a href={`/problems/create`}>{$_("problem.createSimple")}</a>
           </li>
         {/if}
       </ul>
@@ -79,12 +79,12 @@
         <li><a href="/ranking/contribution">{$_("ranking.contribution")}</a></li>
       </ul>
       <ul class="user-links">
-        {#if loggedIn && me !== null && $me.isSuccess}<li>
+        {#if signedIn && me !== null && $me.isSuccess}<li>
             <a href={`/profile/${$me.data.username}`}>{$_("user.profile")}</a>
           </li>{/if}
         <li><a href="/notifications">{$_("user.notifications")}</a></li>
         <li><a href="/settings">{$_("user.settings")}</a></li>
-        {#if loggedIn}<li><a href={"/intro"} on:click={logout}>{$_("auth.logout")}</a></li>{/if}
+        {#if signedIn}<li><a href={"/intro"} on:click={signout}>{$_("auth.signout")}</a></li>{/if}
       </ul>
     </div>
   </div>

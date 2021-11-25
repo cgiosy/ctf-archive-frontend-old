@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { MetaTags } from "svelte-meta-tags";
   import { params } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { post, put } from "../../libs/fetcher";
@@ -26,7 +27,7 @@
 
   let id: number;
   let lifetime: string = "30";
-  let loggedIn = false;
+  let signedIn = false;
   let flag: string = "";
   let levels: Levels = [0, 0, 0, 0, 0, 0];
   let tags: number[] = [];
@@ -100,8 +101,8 @@
     }
     if (comment === "") comment = $problem.data.submission.comment;
   }
-  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
-  $: if (loggedIn && $problem.isSuccess) {
+  $: if ((signedIn = !!$sessionid.data)) getMyInfo();
+  $: if (signedIn && $problem.isSuccess) {
     tags = mergeTags($problem.data.tags);
     if ($problem.data.types & ProblemType.BuildFileExist) getStatus();
   }
@@ -114,6 +115,28 @@
   */
 </script>
 
+{#if $problem.isSuccess}
+  <MetaTags
+    title="{$problem.data.title} <{$problem.data.source}> | CTF Archive"
+    description={$problem.data.content}
+    openGraph={{
+      type: "website",
+      site_name: "CTF Archive",
+      url: location.toString(),
+      title: $problem.data.title,
+      description: $problem.data.content,
+      images: [
+        {
+          url: "https://ctf-archive.com/assets/images/logo-800.png",
+          alt: "CTF Archive Logo",
+          width: 800,
+          height: 800,
+        },
+      ],
+    }}
+  />
+{/if}
+
 <main>
   {#if $problem.isSuccess}
     <section>
@@ -123,7 +146,7 @@
         {#if $problem.data.license}
           <ProblemLicenseLink url={$problem.data.license} float="right" />
         {/if}
-        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
+        {#if signedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
           <ProblemEditLink {id} float="right" />
         {/if}
       </h1>
@@ -171,7 +194,10 @@
                   /></svg
                 ></IconButton
               >
-              <IconLinkButton href="http://35.212.240.188:{$status.data.port}" target="_blank"
+              <IconLinkButton
+                href="http://35.212.240.188:{$status.data.port}"
+                target="_blank"
+                rel="noreferer nofollow"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
                   enable-background="new 0 0 24 24"
@@ -189,8 +215,8 @@
           {/if}
         {:else}
           <Notice>
-            {$_("server.required")}&nbsp;<Link href="/login">{$_("auth.login")}</Link>{$_(
-              "server.login"
+            {$_("server.required")}&nbsp;<Link href="/signin">{$_("auth.signin")}</Link>{$_(
+              "server.signin"
             )}
           </Notice>
         {/if}
@@ -226,7 +252,7 @@
           </Notice>
         {/if}
       {:else}
-        <BigLinkButton href="/login">{$_("auth.required")}</BigLinkButton>
+        <BigLinkButton href="/signin">{$_("auth.required")}</BigLinkButton>
       {/if}
     </section>
     {#if $problem.data.types & ProblemType.Solved}

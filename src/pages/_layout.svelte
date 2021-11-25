@@ -9,22 +9,22 @@
 
   let allowed: boolean = false;
   const [sessionid] = useSessionid();
-  let loggedIn = false;
+  let signedIn = false;
 
-  $: loggedIn = !!$sessionid.data;
+  $: signedIn = !!$sessionid.data;
   $: {
     const path = location.pathname;
-    if (path !== "login" && path !== "/login") sessionStorage.setItem("lastPage", path);
+    if (path !== "signin" && path !== "/signin") sessionStorage.setItem("lastPage", path);
     allowed = Config.isAllowedPath(path);
-    if (allowed === false && !loggedIn) {
-      $goto("/login");
+    if (allowed === false && !signedIn) {
+      $goto("/signin");
     }
   }
 </script>
 
 {#if !$isLoading}
   <TopBar />
-  {#if allowed === true || loggedIn}
+  {#if allowed === true || signedIn}
     <slot />
   {/if}
 {/if}
@@ -43,9 +43,8 @@
 
     --font-family: "Apple SD Gothic Neo", "Noto Sans CJK KR", "Noto Sans KR", "본고딕", "KoPubDotum",
       "나눔바른고딕", "나눔고딕", "NanumBarunGothic", "NanumGothic", sans-serif;
-    --font-family-monospace: "Menlo", "Noto Sans Mono CJK KR", "Monaco", "Hack",
-      "D2Coding ligature", "D2 Coding ligature", "D2Coding", "D2 Coding", "Consolas",
-      var(--font-family), monospace;
+    --font-family-monospace: "Menlo", "Noto Sans Mono CJK KR", "Monaco", "Hack", "D2Coding ligature",
+      "D2 Coding ligature", "D2Coding", "D2 Coding", "Consolas", var(--font-family), monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root {

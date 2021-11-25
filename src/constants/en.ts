@@ -1,13 +1,13 @@
 export default {
   auth: {
-    login: "Login",
-    logout: "Logout",
-    signup: "Sign Up",
+    signin: "Sign in",
+    signout: "Sign out",
+    signup: "Sign up",
     idOrEmail: "ID / E-mail",
     email: "이메일 (ONLY gmail, naver, kakao)",
     nextStep: "Next",
     verificationCode: "Verification Code",
-    required: "Login Required",
+    required: "Sign in required",
   },
   user: {
     id: "ID",
@@ -41,11 +41,12 @@ export default {
     searchQuery: "Search Here...",
     submit: "Submit",
     editTags: "Edit Tags",
-    create: "Create",
+    create: "Create Problem",
+    createSimple: "Create",
     download: "Download File",
     upload: "Upload",
-    edit: "Edit",
-    delete: "Delete",
+    edit: "Edit Problem",
+    delete: "Delete Problem",
     inputProblemId: "Please enter problem ID!",
     levelsRequired:
       "문제에 티어를 매겨야 제출할 수 있습니다. 원을 클릭한 뒤, 스크롤하거나 wasd 키 등을 통해 조작 가능합니다.",
@@ -54,7 +55,7 @@ export default {
     address: "Server Address",
     lifetime: "Server Lifetime (min)",
     required: "This problem requires a server.",
-    login: "",
+    signin: "Sign in",
     notice:
       "The server may take a long time to turn on. Please wait for 2 to 3 minutes even if the loading lasts for more than 1 minute or if you can't connecting the server.",
     start: "Start Server",

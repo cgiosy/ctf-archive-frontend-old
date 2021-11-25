@@ -1,7 +1,7 @@
 export default {
   auth: {
-    login: "로그인",
-    logout: "로그아웃",
+    signin: "로그인",
+    signout: "로그아웃",
     signup: "가입",
     idOrEmail: "아이디 또는 이메일",
     email: "이메일 (gmail, naver, kakao만 허용)",
@@ -41,11 +41,12 @@ export default {
     searchQuery: "검색어",
     submit: "제출",
     editTags: "태그 수정",
-    create: "만들기",
+    create: "문제 만들기",
+    createSimple: "만들기",
     download: "파일 다운로드",
     upload: "업로드",
-    edit: "변경",
-    delete: "삭제",
+    edit: "문제 수정",
+    delete: "문제 삭제",
     inputProblemId: "문제 번호를 입력해 주세요!",
     levelsRequired:
       "문제에 티어를 매겨야 제출할 수 있습니다. 원을 클릭한 뒤, 스크롤하거나 wasd 키 등을 통해 조작 가능합니다.",
@@ -54,7 +55,7 @@ export default {
     address: "서버 주소",
     lifetime: "켜둘 시간 (분)",
     required: "서버가 필요한 문제입니다.",
-    login: "하여 서버를 사용할 수 있습니다.",
+    signin: "하여 서버를 사용할 수 있습니다.",
     notice:
       "서버가 켜지는데 오래 걸릴 수 있습니다. 로딩이 1분 이상 지속되거나, 서버에 접속이 되지 않더라도 2~3분 정도 대기해 주시기 바랍니다.",
     start: "서버 시작하기",

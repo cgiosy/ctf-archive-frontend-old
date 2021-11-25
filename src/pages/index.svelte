@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { MetaTags } from "svelte-meta-tags";
   import { useInfiniteQuery, useQueryClient } from "@sveltestack/svelte-query";
   import { goto, params } from "@roxi/routify";
   import { dequal } from "dequal/lite";
@@ -138,6 +139,24 @@
     }
   }
 </script>
+
+<MetaTags
+  title="CTF Archive"
+  openGraph={{
+    type: "website",
+    site_name: "CTF Archive",
+    url: location.toString(),
+    title: "CTF Archive",
+    images: [
+      {
+        url: "https://ctf-archive.com/assets/images/logo-800.png",
+        alt: "CTF Archive Logo",
+        width: 800,
+        height: 800,
+      },
+    ],
+  }}
+/>
 
 <svelte:window bind:scrollY bind:innerHeight />
 

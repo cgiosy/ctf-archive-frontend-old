@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { MetaTags } from "svelte-meta-tags";
   import { goto } from "@roxi/routify";
   import { useQueryClient, useMutation } from "@sveltestack/svelte-query";
   import { post } from "../libs/fetcher";
@@ -26,7 +27,7 @@
   };
 
   const signin = useMutation(
-    () => post<{ sessionid: string }>("/login", { id: text || username, password }),
+    () => post<{ sessionid: string }>("/signin", { id: text || username, password }),
     {
       onSuccess: (data) => {
         login(data.sessionid);
@@ -59,6 +60,24 @@
   );
 </script>
 
+<MetaTags
+  title="Sign in | CTF Archive"
+  openGraph={{
+    type: "website",
+    site_name: "CTF Archive",
+    url: location.toString(),
+    title: "Sign in | CTF Archive",
+    images: [
+      {
+        url: "https://ctf-archive.com/assets/images/logo-800.png",
+        alt: "CTF Archive Logo",
+        width: 800,
+        height: 800,
+      },
+    ],
+  }}
+/>
+
 <main>
   <section>
     <Logo />
@@ -68,7 +87,7 @@
       <TextInput type="text" bind:value={text}>{$_("auth.idOrEmail")}</TextInput>
       <TextInput type="password" bind:value={password}>{$_("user.password")}</TextInput>
       <br />
-      <BigButton mutation={signin}>{$_("auth.login")}</BigButton>
+      <BigButton mutation={signin}>{$_("auth.signin")}</BigButton>
       <BigButton mutation={signup}>{$_("auth.signup")}</BigButton>
     {:else}
       <TextInput type="text" bind:value={username}>{$_("user.id")}</TextInput>

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { MetaTags } from "svelte-meta-tags";
   import { goto } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { put } from "../../libs/fetcher";
@@ -74,6 +75,24 @@
     }
   );
 </script>
+
+<MetaTags
+  title="{$_('problem.create')} | CTF Archive"
+  openGraph={{
+    type: "website",
+    site_name: "CTF Archive",
+    url: location.toString(),
+    title: `${$_("problem.create")} | CTF Archive`,
+    images: [
+      {
+        url: "https://ctf-archive.com/assets/images/logo-800.png",
+        alt: "CTF Archive Logo",
+        width: 800,
+        height: 800,
+      },
+    ],
+  }}
+/>
 
 <main>
   <section>

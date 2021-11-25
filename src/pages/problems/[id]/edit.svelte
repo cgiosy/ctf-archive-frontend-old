@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { MetaTags } from "svelte-meta-tags";
   import { goto, params } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { del, put, post } from "../../../libs/fetcher";
@@ -104,6 +105,24 @@
   $: getProblem((id = Number($params.id)));
   $: if ($problem.isSuccess) setData($problem.data);
 </script>
+
+<MetaTags
+  title="{$_('problem.edit')} | CTF Archive"
+  openGraph={{
+    type: "website",
+    site_name: "CTF Archive",
+    url: location.toString(),
+    title: `${$_("problem.edit")} | CTF Archive`,
+    images: [
+      {
+        url: "https://ctf-archive.com/assets/images/logo-800.png",
+        alt: "CTF Archive Logo",
+        width: 800,
+        height: 800,
+      },
+    ],
+  }}
+/>
 
 <main>
   {#if $problem.isSuccess}

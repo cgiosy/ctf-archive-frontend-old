@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { MetaTags } from "svelte-meta-tags";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import { params } from "@roxi/routify";
   import ExpIcon from "../_components/ExpIcon.svelte";
@@ -64,11 +65,11 @@
   const [user, getUser] = useUser();
   const [me, getMyInfo] = useMyInfo();
   const ranking: number = 0;
-  let loggedIn = false;
+  let signedIn = false;
 
   $: username = $params.username;
   $: getUser(username);
-  $: if ((loggedIn = !!$sessionid.data)) getMyInfo();
+  $: if ((signedIn = !!$sessionid.data)) getMyInfo();
   $: if (profileImageFile != null) {
     $uploadProfileImage.mutate(profileImageFile);
     profileImageFile = null;
@@ -78,6 +79,38 @@
     profileBackgroundFile = null;
   }
 </script>
+
+{#if $user.isSuccess}
+  <MetaTags
+    title="{username} | CTF Archive"
+    openGraph={{
+      type: "profile",
+      site_name: "CTF Archive",
+      url: location.toString(),
+      title: username,
+      description: `${$user.data.username} - ${$user.data.description} | ${$user.data.solves} ${$_(
+        "profile.solves"
+      )} | ${expsSum($user.data.exps)} ${$_("profile.exp")}`,
+      images: [
+        {
+          url:
+            getImageUrl($user.data.profileImage) ??
+            getImageUrl($user.data.profileBackground) ??
+            `https://ctf-archive.com/assets/images/default-profile-image-lg.png`,
+          alt: `${username}'s Profile Image`,
+          width: 800,
+          height: 800,
+        },
+        {
+          url: "/assets/images/logo-800.png",
+          alt: "CTF Archive Logo",
+          width: 800,
+          height: 800,
+        },
+      ],
+    }}
+  />
+{/if}
 
 <main>
   {#if $user.isSuccess}
@@ -89,7 +122,7 @@
     >
       <div class="wrapper">
         <div class="user">
-          {#if loggedIn && me !== null && $me.isSuccess && $me.data.username === $user.data.username}
+          {#if signedIn && me !== null && $me.isSuccess && $me.data.username === $user.data.username}
             <label class="profile-image-button">
               <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onChangeProfileImage} />
               <ProfileImage src={$user.data.profileImage} size="lg" alt={$user.data.username} />
@@ -117,7 +150,7 @@
         </div>
       </div>
       <div class="solves" />
-      {#if loggedIn && me !== null && $me.isSuccess && $me.data.username === $user.data.username}
+      {#if signedIn && me !== null && $me.isSuccess && $me.data.username === $user.data.username}
         <label class="profile-background-button">
           <input type="file" accept=".jpg,.jpeg,.png,.webp" on:change={onChangeProfileBackground} />
           <svg viewBox="0 0 24 24"

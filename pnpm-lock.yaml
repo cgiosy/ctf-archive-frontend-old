@@ -32,6 +32,7 @@ specifiers:
   svelte: ^3.42.4
   svelte-check: ^2.2.5
   svelte-i18n: ^3.3.10
+  svelte-meta-tags: ^2.1.0
   svelte-preprocess: ^4.8.0
   tslib: ^2.3.1
   typescript: ^4.5.0-dev.20210902
@@ -43,6 +44,7 @@ dependencies:
   fflate: 0.7.1
   marked: 3.0.2
   svelte-i18n: 3.3.10_svelte@3.42.4
+  svelte-meta-tags: 2.1.0_f277a533d5b4d5073dfcd99a84b18f9e
 
 devDependencies:
   '@rollup/plugin-commonjs': 20.0.0_rollup@2.56.3
@@ -3459,6 +3461,14 @@ packages:
       xmlchars: 2.2.0
     dev: true
 
+  /schema-dts/1.0.0_typescript@4.5.0-dev.20210902:
+    resolution: {integrity: sha512-9t8gnY3RW2CbpuvA0pIpcaHFXkJTeNnWR4uaWI+PiYSfpuEeMw+2Q0Gac6YTnQb1B8TR6/+G71gQWuSE7dq6Zw==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    dependencies:
+      typescript: 4.5.0-dev.20210902
+    dev: false
+
   /semver/5.7.1:
     resolution: {integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==}
     hasBin: true
@@ -3732,6 +3742,17 @@ packages:
       sade: 1.7.4
       svelte: 3.42.4
       tiny-glob: 0.2.9
+    dev: false
+
+  /svelte-meta-tags/2.1.0_f277a533d5b4d5073dfcd99a84b18f9e:
+    resolution: {integrity: sha512-OSHDRroMPzyaOHdnkoZt9bsFIWdgR9CFnWFt6ifKq5DnoMJDhOEjDGQQB5lffYYYs7qTKTBvOQlt8ASknYz/jA==}
+    peerDependencies:
+      svelte: ^3.39.0
+    dependencies:
+      schema-dts: 1.0.0_typescript@4.5.0-dev.20210902
+      svelte: 3.42.4
+    transitivePeerDependencies:
+      - typescript
     dev: false
 
   /svelte-preprocess/4.8.0_325a520871b9794a48648948d9fccbb4:

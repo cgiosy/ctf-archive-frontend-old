@@ -2,7 +2,7 @@
   export let href: string | undefined = undefined;
 </script>
 
-<a {href} {...$$props}><slot /></a>
+<a {href} {...$$restProps}><slot /></a>
 
 <style>
   a {

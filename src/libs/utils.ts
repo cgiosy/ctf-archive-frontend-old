@@ -1,6 +1,6 @@
 import marked from "marked/lib/marked.esm";
 import DOMPurify from "dompurify/dist/purify.es";
-import { ProblemCategory } from "../types";
+import { ProblemCategory, SearchType } from "../types";
 import type { Exps, Levels } from "../types";
 
 export const useVars = (...args: unknown[]) => {};
@@ -16,7 +16,7 @@ export const style = (styles: { [key: string]: string | number | boolean | null 
 export const getImageUrl = (uuid: string) =>
   uuid !== "00000000-0000-0000-0000-000000000000" &&
   uuid.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i)
-    ? "//cdn.ctf-archive.com/images/" + uuid
+    ? "https://cdn.ctf-archive.com/images/" + uuid
     : null;
 
 export const emptyImageUrl =
@@ -61,6 +61,18 @@ export const editDistance = (from: string, to: string, delCost = 1, insCost = 1)
 
 export const tagEditDistance = (from: string, to: string, delCost = 2, insCost = 1) =>
   editDistance(alphaNumericalize(from), alphaNumericalize(to), delCost, insCost);
+
+export const identifySearchType = (input: string): SearchType => {
+  const notCount = input.match(/^[!~-]*/)![0].length;
+  const not = notCount & 1 ? 1 : 0;
+  if (notCount > 0) input = input.slice(notCount);
+  if (input[0] === "#") return not ? SearchType.NotTag : SearchType.Tag;
+  if (input[0] === "@") return not ? SearchType.NotUser : SearchType.User;
+  if (input[0] === "&") return not ? SearchType.NotContest : SearchType.Contest;
+  if (input.match(/^(\d*)\.+(\d*)$/) !== null) return not ? SearchType.NotLevel : SearchType.Level;
+  if (input.match(/^(\d*),+(\d*)$/) !== null) return not ? SearchType.NotSolves : SearchType.Solves;
+  return not ? SearchType.NotTitle : SearchType.Title;
+};
 
 // Charsets
 

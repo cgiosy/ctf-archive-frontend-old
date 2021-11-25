@@ -1,5 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
+  import { MetaTags } from "svelte-meta-tags";
   import { goto, params } from "@roxi/routify";
   import { useQueryClient } from "@sveltestack/svelte-query";
   import { dequal } from "dequal/lite";
@@ -55,6 +56,24 @@
   $: useVars(query, sort, page), onQueryChanged();
   $: useVars($params), onParamsChanged();
 </script>
+
+<MetaTags
+  title="{$_('ranking.ranking')} | CTF Archive"
+  openGraph={{
+    type: "website",
+    site_name: "CTF Archive",
+    url: location.toString(),
+    title: `${$_("ranking.ranking")} | CTF Archive`,
+    images: [
+      {
+        url: "https://ctf-archive.com/assets/images/logo-800.png",
+        alt: "CTF Archive Logo",
+        width: 800,
+        height: 800,
+      },
+    ],
+  }}
+/>
 
 <main>
   <header>
