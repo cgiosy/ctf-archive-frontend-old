@@ -134,7 +134,7 @@
             <Tag {tid} />
           {/each}
           {#if $problem.data.tags.length === 0}
-            ?
+            No Tags.
           {/if}
         {:else}
           <span
