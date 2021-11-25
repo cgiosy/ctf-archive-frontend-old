@@ -19,9 +19,35 @@ export enum ProblemType {
   Solved = 1 << 2,
 }
 
+export enum SearchType {
+  Title = 0,
+  Contest = 1,
+  Tag = 2,
+  Level = 3,
+  Solves = 4,
+  User = 5,
+
+  NotTitle = ~0,
+  NotContest = ~1,
+  NotTag = ~2,
+  NotLevel = ~3,
+  NotSolves = ~4,
+  NotUser = ~5,
+}
+
 export type Levels = [number, number, number, number, number, number];
 
 export type Exps = [number, number, number, number, number, number];
+
+export interface ISearchQuery {
+  types: SearchType;
+  query: string;
+}
+
+export interface ISuggestion {
+  value: ISearchQuery;
+  score: number;
+}
 
 export interface IProblem {
   id: number;
