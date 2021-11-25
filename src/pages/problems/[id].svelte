@@ -170,63 +170,66 @@
       </div>
       <p class="markdown">{@html markdown($problem.data.content)}</p>
     </section>
-    <section>
-      {#if $problem.data.types & ProblemType.BuildFileExist}
-        {#if $status.isSuccess}
-          <Notice>{$_("server.notice")}</Notice>
-          {#if $status.data.id !== id}
-            <TextInput type="number" bind:value={lifetime}>{$_("server.lifetime")}</TextInput>
-            <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
-              >{$_("server.start")}</BigButton
-            >
+    {#if $problem.data.types & (ProblemType.BuildFileExist | ProblemType.ProblemFileExist)}
+      <section>
+        {#if $problem.data.types & ProblemType.BuildFileExist}
+          {#if $status.isSuccess}
+            <Notice>{$_("server.notice")}</Notice>
+            {#if $status.data.id !== id}
+              <TextInput type="number" bind:value={lifetime}>{$_("server.lifetime")}</TextInput>
+              <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
+                >{$_("server.start")}</BigButton
+              >
+            {:else}
+              <div class="address">
+                {$_("server.address")}:
+                <pre>35.212.240.188:{$status.data.port}</pre>
+                <IconButton
+                  onClick={() => copyToClipboard("nc 35.212.240.188 " + $status.data?.port)}
+                  ><svg
+                    width="1em"
+                    height="1em"
+                    viewBox="0 0 24 24"
+                    style="fill: rgb(var(--text-color))"
+                    ><path d="M0 0h24v24H0V0z" fill="none" /><path
+                      d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                    /></svg
+                  ></IconButton
+                >
+                <IconLinkButton
+                  href="http://35.212.240.188:{$status.data.port}"
+                  target="_blank"
+                  rel="noreferer nofollow"
+                  ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    enable-background="new 0 0 24 24"
+                    height="24px"
+                    viewBox="0 0 24 24"
+                    width="24px"
+                    fill="#000000"
+                    ><rect fill="none" height="24" width="24" /><path
+                      d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z"
+                    /></svg
+                  ></IconLinkButton
+                >
+              </div>
+              <BigButton mutation={stopMutation}>{$_("server.stop")}</BigButton>
+            {/if}
           {:else}
-            <div class="address">
-              {$_("server.address")}:
-              <pre>35.212.240.188:{$status.data.port}</pre>
-              <IconButton onClick={() => copyToClipboard("nc 35.212.240.188 " + $status.data?.port)}
-                ><svg
-                  width="1em"
-                  height="1em"
-                  viewBox="0 0 24 24"
-                  style="fill: rgb(var(--text-color))"
-                  ><path d="M0 0h24v24H0V0z" fill="none" /><path
-                    d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
-                  /></svg
-                ></IconButton
-              >
-              <IconLinkButton
-                href="http://35.212.240.188:{$status.data.port}"
-                target="_blank"
-                rel="noreferer nofollow"
-                ><svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  enable-background="new 0 0 24 24"
-                  height="24px"
-                  viewBox="0 0 24 24"
-                  width="24px"
-                  fill="#000000"
-                  ><rect fill="none" height="24" width="24" /><path
-                    d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z"
-                  /></svg
-                ></IconLinkButton
-              >
-            </div>
-            <BigButton mutation={stopMutation}>{$_("server.stop")}</BigButton>
+            <Notice>
+              {$_("server.required")}&nbsp;<Link href="/signin">{$_("auth.signin")}</Link>{$_(
+                "server.signin"
+              )}
+            </Notice>
           {/if}
-        {:else}
-          <Notice>
-            {$_("server.required")}&nbsp;<Link href="/signin">{$_("auth.signin")}</Link>{$_(
-              "server.signin"
-            )}
-          </Notice>
         {/if}
-      {/if}
-      {#if $problem.data.types & ProblemType.ProblemFileExist}
-        <BigLinkButton href={`//cdn.ctf-archive.com/ctf/${id}-${$problem.data.uuid}.7z`}
-          >{$_("problem.download")}</BigLinkButton
-        >
-      {/if}
-    </section>
+        {#if $problem.data.types & ProblemType.ProblemFileExist}
+          <BigLinkButton href={`//cdn.ctf-archive.com/ctf/${id}-${$problem.data.uuid}.7z`}
+            >{$_("problem.download")}</BigLinkButton
+          >
+        {/if}
+      </section>
+    {/if}
     <section>
       {#if !($problem.data.types & ProblemType.Solved)}
         <TextInput bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
