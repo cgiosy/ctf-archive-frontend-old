@@ -35,7 +35,7 @@ export default {
     id: "Upload Date",
     comment: "Comment",
     comments: "Comments",
-    problemFile: "Distributions (zip or 7z / Drag and Drop Available)",
+    problemFile: "Distributions (7z only / Drag and Drop Available)",
     buildFile: "Build File (7z only / Drag and Drop Available)",
     search: "Search",
     searchQuery: "Search Here...",

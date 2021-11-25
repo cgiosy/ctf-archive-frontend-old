@@ -83,9 +83,7 @@
     <TextInput type="text" bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
     <TextInput type="text" bind:value={group}>{$_("problem.group")}</TextInput>
     <TextArea bind:value={content} rows={15}>{$_("problem.description")}</TextArea>
-    <FileUpload bind:file={problemFile} accepts={[".zip", ".7z"]}
-      >{$_("problem.problemFile")}</FileUpload
-    >
+    <FileUpload bind:file={problemFile} accepts={[".7z"]}>{$_("problem.problemFile")}</FileUpload>
     <FileUpload bind:file={buildFile} accepts={[".7z"]}>{$_("problem.buildFile")}</FileUpload>
     <BigButton mutation={upload}>{$_("problem.upload")}</BigButton>
   </section>

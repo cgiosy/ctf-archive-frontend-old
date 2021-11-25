@@ -1,6 +1,6 @@
 <script lang="ts">
   export let file: File | null | undefined;
-  export let accepts: string[] = [".zip", ".7z"];
+  export let accepts: string[] = [".7z"];
 
   type LabelDragEvent = DragEvent & {
     currentTarget: EventTarget & HTMLLabelElement;
