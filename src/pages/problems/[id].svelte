@@ -120,9 +120,6 @@
       <h1>
         <LevelIcon levels={$problem.data.levels} small={true} />
         <span class="title">{$problem.data.title}</span>
-        {#if $problem.data.types & ProblemType.ProblemFileExist}
-          <FileLink {id} key={$problem.data.uuid} name={$problem.data.title} float="right" />
-        {/if}
         {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
           <ProblemEditLink {id} float="right" />
         {/if}
@@ -150,8 +147,8 @@
       </div>
       <p class="markdown">{@html markdown($problem.data.content)}</p>
     </section>
-    {#if $problem.data.types & ProblemType.BuildFileExist}
-      <section>
+    <section>
+      {#if $problem.data.types & ProblemType.BuildFileExist}
         {#if $status.isSuccess}
           <Notice>{$_("server.notice")}</Notice>
           {#if $status.data.id !== id}
@@ -162,8 +159,8 @@
           {:else}
             <div class="address">
               {$_("server.address")}:
-              <pre>35.212.179.177:{$status.data.port}</pre>
-              <IconButton onClick={() => copyToClipboard("nc 35.212.179.177 " + $status.data?.port)}
+              <pre>35.212.240.188:{$status.data.port}</pre>
+              <IconButton onClick={() => copyToClipboard("nc 35.212.240.188 " + $status.data?.port)}
                 ><svg
                   width="1em"
                   height="1em"
@@ -174,7 +171,7 @@
                   /></svg
                 ></IconButton
               >
-              <IconLinkButton href="http://35.212.179.177:{$status.data.port}" target="_blank"
+              <IconLinkButton href="http://35.212.240.188:{$status.data.port}" target="_blank"
                 ><svg
                   xmlns="http://www.w3.org/2000/svg"
                   enable-background="new 0 0 24 24"
@@ -197,8 +194,13 @@
             )}
           </Notice>
         {/if}
-      </section>
-    {/if}
+      {/if}
+      {#if $problem.data.types & ProblemType.ProblemFileExist}
+        <BigLinkButton href={`//cdn.ctf-archive.com/ctf/${id}-${$problem.data.uuid}.7z`}
+          >{$_("problem.download")}</BigLinkButton
+        >
+      {/if}
+    </section>
     <section>
       {#if !($problem.data.types & ProblemType.Solved)}
         <TextInput bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>

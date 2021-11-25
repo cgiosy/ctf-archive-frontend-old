@@ -42,6 +42,7 @@ export default {
     submit: "제출",
     editTags: "태그 수정",
     create: "만들기",
+    download: "파일 다운로드",
     upload: "업로드",
     edit: "변경",
     delete: "삭제",

@@ -42,6 +42,7 @@ export default {
     submit: "Submit",
     editTags: "Edit Tags",
     create: "Create",
+    download: "Download File",
     upload: "Upload",
     edit: "Edit",
     delete: "Delete",
