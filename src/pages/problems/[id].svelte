@@ -120,11 +120,11 @@
       <h1>
         <LevelIcon levels={$problem.data.levels} small={true} />
         <span class="title">{$problem.data.title}</span>
-        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
-          <ProblemEditLink {id} float="right" />
-        {/if}
         {#if $problem.data.license}
           <ProblemLicenseLink url={$problem.data.license} float="right" />
+        {/if}
+        {#if loggedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
+          <ProblemEditLink {id} float="right" />
         {/if}
       </h1>
       <div class="tags-small">
