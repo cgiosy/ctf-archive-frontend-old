@@ -10,9 +10,9 @@
     stroke: rgb(var(--link-color));
   }
   circle {
+    r: 0.75em;
     cx: 1em;
     cy: 1em;
-    r: 0.75em;
     fill: none;
     stroke-dasharray: 6em;
     stroke-dashoffset: 2.5em;

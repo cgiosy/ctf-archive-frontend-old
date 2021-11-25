@@ -41,7 +41,7 @@
         />
       {/each}
     {:else}
-      <circle style="stroke: rgba(var(--text-color), calc(var(--background-opacity) * 24))" />
+      <circle class="background" />
     {/if}
   </svg>
 </a>
@@ -74,14 +74,21 @@
     text-align: center;
     flex-shrink: 0;
   }
+  svg {
+    width: 3em;
+    height: 3em;
+  }
   circle {
+    r: 20px;
     cx: 50%;
     cy: 50%;
-    r: 20;
     stroke-width: 4;
     transform: rotate(90deg);
     transform-origin: center;
     cursor: pointer;
+  }
+  .background {
+    stroke: rgba(var(--text-color), calc(var(--background-opacity) * 24));
   }
   .solved {
     opacity: 0.375;
