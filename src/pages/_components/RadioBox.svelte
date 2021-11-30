@@ -22,10 +22,12 @@
     user-select: none;
     cursor: pointer;
     border: 0.0625em solid transparent;
-    transition: border-color 0.175s, box-shadow 0.175s, transform 0.175s ease-out;
+    transition: background-color 0.175s, border-color 0.175s, box-shadow 0.175s,
+      transform 0.175s ease-out;
   }
   label:hover,
   .selected {
+    background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.25));
     border-color: rgba(var(--text-color), calc(var(--background-opacity) * 2));
     box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
     transform: translateY(-0.1875em);

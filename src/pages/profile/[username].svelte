@@ -181,7 +181,10 @@
     min-height: calc(100vh - 3rem);
   }
   .profile-background {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5625), rgba(0, 0, 0, 0.5625)),
+    background-image: linear-gradient(
+        rgba(var(--text-color), calc(var(--background-opacity) * 10)),
+        rgba(var(--text-color), calc(var(--background-opacity) * 10))
+      ),
       var(--background);
     background-position: 50% 25%;
     background-repeat: no-repeat;

@@ -54,9 +54,10 @@
     border-radius: 0.5em;
     background-size: cover;
     /* 2 vs 2.5 vs 3 */
-    border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    transition: border-color 0.175s, box-shadow 0.175s, transform 0.175s ease-out;
+    border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 1.5));
+    box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 1.5));
+    transition: background-color 0.175s, border-color 0.175s, box-shadow 0.175s,
+      transform 0.175s ease-out;
     background-image: linear-gradient(
         to right,
         rgba(32, 32, 32, 0.95),
@@ -67,8 +68,9 @@
     background-position: top var(--wallpaper-pos), center;
   }
   .problem:hover {
-    border-color: rgba(var(--text-color), calc(var(--background-opacity) * 4));
-    box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
+    background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.25));
+    border-color: rgba(var(--text-color), calc(var(--background-opacity) * 3));
+    box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
     transform: translateY(-0.1875em);
   }
   span.problem {
