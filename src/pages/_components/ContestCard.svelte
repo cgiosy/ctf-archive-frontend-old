@@ -1,5 +1,6 @@
 <script lang="ts">
   import LevelIcon from "./LevelIcon.svelte";
+  import { style } from "../../libs/utils";
   import type { IContest } from "../../types";
 
   export let contest: IContest | undefined = undefined;
@@ -15,7 +16,12 @@
 {#if contest !== undefined}
   <a href={`/contest/${contest.id}`} class="contest">
     <section>
-      <h3 class="title" style="/* background-image: src('/assets/images/contest/{contest.id}') */">
+      <h3
+        class="title"
+        style={style({
+          // background-image: `src('/assets/images/contest/${contest.id}')`
+        })}
+      >
         {contest.title}
       </h3>
       <ul on:wheel|preventDefault={scrollHorizontally}>
@@ -26,7 +32,7 @@
     </section>
   </a>
 {:else}
-  <span class="contest" style="pointer-events: none">
+  <span class="contest">
     <section>
       <h3 class="title">&nbsp;</h3>
       <ul>
@@ -55,6 +61,9 @@
     border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 4));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
     transform: translateY(-0.1875em);
+  }
+  span.contest {
+    pointer-events: none;
   }
   ul {
     margin: 0.5em 0;

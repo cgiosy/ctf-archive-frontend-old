@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { categoryColors } from "../../libs/utils";
+  import { style as styleUtil, categoryColors } from "../../libs/utils";
   import { ProblemCategory } from "../../types";
 
   export let colors: { code: string; text: string }[] = [
@@ -15,7 +15,7 @@
 
 <ul {style}>
   {#each colors as color}
-    <li><i style="background: {color.code}" /> {color.text}</li>
+    <li><i style={styleUtil({ background: color.code })} /> {color.text}</li>
   {/each}
 </ul>
 

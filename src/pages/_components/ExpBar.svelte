@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { expToLevel } from "../../libs/utils";
+  import { style, expToLevel } from "../../libs/utils";
 
   export let exp: number = 0;
   export let height: string = "0.125rem";
@@ -20,14 +20,22 @@
   $: ({ level, percentage } = expToLevel(exp));
 </script>
 
-<div class="bar" style={`height: ${height}; ${false && inset ? "overflow: hidden" : ""}`}>
+<div
+  class="bar"
+  class:inset
+  style={style({
+    height,
+  })}
+>
   <div
     class="gauge"
-    style={`width: ${percentage}%;` +
-      `background-image: ${mixedColors(colors)}; ` +
-      `box-shadow: 0 0 0.75rem 0.0625em ${colors[colors.length - 1]}`}
+    style={style({
+      width: percentage + "%",
+      "background-image": mixedColors(colors),
+      "box-shadow": "0 0 0.75rem 0.0625em " + colors[colors.length - 1],
+    })}
   />
-  <div class="light" style={`box-shadow: -0.125rem 0 1rem ${colors[colors.length - 1]}`} />
+  <div class="light" style={style({"box-shadow": "-0.125rem 0 1rem " + colors[colors.length - 1])} />
 </div>
 
 <style>
@@ -35,6 +43,9 @@
     display: flex;
     width: 100%;
     background-color: black;
+  }
+  .inset {
+    overflow: hidden;
   }
   .gauge,
   .light {

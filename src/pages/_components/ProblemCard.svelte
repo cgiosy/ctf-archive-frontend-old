@@ -35,7 +35,7 @@
     </section>
   </a>
 {:else}
-  <span class="problem" style="pointer-events: none">
+  <span class="problem">
     <LevelIcon />
     <section>
       <h3 class="title">&nbsp;</h3>
@@ -70,6 +70,9 @@
     border-color: rgba(var(--text-color), calc(var(--background-opacity) * 4));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
     transform: translateY(-0.1875em);
+  }
+  span.problem {
+    pointer-events: none;
   }
   .solved,
   .solved:hover {

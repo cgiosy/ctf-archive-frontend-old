@@ -186,11 +186,7 @@
                 <pre>35.212.240.188:{$status.data.port}</pre>
                 <IconButton
                   onClick={() => copyToClipboard("nc 35.212.240.188 " + $status.data?.port)}
-                  ><svg
-                    width="1em"
-                    height="1em"
-                    viewBox="0 0 24 24"
-                    style="fill: rgb(var(--text-color))"
+                  ><svg width="1em" height="1em" viewBox="0 0 24 24"
                     ><path d="M0 0h24v24H0V0z" fill="none" /><path
                       d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
                     /></svg
@@ -206,7 +202,6 @@
                     height="24px"
                     viewBox="0 0 24 24"
                     width="24px"
-                    fill="#000000"
                     ><rect fill="none" height="24" width="24" /><path
                       d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z"
                     /></svg
@@ -288,6 +283,9 @@
     border-radius: 0.75em;
     margin: 1em 0;
     /* box-shadow: 0 0.0625em 0.5em rgba(var(--text-color), calc(var(--background-opacity) * 2)); */
+  }
+  svg {
+    fill: rgb(var(--text-color));
   }
   h1 {
     width: 100%;

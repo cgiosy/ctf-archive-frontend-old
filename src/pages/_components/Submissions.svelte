@@ -3,7 +3,7 @@
   import ExpIcon from "./ExpIcon.svelte";
   import ProfileImage from "./ProfileImage.svelte";
   import { get } from "../../libs/fetcher";
-  import { useVars } from "../../libs/utils";
+  import { useVars, style } from "../../libs/utils";
   import type { ISubmission } from "../../types";
 
   type GetSubmissionsSortKey = "time_asc" | "time_desc" | "commentTime_asc" | "commentTime_desc";
@@ -150,10 +150,9 @@
           >
             <a
               href={"/profile/" + username}
-              style="transform: translateY({levelToYPos(
-                self?.offsetHeight,
-                calcLevel(...levels)
-              )}px)"
+              style={style({
+                transform: `translateY(${levelToYPos(self?.offsetHeight, calcLevel(...levels))}px)`,
+              })}
             >
               <ProfileImage src={profileImage} alt={username} />
               <div class="user-info">
@@ -164,14 +163,17 @@
           </div>
         {/each}
       {/each}
-      <div class="submission-cursor" style="transform: translateX({cursorPosition}px)" />
+      <div
+        class="submission-cursor"
+        style={style({ transform: `translateX(${cursorPosition}px)` })}
+      />
       <div
         class="submission-comment"
-        style="transform: translateX(calc({cursorPosition}px - 50%)) translateY(calc({levelToYPos(
-          self?.offsetHeight,
-          currentLevel
-        ) +
-          submissionHeight / 3}px + 75%))"
+        style={style({
+          transform: `translateX(calc(${cursorPosition}px - 50%)) translateY(calc(${
+            levelToYPos(self?.offsetHeight, currentLevel) + submissionHeight / 3
+          }px + 75%)`,
+        })}
       >
         {currentComment}
       </div>
