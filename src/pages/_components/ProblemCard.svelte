@@ -18,7 +18,8 @@
 {#if problem !== undefined}
   <a
     href={`/problems/${problem.id}`}
-    class="problem{solved ? ' solved' : ''}"
+    class="problem"
+    class:solved
     style={style({
       "--wallpaper-pos": (wallpaperPos ?? 50) + "%",
       "--wallpaper-image": wallpaper && `url('${`/assets/wallpapers/${wallpaper}.jpg`}')`,
@@ -55,7 +56,7 @@
     /* 2 vs 2.5 vs 3 */
     border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 2));
     box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 2));
-    transition: border 0.175s, box-shadow 0.175s, transform 0.175s ease-out;
+    transition: border-color 0.175s, box-shadow 0.175s, transform 0.175s ease-out;
     background-image: linear-gradient(
         to right,
         rgba(32, 32, 32, 0.95),
@@ -66,7 +67,7 @@
     background-position: top var(--wallpaper-pos), center;
   }
   .problem:hover {
-    border: 0.0625em solid rgba(var(--text-color), calc(var(--background-opacity) * 4));
+    border-color: rgba(var(--text-color), calc(var(--background-opacity) * 4));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
     transform: translateY(-0.1875em);
   }

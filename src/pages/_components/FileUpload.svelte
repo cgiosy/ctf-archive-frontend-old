@@ -63,7 +63,7 @@
 </script>
 
 <label
-  class={file != null || dragging === true ? "selected" : ""}
+  class:selected={file != null || dragging === true}
   on:dragenter={onDragEnter}
   on:dragover={onDragOver}
   on:dragleave={onDragLeave}

@@ -10,7 +10,7 @@
   }
 </script>
 
-<label class={selected ? "selected" : ""}><input type="radio" {value} bind:group /><slot /></label>
+<label class:selected><input type="radio" {value} bind:group /><slot /></label>
 
 <style>
   label {

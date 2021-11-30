@@ -81,7 +81,8 @@
     {/each}
     {#each [ProblemCategory.Pwnable, ProblemCategory.Reversing, ProblemCategory.Crypto, ProblemCategory.Web, ProblemCategory.Forensic, ProblemCategory.Misc] as category, i}
       <circle
-        class="{index === category ? 'focused' : ''} {levels[category] > 0 ? 'selected' : ''}"
+        class:focused={index === category}
+        class:selected={levels[category] > 0}
         stroke={categoryColors[category]}
         stroke-dashoffset={-((i * (144 + ((levels[category] * 2) / 30) * 24)) / 6) * Math.PI}
         stroke-dasharray="{((144 + ((levels[category] * 2) / 30) * 24) / 6) * Math.PI} {192 *

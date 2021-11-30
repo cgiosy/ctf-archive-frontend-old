@@ -38,7 +38,7 @@
   }
 </script>
 
-<a href={url} class={`${small ? "small " : ""}${stopped ? "stopped " : ""}circle`} {style}>
+<a href={url} class="circle" class:small class:stopped {style}>
   <span>{expSum >= 0 ? level : ""}</span>
   <svg fill="none" viewBox="0 0 48 48">
     {#if categories.length > 0}

@@ -29,7 +29,7 @@
   }
 </script>
 
-<a href={url} class={`${solved ? "solved " : ""}${small ? "small " : ""}`} {style}>
+<a href={url} class:solved class:small {style}>
   <span>{levelSum > 0 ? levelsToLevel(levels) : levelSum >= 0 ? 0 : ""}</span>
   <svg fill="none" viewBox="0 0 48 48">
     {#if categories.length > 0}
