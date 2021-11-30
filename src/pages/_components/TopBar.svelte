@@ -84,7 +84,7 @@
           </li>{/if}
         <li><a href="/notifications">{$_("user.notifications")}</a></li>
         <li><a href="/settings">{$_("user.settings")}</a></li>
-        {#if signedIn}<li><a href={"/intro"} on:click={signout}>{$_("auth.signout")}</a></li>{/if}
+        {#if signedIn}<li><a href={"/"} on:click={signout}>{$_("auth.signout")}</a></li>{/if}
       </ul>
     </div>
   </div>
