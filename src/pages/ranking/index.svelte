@@ -118,7 +118,7 @@
       <th>{$_("user.solves")}</th>
     </tr>
     {#if $users.isSuccess}
-      {#each $users.data.users as user, index}
+      {#each $users.data.users as user, index (user.username)}
         <tr>
           <td>#{(page - 1) * pageSize + index + 1}</td>
           <td><UserLink {user} /></td>

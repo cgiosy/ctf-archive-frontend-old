@@ -152,7 +152,7 @@
       </h1>
       <div class="tags-small">
         {#if showTags || $problem.data.types & ProblemType.Solved}
-          {#each $problem.data.tags as tid, i}
+          {#each $problem.data.tags as tid, i (tid)}
             {i ? " | " : ""}
             <Tag {tid} />
           {/each}

@@ -41,7 +41,7 @@
     <TextInput type="text" bind:value={query} monospace={true} large={true}>대회 검색</TextInput>
   </header>
   <ul class="contests">
-    {#each resultContests as contest}
+    {#each resultContests as contest (contest?.id)}
       <li><ContestCard {contest} /></li>
     {/each}
 

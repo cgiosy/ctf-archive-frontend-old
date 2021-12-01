@@ -141,7 +141,7 @@
         {/each}
       </svg>
       {#each $submissions.data.pages as { total, submissions }}
-        {#each submissions as { username, profileImage, levels, exps, comment, time, commentTime }}
+        {#each submissions as { username, profileImage, levels, exps, comment, time, commentTime } (username)}
           <div
             class="submission"
             on:mouseenter={moveCursorToSubmission}
