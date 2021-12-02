@@ -79,8 +79,8 @@
     box-shadow: 0 0.0625em 0.375em 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
   }
   input:focus {
-    padding: 0.625em 0.875em;
-    border-width: 0.125em;
+    padding: 0.575em 0.825em;
+    border-width: 0.175em;
     border-color: rgb(var(--link-color));
     outline: none;
   }
