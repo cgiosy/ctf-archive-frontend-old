@@ -90,7 +90,7 @@
     on:focus={focus}
     on:blur={blur}
   />
-  <ul class:focused>
+  <ul class:focused={focused && suggestions.length > 0}>
     {#each suggestions as suggestion, i (suggestion)}
       <li
         class:selected={i === selectedIndex}
@@ -110,8 +110,9 @@
   }
   ul {
     position: absolute;
-    pointer-events: none;
     opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
     width: 100%;
     top: 100%;
     left: 0;
@@ -123,13 +124,14 @@
     background: rgb(var(--background-color));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
     z-index: 1;
-    transition: opacity 0.175s;
+    transition: opacity 0.175s, visibility 0.175s;
   }
   .focused,
   ul:hover,
   ul:active {
     opacity: 1;
     pointer-events: all;
+    visibility: visible;
   }
   li {
     padding: 0.5em 1em;
