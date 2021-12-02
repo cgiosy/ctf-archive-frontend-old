@@ -73,6 +73,7 @@ export const getTagSuggestions = (tag: string): ISuggestion[] => {
     }
     if (score !== 0x7fffffff)
       newSuggestions.push({
+        not: false,
         types: SearchType.Tag,
         value: tidToTag[tid][0],
         caption: "",
@@ -85,19 +86,16 @@ export const getTagSuggestions = (tag: string): ISuggestion[] => {
 export const parseSearchQuery = (input: string): ISearchQuery => {
   input = input.replace(/ +/g, " ").trim();
   const notCount = input.match(/^[!~-]*/)![0].length;
-  const not = notCount & 1 ? 1 : 0;
+  const not = notCount & 1 ? true : false;
   if (notCount > 0) input = input.slice(notCount);
-  if (input[0] === "#")
-    return { types: not ? SearchType.NotTag : SearchType.Tag, value: input.slice(1) };
-  if (input[0] === "@")
-    return { types: not ? SearchType.NotUser : SearchType.User, value: input.slice(1) };
-  if (input[0] === "&")
-    return { types: not ? SearchType.NotContest : SearchType.Contest, value: input.slice(1) };
+  if (input[0] === "#") return { not, types: SearchType.Tag, value: input.slice(1) };
+  if (input[0] === "@") return { not, types: SearchType.User, value: input.slice(1) };
+  if (input[0] === "&") return { not, types: SearchType.Contest, value: input.slice(1) };
   if (input.match(/^(\d*),+(\d*)$/) !== null)
-    return { types: not ? SearchType.NotSolves : SearchType.Solves, value: input };
+    return { not, types: SearchType.Solves, value: input };
   if (input.match(/^(\d*)\.+(\d*)$|^\d+$/) !== null)
-    return { types: not ? SearchType.NotLevel : SearchType.Level, value: input };
-  return { types: not ? SearchType.NotTitle : SearchType.Title, value: input };
+    return { not, types: SearchType.Level, value: input };
+  return { not, types: SearchType.Title, value: input };
 };
 
 // Charsets

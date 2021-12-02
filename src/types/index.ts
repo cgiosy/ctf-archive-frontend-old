@@ -26,13 +26,6 @@ export enum SearchType {
   Level = 3,
   Solves = 4,
   User = 5,
-
-  NotTitle = ~0,
-  NotContest = ~1,
-  NotTag = ~2,
-  NotLevel = ~3,
-  NotSolves = ~4,
-  NotUser = ~5,
 }
 
 export type Levels = [number, number, number, number, number, number];
@@ -40,6 +33,7 @@ export type Levels = [number, number, number, number, number, number];
 export type Exps = [number, number, number, number, number, number];
 
 export interface ISearchQuery {
+  not: boolean;
   types: SearchType;
   value: string;
 }
