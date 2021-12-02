@@ -85,7 +85,8 @@ export const getTagSuggestions = (tag: string): ISuggestion[] => {
 
 export const parseSearchQuery = (input: string): ISearchQuery => {
   input = input.replace(/ +/g, " ").trim();
-  const notCount = input.match(/^[!~-]*/)![0].length;
+  // const notCount = input.match(/^[!~-]*/)![0].length;
+  const notCount = input.match(/^[!~-]?/)![0].length;
   const not = notCount & 1 ? true : false;
   if (notCount > 0) input = input.slice(notCount);
   if (input[0] === "#") return { not, types: SearchType.Tag, value: input.slice(1) };
@@ -96,6 +97,14 @@ export const parseSearchQuery = (input: string): ISearchQuery => {
   if (input.match(/^(\d*)\.+(\d*)$|^\d+$/) !== null)
     return { not, types: SearchType.Level, value: input };
   return { not, types: SearchType.Title, value: input };
+};
+
+export const queryToString = (query: ISearchQuery): string => {
+  let ret = query.value;
+  if (query.types === SearchType.Tag) ret = "#" + ret;
+  if (query.types === SearchType.User) ret = "@" + ret;
+  if (query.types === SearchType.Contest) ret = "&" + ret;
+  return (query.not ? "!" : "") + ret;
 };
 
 // Charsets

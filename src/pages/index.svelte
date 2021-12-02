@@ -6,12 +6,13 @@
   import { dequal } from "dequal/lite";
   import Logo from "./_components/Logo.svelte";
   import RadioBox from "./_components/RadioBox.svelte";
-  import TextInput from "./_components/TextInput.svelte";
+  import Search from "./_components/Search.svelte";
   import ColorList from "./_components/ColorList.svelte";
   import ProblemCard from "./_components/ProblemCard.svelte";
   import { get } from "../libs/fetcher";
-  import { useVars } from "../libs/utils";
-  import type { IProblem } from "../types";
+  import { parseSearchQuery, queryToString, useVars } from "../libs/utils";
+  import { tagToTid } from "../constants/tags";
+  import { IProblem, ISearchQuery, SearchType } from "../types";
 
   type GetUsersSortKey =
     | "solves_asc"
@@ -34,25 +35,6 @@
 
   const equal = (a: string, b: string) => a.split("_")[0] === b.split("_")[0];
 
-  // Tag Functions
-  const isCategory = (query: string): boolean =>
-    ["web", "pwn", "rev", "crypto", "fore", "misc"].includes(query);
-
-  const isDifficulty = (query: string): boolean => query.match(/^[bsgpd][1-5]$/m) !== null;
-
-  const getQueryType = (query: string): string => {
-    const typeList = [
-      { check: isDifficulty, name: "difficulty" },
-      { check: isCategory, name: "category" },
-    ];
-    for (let { check, name } of typeList) {
-      if (check(query)) {
-        return name;
-      }
-    }
-    return "";
-  };
-
   const queryClient = useQueryClient();
 
   let scrollY = 0;
@@ -60,6 +42,7 @@
   let clientHeight = 0;
   let isPending = false;
   let query: string = "";
+  let queries: ISearchQuery[] = [];
   let sort: GetUsersSortKey = "solves_desc";
   const solvedSet: Set<number> = new Set();
   const pageSize = 25;
@@ -68,17 +51,31 @@
   let queryKey: GetUsersQueryKey;
   let timeoutId: NodeJS.Timeout;
 
-  const getProblems = ({ pageParam }: any) =>
-    get<{ total: number; solves: number; problems: IProblem[]; solved: number[] }>("/problems", {
-      queries: JSON.stringify(
-        query.split(/\s+/).map((s) => ({
-          types: 0,
-          query: `${s}`,
-        }))
-      ),
-      sort,
-      page: String(Number(pageParam) || 1),
-    });
+  const getProblems = ({ pageParam }: any) => {
+    const realQueries: { types: number; query: string | number }[] = [];
+    for (let { not, types, value } of queries) {
+      value = parseSearchQuery(value).value; // TODO: Fix
+      if (types === SearchType.Level || types === SearchType.Solves) {
+        const [l, r] = value.split(/[\.,]+/);
+        if (!not && l !== "") realQueries.push({ types: ~types, query: l }); // >=l
+        if (!not && r !== "") realQueries.push({ types, query: r }); // <=r
+        if (not && l !== "") realQueries.push({ types, query: (Number(l) - 1).toString() }); // <=l-1
+        if (not && r !== "") realQueries.push({ types: ~types, query: (Number(r) + 1).toString() }); // r+1>=
+      } else if (types === SearchType.Tag) {
+        realQueries.push({ types: not ? ~types : types, query: tagToTid[value].toString() });
+      } else {
+        realQueries.push({ types: not ? ~types : types, query: value });
+      }
+    }
+    return get<{ total: number; solves: number; problems: IProblem[]; solved: number[] }>(
+      "/problems",
+      {
+        queries: JSON.stringify(realQueries),
+        sort,
+        page: String(Number(pageParam) || 1),
+      }
+    );
+  };
 
   const problems = useInfiniteQuery({
     queryFn: getProblems,
@@ -103,6 +100,10 @@
       (sort = toSort($params.sort)),
       // (page = Math.max(Number($params.page) || 1, 1)),
     ];
+    queries = query
+      .split("\n")
+      .filter((str) => str.length > 0)
+      .map(parseSearchQuery);
     if (queryKey !== undefined) await queryClient.cancelQueries(queryKey);
     queryKey = newQueryKey;
     problems.setOptions({
@@ -123,7 +124,8 @@
   };
 
   // $: total = $problems.data?.total ?? total;
-  $: useVars(query, sort), onQueryChanged();
+  $: query = queries.map(queryToString).join("\n");
+  $: useVars(query, sort), onQueryChanged(true);
   $: useVars($params), onParamsChanged();
   $: {
     if (
@@ -167,13 +169,7 @@
     </div>
     <div class="search">
       <div class="search-bar">
-        <TextInput
-          type="text"
-          monospace={true}
-          bind:value={query}
-          size={1.5}
-          on:enter={() => onQueryChanged(true)}>{$_("problem.searchQuery")}</TextInput
-        >
+        <Search bind:queries on:submit={() => onQueryChanged(true)} />
       </div>
       <ColorList />
       <div class="search-options">
@@ -219,7 +215,6 @@
     align-items: center;
   }
   main,
-  header,
   ul {
     contain: content;
   }
@@ -240,6 +235,7 @@
   }
   .search-bar {
     width: 100%;
+    /* font-size: 0.9325em; */
   }
   .search-logo {
     font-size: 3rem;

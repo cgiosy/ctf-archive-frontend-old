@@ -29,7 +29,9 @@
     <section>
       <h3 class="title">{problem.title}</h3>
       <div class="info">
-        <a href={`/?q=${encodeURIComponent(problem.source)}`} class="source">{problem.source}</a>
+        <a href={`/?query=${encodeURIComponent("&&" + problem.source)}`} class="source"
+          >{problem.source}</a
+        >
         <span class="solves"><b>✓</b> {problem.solves}</span>
       </div>
     </section>
