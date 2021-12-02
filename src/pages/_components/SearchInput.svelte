@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import TextInput from "./TextInput.svelte";
-  import { parseSearchQuery } from "../../libs/utils";
+  import { useVars, parseSearchQuery } from "../../libs/utils";
   import type { ISearchQuery, ISuggestion } from "../../types";
 
   export let placeholder: string;
@@ -72,6 +72,7 @@
   };
 
   $: {
+    useVars(focused);
     selectedIndex = 0;
     const newSuggestions = suggest(parseSearchQuery(query));
     newSuggestions.sort(compareSuggestion);
@@ -99,7 +100,7 @@
         on:click={() => applySuggestion(suggestion)}
         on:mousemove={() => (selectedIndex = i)}
       >
-        <span>{suggestion.value}</span>
+        <span class="value">{suggestion.value}</span>
         <span class="caption">{suggestion.caption}</span>
       </li>
     {/each}
@@ -136,6 +137,10 @@
     visibility: visible;
   }
   li {
+    display: inline-flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    width: 100%;
     padding: 0.5em 1em;
     transition: background 0.175s;
     cursor: pointer;
@@ -144,8 +149,12 @@
   .selected {
     background: rgba(var(--text-color), calc(var(--background-opacity) * 2));
   }
-  span.caption {
-    text-align: right;
-    color: rgba(var(--text-color), calc(var(--background-color) * 4));
+  .value {
+    font-family: var(--font-family-monospace);
+  }
+  .caption {
+    color: rgba(var(--text-color), calc(var(--background-opacity) * 12));
+    font-size: 0.875em;
+    margin-left: 1.25em;
   }
 </style>
