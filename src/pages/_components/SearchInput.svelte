@@ -32,8 +32,10 @@
 
   const keyEvent = ({ detail: e }: CustomEvent<KeyboardEvent>) => {
     switch (e.key) {
+      /*
       case "Tab":
         if (query === "") return;
+      */
       case "Enter":
         if (!(selectedIndex in suggestions)) submit();
         else applySuggestion(suggestions[selectedIndex]);
@@ -71,7 +73,7 @@
 
   $: {
     selectedIndex = 0;
-    const newSuggestions = suggest(parseSearchQuery("#" + query));
+    const newSuggestions = suggest(parseSearchQuery(query));
     newSuggestions.sort(compareSuggestion);
     suggestions = newSuggestions;
   }

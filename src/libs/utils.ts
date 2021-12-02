@@ -64,7 +64,6 @@ export const tagEditDistance = (from: string, to: string, delCost = 2, insCost =
   editDistance(alphaNumericalize(from), alphaNumericalize(to), delCost, insCost);
 
 export const getTagSuggestions = (tag: string): ISuggestion[] => {
-  if (tag === "") return [];
   const newSuggestions: ISuggestion[] = [];
   for (let tid = 0; tid < tidToTag.length; tid++) {
     let score = 0x7fffffff;
