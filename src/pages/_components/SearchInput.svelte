@@ -73,6 +73,11 @@
 
   $: {
     useVars(focused);
+    const newSuggestions = suggest(parseSearchQuery(query));
+    newSuggestions.sort(compareSuggestion);
+    suggestions = newSuggestions;
+  }
+  $: {
     selectedIndex = 0;
     const newSuggestions = suggest(parseSearchQuery(query));
     newSuggestions.sort(compareSuggestion);
@@ -97,7 +102,7 @@
     {#each suggestions as suggestion, i (suggestion)}
       <li
         class:selected={i === selectedIndex}
-        on:click={() => applySuggestion(suggestion)}
+        on:mouseup={() => applySuggestion(suggestion)}
         on:mousemove={() => (selectedIndex = i)}
       >
         <span class="value">{suggestion.value}</span>
