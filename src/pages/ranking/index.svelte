@@ -86,7 +86,7 @@
           type="text"
           monospace={true}
           bind:value={query}
-          onEnter={() => onQueryChanged(true)}>{$_("ranking.searchQuery")}</TextInput
+          on:enter={() => onQueryChanged(true)}>{$_("ranking.searchQuery")}</TextInput
         >
       </div>
       <div class="search-options">

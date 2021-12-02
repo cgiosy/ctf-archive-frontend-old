@@ -1,24 +1,35 @@
 <script lang="ts">
-  export let large: boolean = false;
+  import { createEventDispatcher } from "svelte";
+  import { style } from "../../libs/utils";
+
+  export let size: number = 1;
   export let monospace: boolean = false;
-  export let value: string = "";
-  export let onEnter: Function | undefined = undefined;
+  export let value: string | number | string[] | null | undefined = "";
+  export let input: HTMLTextAreaElement | undefined = undefined;
 
-  let classes: string[];
+  const dispatch = createEventDispatcher();
 
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Enter" && onEnter !== undefined) onEnter();
+  const fowardEvent = (e: Event) => {
+    dispatch(e.type, e);
   };
 
-  $: {
-    classes = [];
-    if (large) classes.push("large");
-    if (monospace) classes.push("monospace");
-  }
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") dispatch("enter");
+    fowardEvent(e);
+  };
 </script>
 
-<label class={classes.join(" ")}>
-  <textarea placeholder=" " spellcheck={false} bind:value on:keydown={onKeyDown} {...$$restProps} />
+<label class:monospace style={style({ "--size": size + "em" })}>
+  <textarea
+    placeholder=" "
+    spellcheck={false}
+    bind:this={input}
+    bind:value
+    on:keydown={onKeyDown}
+    on:focus={fowardEvent}
+    on:blur={fowardEvent}
+    {...$$restProps}
+  />
   <div><slot /></div>
 </label>
 
@@ -28,9 +39,7 @@
     position: relative;
     width: 100%;
     margin: 0.375em;
-  }
-  .large {
-    font-size: 1.5em;
+    font-size: var(--size);
   }
   .monospace,
   .monospace * {

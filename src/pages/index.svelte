@@ -171,8 +171,8 @@
           type="text"
           monospace={true}
           bind:value={query}
-          large={true}
-          onEnter={() => onQueryChanged(true)}>{$_("problem.searchQuery")}</TextInput
+          size={1.5}
+          on:enter={() => onQueryChanged(true)}>{$_("problem.searchQuery")}</TextInput
         >
       </div>
       <ColorList />
@@ -187,12 +187,19 @@
           >
         {/each}
       </div>
+      {#if $problems.status === "success"}
+        <div class="problems-count">
+          {new Intl.NumberFormat().format($problems.data.pages[0].total)}개를 찾았어요. ({new Intl.NumberFormat().format(
+            $problems.data.pages[0].solves
+          )}개 풀었어요!)
+        </div>
+      {/if}
     </div>
   </header>
   <ul class="problems">
     {#if $problems.status === "success"}
       {#each $problems.data.pages as page}
-        {#each page.problems as problem}
+        {#each page.problems as problem (problem.id)}
           <li><ProblemCard {problem} solved={solvedSet.has(problem.id)} /></li>
         {/each}
       {/each}
@@ -243,6 +250,10 @@
     display: grid;
     /* == https://css-tricks.com/preventing-a-grid-blowout == */
     grid-template-columns: minmax(0, 1fr);
+  }
+  .problems-count {
+    font-size: 0.8em;
+    margin: 0.5em 1em;
   }
 
   @media (min-width: 48em) {

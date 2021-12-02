@@ -38,7 +38,7 @@
     <div class="search-logo">
       <Logo />
     </div>
-    <TextInput type="text" bind:value={query} monospace={true} large={true}>대회 검색</TextInput>
+    <TextInput type="text" bind:value={query} monospace={true} size={1.5}>대회 검색</TextInput>
   </header>
   <ul class="contests">
     {#each resultContests as contest (contest?.id)}
