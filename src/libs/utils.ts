@@ -1,7 +1,8 @@
 import marked from "marked/lib/marked.esm";
 import DOMPurify from "dompurify/dist/purify.es";
-import { ProblemCategory, SearchType } from "../types";
+import { ISearchQuery, ISuggestion, ProblemCategory, SearchType } from "../types";
 import type { Exps, Levels } from "../types";
+import { tidToTag } from "../constants/tags";
 
 export const useVars = (...args: unknown[]) => {};
 
@@ -62,16 +63,42 @@ export const editDistance = (from: string, to: string, delCost = 1, insCost = 1)
 export const tagEditDistance = (from: string, to: string, delCost = 2, insCost = 1) =>
   editDistance(alphaNumericalize(from), alphaNumericalize(to), delCost, insCost);
 
-export const identifySearchType = (input: string): SearchType => {
+export const getTagSuggestions = (tag: string): ISuggestion[] => {
+  if (tag === "") return [];
+  const newSuggestions: ISuggestion[] = [];
+  for (let tid = 0; tid < tidToTag.length; tid++) {
+    let score = 0x7fffffff;
+    for (const newTag of tidToTag[tid]) {
+      const dist = tagEditDistance(tag, newTag);
+      if (dist < newTag.length) score = Math.min(score, dist);
+    }
+    if (score !== 0x7fffffff)
+      newSuggestions.push({
+        types: SearchType.Tag,
+        value: tidToTag[tid][0],
+        caption: "",
+        score,
+      });
+  }
+  return newSuggestions;
+};
+
+export const parseSearchQuery = (input: string): ISearchQuery => {
+  input = input.replace(/ +/g, " ").trim();
   const notCount = input.match(/^[!~-]*/)![0].length;
   const not = notCount & 1 ? 1 : 0;
   if (notCount > 0) input = input.slice(notCount);
-  if (input[0] === "#") return not ? SearchType.NotTag : SearchType.Tag;
-  if (input[0] === "@") return not ? SearchType.NotUser : SearchType.User;
-  if (input[0] === "&") return not ? SearchType.NotContest : SearchType.Contest;
-  if (input.match(/^(\d*)\.+(\d*)$/) !== null) return not ? SearchType.NotLevel : SearchType.Level;
-  if (input.match(/^(\d*),+(\d*)$/) !== null) return not ? SearchType.NotSolves : SearchType.Solves;
-  return not ? SearchType.NotTitle : SearchType.Title;
+  if (input[0] === "#")
+    return { types: not ? SearchType.NotTag : SearchType.Tag, value: input.slice(1) };
+  if (input[0] === "@")
+    return { types: not ? SearchType.NotUser : SearchType.User, value: input.slice(1) };
+  if (input[0] === "&")
+    return { types: not ? SearchType.NotContest : SearchType.Contest, value: input.slice(1) };
+  if (input.match(/^(\d*),+(\d*)$/) !== null)
+    return { types: not ? SearchType.NotSolves : SearchType.Solves, value: input };
+  if (input.match(/^(\d*)\.+(\d*)$|^\d+$/) !== null)
+    return { types: not ? SearchType.NotLevel : SearchType.Level, value: input };
+  return { types: not ? SearchType.NotTitle : SearchType.Title, value: input };
 };
 
 // Charsets

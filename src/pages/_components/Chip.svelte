@@ -1,17 +1,15 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import { tidToTag } from "../../constants/tags";
 
   const dispatch = createEventDispatcher();
-  export let tid: number;
 
   const onClick = (e: MouseEvent) => {
     e.stopPropagation();
-    dispatch("click", tid);
+    dispatch("click");
   };
 </script>
 
-<span on:click={onClick}>{tidToTag[tid][0] ?? ""}</span>
+<span on:click={onClick}><slot /></span>
 
 <style>
   span {
@@ -27,6 +25,7 @@
     text-align: center;
     transition: background 0.175s;
     cursor: pointer;
+    user-select: none;
   }
   span:hover {
     background: rgba(var(--text-color), calc(var(--background-opacity) * 4));

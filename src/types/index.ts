@@ -41,11 +41,11 @@ export type Exps = [number, number, number, number, number, number];
 
 export interface ISearchQuery {
   types: SearchType;
-  query: string;
+  value: string;
 }
 
-export interface ISuggestion {
-  value: ISearchQuery;
+export interface ISuggestion extends ISearchQuery {
+  caption: string;
   score: number;
 }
 
