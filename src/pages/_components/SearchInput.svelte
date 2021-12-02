@@ -15,8 +15,7 @@
 
   const dispatch = createEventDispatcher();
 
-  const compareSuggestion = (a: ISuggestion, b: ISuggestion) =>
-    a.score - b.score || a.types - b.types;
+  const compareSuggestion = (a: ISuggestion, b: ISuggestion) => a.score - b.score;
 
   const applySuggestion = (suggestion: ISuggestion) => {
     dispatch("add", suggestion);
