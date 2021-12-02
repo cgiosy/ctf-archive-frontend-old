@@ -35,6 +35,9 @@
       case "Tab":
         if (query === "") return;
       */
+      case "Escape":
+        blur();
+        break;
       case "Enter":
         if (!(selectedIndex in suggestions)) submit();
         else applySuggestion(suggestions[selectedIndex]);
@@ -42,9 +45,11 @@
       case "ArrowUp":
         if (suggestions.length > 0)
           selectedIndex = (Math.max(selectedIndex, 0) || suggestions.length) - 1;
+        focus();
         break;
       case "ArrowDown":
         if (suggestions.length > 0) selectedIndex = (selectedIndex + 1) % suggestions.length;
+        focus();
         break;
       // TODO: 이전 입력들 불러와서 삭제?
       /*
@@ -57,6 +62,7 @@
         break;
       */
       default:
+        focus();
         return;
     }
     e.preventDefault();
@@ -94,6 +100,7 @@
     size={1.15}
     bind:value={query}
     on:keydown={keyEvent}
+    on:click={focus}
     on:focus={focus}
     on:blur={blur}
   />

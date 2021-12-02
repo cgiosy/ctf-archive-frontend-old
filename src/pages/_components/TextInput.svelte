@@ -26,6 +26,7 @@
     bind:this={input}
     bind:value
     on:keydown={onKeyDown}
+    on:click={fowardEvent}
     on:focus={fowardEvent}
     on:blur={fowardEvent}
     {...$$restProps}
