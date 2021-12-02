@@ -11,6 +11,8 @@
     font-family: Montserrat;
     font-weight: 800;
     font-size: 0.5em;
+    user-select: none;
+    -webkit-user-drag: none;
   }
   p {
     margin: 0;
