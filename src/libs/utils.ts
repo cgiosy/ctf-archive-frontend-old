@@ -1,12 +1,8 @@
-import marked from "marked/lib/marked.esm";
-import DOMPurify from "dompurify/dist/purify.es";
-import { ISearchQuery, ISuggestion, ProblemCategory, SearchType } from "../types";
-import type { Exps, Levels } from "../types";
+import { SearchType, ProblemCategory } from "../types";
+import type { ISearchQuery, ISuggestion, Exps, Levels } from "../types";
 import { tidToTag } from "../constants/tags";
 
 export const useVars = (...args: unknown[]) => {};
-
-export const markdown = (text: string) => DOMPurify.sanitize(marked(text));
 
 export const style = (styles: { [key: string]: string | number | boolean | null | undefined }) =>
   Object.entries(styles)

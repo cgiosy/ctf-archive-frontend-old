@@ -11,10 +11,6 @@
   let categories: { sum: number; exp: number; category: ProblemCategory }[];
   let style: string;
   let level: number;
-  let remain: number;
-  let percentage: number;
-
-  const toBorder = (color: string): string => `border: 0.25em solid ${color}`;
 
   $: {
     const tempCategories = exps.map((exp, category: ProblemCategory) => ({
@@ -34,7 +30,7 @@
     });
     expSum = expSum2;
 
-    ({ level, remain, percentage } = expToLevel(expSum));
+    ({ level } = expToLevel(expSum));
   }
 </script>
 

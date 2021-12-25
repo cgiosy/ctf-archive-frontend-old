@@ -3,27 +3,29 @@
   import { MetaTags } from "svelte-meta-tags";
   import { params } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
-  import { post, put } from "../../libs/fetcher";
-  import { copyToClipboard, markdown } from "../../libs/utils";
-  import Link from "../_components/Link.svelte";
-  import ProblemEditLink from "../_components/ProblemEditLink.svelte";
-  import ProblemLicenseLink from "../_components/ProblemLicenseLink.svelte";
-  import Notice from "../_components/Notice.svelte";
-  import LevelIcon from "../_components/LevelIcon.svelte";
-  import ColorList from "../_components/ColorList.svelte";
-  import FileLink from "../_components/FileLink.svelte";
-  import TextArea from "../_components/TextArea.svelte";
-  import BigButton from "../_components/BigButton.svelte";
-  import BigLinkButton from "../_components/BigLinkButton.svelte";
-  import IconButton from "../_components/IconButton.svelte";
-  import IconLinkButton from "../_components/IconLinkButton.svelte";
-  import Tag from "../_components/Tag.svelte";
-  import TextInput from "../_components/TextInput.svelte";
-  import TagSearch from "../_components/TagSearch.svelte";
-  import SubmissionCircle from "../_components/SubmissionCircle.svelte";
-  import Submissions from "../_components/Submissions.svelte";
-  import { Levels, ProblemType, UserAuth } from "../../types";
-  import { useMyInfo, useProblem, useSessionid, useStatus } from "../../queries";
+  import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
+  import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+  import { post, put } from "../../../libs/fetcher";
+  import { copyToClipboard } from "../../../libs/utils";
+  import Link from "../../_components/Link.svelte";
+  import ProblemEditLink from "../../_components/ProblemEditLink.svelte";
+  import ProblemLicenseLink from "../../_components/ProblemLicenseLink.svelte";
+  import Notice from "../../_components/Notice.svelte";
+  import LevelIcon from "../../_components/LevelIcon.svelte";
+  import ColorList from "../../_components/ColorList.svelte";
+  import TextArea from "../../_components/TextArea.svelte";
+  import BigButton from "../../_components/BigButton.svelte";
+  import BigLinkButton from "../../_components/BigLinkButton.svelte";
+  import IconButton from "../../_components/IconButton.svelte";
+  import IconLinkButton from "../../_components/IconLinkButton.svelte";
+  import Tag from "../../_components/Tag.svelte";
+  import TextInput from "../../_components/TextInput.svelte";
+  import TagSearch from "../../_components/TagSearch.svelte";
+  import SubmissionCircle from "../../_components/SubmissionCircle.svelte";
+  import Submissions from "../../_components/Submissions.svelte";
+  import { ProblemType, UserAuth } from "../../../types";
+  import type { Levels } from "../../../types";
+  import { useMyInfo, useProblem, useSessionid, useStatus } from "../../../queries";
 
   let id: number;
   let lifetime: string = "30";
@@ -35,6 +37,8 @@
   let comment: string = "";
   let isInvalidLevels: boolean = true;
   let isModifiedTags: boolean = false;
+  let viewer: Viewer;
+  let viewerElm: HTMLParagraphElement;
 
   const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: Number(lifetime) });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
@@ -93,7 +97,7 @@
   $: isInvalidLevels = !(
     levels.every((x) => 0 <= x && x <= 30 && Number.isInteger(x)) && levels.some((x) => x > 0)
   );
-  $: getProblem((id = Number($params.id)));
+  $: if (!isNaN(Number($params.id))) getProblem((id = Number($params.id)));
   $: if ($problem.isSuccess && $problem.data.submission != null) {
     if (isInvalidLevels) {
       isInvalidLevels = false;
@@ -105,6 +109,15 @@
   $: if (signedIn && $problem.isSuccess) {
     tags = mergeTags($problem.data.tags);
     if ($problem.data.types & ProblemType.BuildFileExist) getStatus();
+  }
+  $: if (viewerElm != null && $problem.isSuccess) {
+    viewer = new Viewer({
+      el: viewerElm,
+      // @ts-ignore
+      height: "auto",
+      initialValue: $problem.data.content,
+      usageStatistics: false,
+    });
   }
 
   /*
@@ -168,7 +181,7 @@
           >
         {/if}
       </div>
-      <p class="markdown">{@html markdown($problem.data.content)}</p>
+      <p bind:this={viewerElm} class="description" />
     </section>
     {#if $problem.data.types & (ProblemType.BuildFileExist | ProblemType.ProblemFileExist)}
       <section>
@@ -307,18 +320,17 @@
   .showTags {
     cursor: pointer;
   }
-  .markdown {
-    margin: 0.75em 0 -2.5em 0;
+  .description {
+    margin: 0.75em 0 -0.75em 0;
     padding: 1.25em 0;
     border-top: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
-    line-height: 187.5%;
     word-break: break-all;
     white-space: pre-wrap;
   }
-  .markdown :global(p) {
+  .description :global(p) {
     margin: 0;
   }
-  .markdown :global(img) {
+  .description :global(img) {
     background: white;
   }
   .tags-small::before {

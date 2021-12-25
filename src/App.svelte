@@ -1,13 +1,13 @@
 <script lang="ts">
   import { register, init, getLocaleFromNavigator } from "svelte-i18n";
   import { Router } from "@roxi/routify";
+  import routes from "../.routify/routes.default.js";
   import {
     QueryClient,
     QueryClientProvider,
     createLocalStoragePersistor,
     persistQueryClient,
   } from "@sveltestack/svelte-query";
-  import { routes } from "../.routify/routes";
 
   const cacheTime = 1000 * 60 * 60 * 24 * 7; // 7 days
   const staleTime = Number(localStorage.getItem("testingStaleTime")) || 1000; // 1000 * 60 * 5; // 5 mins

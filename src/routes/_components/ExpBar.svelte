@@ -35,7 +35,10 @@
       "box-shadow": "0 0 0.75rem 0.0625em " + colors[colors.length - 1],
     })}
   />
-  <div class="light" style={style({"box-shadow": "-0.125rem 0 1rem " + colors[colors.length - 1])} />
+  <div
+    class="light"
+    style={style({ "box-shadow": "-0.125rem 0 1rem " + colors[colors.length - 1] })}
+  />
 </div>
 
 <style>

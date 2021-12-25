@@ -1,4 +1,5 @@
-import { QueryFunction, QueryKey, useQuery, UseQueryOptions } from "@sveltestack/svelte-query";
+import { useQuery } from "@sveltestack/svelte-query";
+import type { QueryFunction, QueryKey, UseQueryOptions } from "@sveltestack/svelte-query";
 import { get } from "../libs/fetcher";
 import { getLocalStorage } from "../libs/utils";
 import type {

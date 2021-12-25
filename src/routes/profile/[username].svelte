@@ -67,7 +67,9 @@
   const ranking: number = 0;
   let signedIn = false;
 
-  $: username = $params.username;
+  $: if ($params.username !== undefined) {
+    username = $params.username;
+  }
   $: getUser(username);
   $: if ((signedIn = !!$sessionid.data)) getMyInfo();
   $: if (profileImageFile != null) {

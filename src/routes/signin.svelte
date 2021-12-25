@@ -22,7 +22,7 @@
   const login = (sessionid: string) => {
     setSessionId(sessionid);
     queryClient.invalidateQueries().then(() => {
-      $goto(sessionStorage.getItem("lastPage") ?? "/");
+      location.href = sessionStorage.getItem("lastPage") ?? "/";
     });
   };
 

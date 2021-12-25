@@ -17,7 +17,7 @@
   let resultContests: (IContest | undefined)[] = [];
   let page = 0;
 
-  const infiniteHandler = ({ detail: { loaded, complete } }: InfiniteEvent) => {
+  const infiniteHandler = ({ detail: { loaded, complete } }: any) => {
     const request = getContests(++page);
     const prevResultContests = [...resultContests];
     resultContests = [...prevResultContests, ...new Array(pageSize)];

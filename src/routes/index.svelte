@@ -12,7 +12,8 @@
   import { get } from "../libs/fetcher";
   import { parseSearchQuery, queryToString, useVars } from "../libs/utils";
   import { tagToTid } from "../constants/tags";
-  import { IProblem, ISearchQuery, SearchType } from "../types";
+  import { SearchType } from "../types";
+  import type { IProblem, ISearchQuery } from "../types";
 
   type GetUsersSortKey =
     | "solves_asc"

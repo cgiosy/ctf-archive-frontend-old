@@ -17,7 +17,7 @@
     if (path !== "signin" && path !== "/signin") sessionStorage.setItem("lastPage", path);
     allowed = Config.isAllowedPath(path);
     if (allowed === false && !signedIn) {
-      $goto("/signin");
+      location.href = "/signin";
     }
   }
 </script>
@@ -78,15 +78,6 @@
   a {
     color: inherit;
     text-decoration: none;
-  }
-  .markdown a {
-    color: rgb(var(--link-color));
-  }
-  .markdown a:hover {
-    text-decoration: underline;
-  }
-  .markdown * {
-    vertical-align: unset;
   }
   body,
   button,

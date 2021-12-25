@@ -5,7 +5,8 @@
   import SearchInput from "./SearchInput.svelte";
   import Chip from "./Chip.svelte";
   import { editDistance, getTagSuggestions } from "../../libs/utils";
-  import { ISearchQuery, ISuggestion, SearchType } from "../../types";
+  import { SearchType } from "../../types";
+  import type { ISearchQuery, ISuggestion } from "../../types";
   import { useMyInfo, useSessionid } from "../../queries";
 
   export let queries: ISearchQuery[];

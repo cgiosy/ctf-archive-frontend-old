@@ -1,8 +1,5 @@
-// @ts-expect-error
-import HMR from "@roxi/routify/hmr";
-// @ts-expect-error
 import App from "./App.svelte";
 
-const app = HMR(App, { target: document.body }, "ctf-archive");
+const app = new App({ target: document.body });
 
 export default app;

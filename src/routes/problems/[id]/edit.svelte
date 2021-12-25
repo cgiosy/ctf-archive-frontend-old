@@ -3,11 +3,12 @@
   import { MetaTags } from "svelte-meta-tags";
   import { goto, params } from "@roxi/routify";
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
+  import Editor from "@toast-ui/editor";
+  import "@toast-ui/editor/dist/toastui-editor-only.css";
   import { del, put, post } from "../../../libs/fetcher";
   // import { proxyStream } from "../../../libs/utils";
   import BigButton from "../../_components/BigButton.svelte";
   import TextInput from "../../_components/TextInput.svelte";
-  import TextArea from "../../_components/TextArea.svelte";
   import FileUpload from "../../_components/FileUpload.svelte";
   import { useProblemDetails } from "../../../queries";
   import type { IProblemDetails } from "../../../types";
@@ -17,8 +18,9 @@
   let source: string = "";
   let license: string = "";
   let flag: string = "";
-  let content: string = "";
   let group: string = "everyone";
+  let editor: Editor;
+  let editorElm: HTMLDivElement;
 
   let problemFile: File | null = null;
   let buildFile: File | null = null;
@@ -33,7 +35,15 @@
   const [problem, getProblem, problemKey] = useProblemDetails();
 
   const edit = useMutation(
-    () => post<{}>("/problems/" + id, { title, source, license, flag, content, group }),
+    () =>
+      post<{}>("/problems/" + id, {
+        title,
+        source,
+        license,
+        flag,
+        content: editor.getMarkdown(),
+        group,
+      }),
     {
       onSuccess: async (data) => {
         try {
@@ -63,13 +73,13 @@
               ),
           ])
             .then(() => {
-              $goto(`/problems/${id}`);
+              location.href = `/problems/${id}`;
             })
             .catch(() => {
-              $goto(`/problems/${id}/edit`);
+              location.href = `/problems/${id}/edit`;
             });
         } catch (e) {
-          $goto(`/problems/${id}/edit`);
+          location.href = `/problems/${id}/edit`;
         }
       },
     }
@@ -83,7 +93,7 @@
     {
       onSuccess: async () => {
         Promise.all([queryClient.invalidateQueries("problems")]).then(() => {
-          $goto(`/`);
+          location.href = `/`;
         });
       },
     }
@@ -93,7 +103,7 @@
     title = data.title;
     source = data.source;
     license = data.license;
-    content = data.content;
+    editor.setMarkdown(data.content);
     group = data.group;
     flag = data.flag ?? "";
   };
@@ -103,7 +113,18 @@
   });
 
   $: getProblem((id = Number($params.id)));
-  $: if ($problem.isSuccess) setData($problem.data);
+  $: if (editor != null && $problem.isSuccess) {
+    setData($problem.data);
+  }
+  $: if (editorElm != null) {
+    editor = new Editor({
+      el: editorElm,
+      height: "540px",
+      initialEditType: "markdown",
+      previewStyle: "tab",
+      usageStatistics: false,
+    });
+  }
 </script>
 
 <MetaTags
@@ -132,7 +153,7 @@
       <TextInput type="text" bind:value={license}>{$_("problem.license")}</TextInput>
       <TextInput type="text" bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
       <TextInput type="text" bind:value={group}>{$_("problem.group")}</TextInput>
-      <TextArea bind:value={content} rows={15}>{$_("problem.description")}</TextArea>
+      <div bind:this={editorElm} class="description" />
       <FileUpload bind:file={problemFile} accepts={[".7z"]}>{$_("problem.problemFile")}</FileUpload>
       <FileUpload bind:file={buildFile} accepts={[".7z"]}>{$_("problem.buildFile")}</FileUpload>
       <BigButton mutation={edit}>{$_("problem.edit")}</BigButton>
@@ -167,6 +188,10 @@
     border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
     /* box-shadow: 0 0.0625em 0.5em rgba(var(--text-color), calc(var(--background-opacity) * 3)); */
     border-radius: 0.75em;
+  }
+  .description {
+    margin: 1em 0;
+    font-size: initial;
   }
 
   @media (min-width: 48em) {
