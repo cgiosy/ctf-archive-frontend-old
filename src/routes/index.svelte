@@ -184,13 +184,15 @@
           >
         {/each}
       </div>
-      {#if $problems.status === "success"}
-        <div class="problems-count">
+      <div class="problems-count">
+        {#if $problems.status === "success"}
           {new Intl.NumberFormat().format($problems.data.pages[0].total)}개를 찾았어요. ({new Intl.NumberFormat().format(
             $problems.data.pages[0].solves
           )}개 풀었어요!)
-        </div>
-      {/if}
+        {:else}
+          개를 찾았어요. ( 개 풀었어요!)
+        {/if}
+      </div>
     </div>
   </header>
   <ul class="problems">
