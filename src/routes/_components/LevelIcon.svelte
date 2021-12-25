@@ -58,7 +58,8 @@
     margin: 0.25rem;
     transition: transform 0.15s cubic-bezier(0, 0.55, 0.45, 1);
   }
-  a:hover {
+  a:hover,
+  a:focus {
     transform: scale(1.15);
     /* text-decoration: underline; */
   }

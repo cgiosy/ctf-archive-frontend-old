@@ -13,6 +13,11 @@
     font-size: 0.5em;
     user-select: none;
     -webkit-user-drag: none;
+    transition: transform 0.15s;
+  }
+  a:hover,
+  a:focus {
+    transform: scale(1.05);
   }
   p {
     margin: 0;

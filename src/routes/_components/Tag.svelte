@@ -15,7 +15,8 @@
     margin: 0.125em 0.25em;
     font-family: var(--font-family-monospace);
   }
-  a:hover {
+  a:hover,
+  a:focus {
     text-decoration: underline;
   }
 </style>

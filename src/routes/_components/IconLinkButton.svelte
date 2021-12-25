@@ -25,7 +25,8 @@
     background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.75));
     pointer-events: none;
   }
-  a:hover {
+  a:hover,
+  a:focus {
     background-color: rgba(var(--text-color), var(--background-opacity));
   }
 </style>

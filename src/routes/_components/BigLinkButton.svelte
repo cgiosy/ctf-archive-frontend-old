@@ -15,7 +15,8 @@
     font-weight: bold;
     transition: background-color 0.25s;
   }
-  a:hover {
+  a:hover,
+  a:focus {
     background-color: rgba(var(--text-color), var(--background-opacity));
   }
 </style>

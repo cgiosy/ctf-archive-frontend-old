@@ -105,7 +105,8 @@
     cursor: pointer;
     z-index: 1;
   }
-  label:hover {
+  label:hover,
+  label:focus {
     border-color: rgba(var(--link-color), 0.675);
   }
   .selected {
@@ -122,7 +123,8 @@
   .arrow {
     transition: transform 0.175s;
   }
-  label:hover .arrow {
+  label:hover .arrow,
+  label:focus .arrow {
     transform: translateY(-0.2em);
   }
   div {

@@ -174,17 +174,16 @@
   .details-links > ul {
     width: 5em;
   }
-  li {
-    transition: text-shadow 0.2s;
-  }
   li > a {
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
     padding: 0.333em 0;
+    transition: text-shadow 0.2s;
   }
-  li:not(.logo-link):hover {
+  li:not(.logo-link) > a:hover,
+  li:not(.logo-link) > a:focus {
     font-weight: bold;
     text-shadow: 0 0 1.5em rgba(var(--text-color), calc(var(--background-opacity) * 9)),
       0 0 1em rgba(var(--text-color), calc(var(--background-opacity) * 6));

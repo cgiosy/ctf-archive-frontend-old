@@ -23,7 +23,8 @@
     cursor: pointer;
     user-select: none;
   }
-  button:hover {
+  button:hover,
+  button:focus {
     background-color: rgba(var(--text-color), var(--background-opacity));
   }
 </style>

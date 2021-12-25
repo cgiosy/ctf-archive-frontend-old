@@ -69,7 +69,8 @@
       var(--wallpaper-image);
     background-position: top var(--wallpaper-pos), center;
   }
-  .problem:hover {
+  .problem:hover,
+  .problem:focus {
     background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.25));
     border-color: rgba(var(--text-color), calc(var(--background-opacity) * 3));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 3));
@@ -79,7 +80,8 @@
     pointer-events: none;
   }
   .solved,
-  .solved:hover {
+  .solved:hover,
+  .solved:focus {
     border-left: 0.5em solid rgba(0, 206, 96, calc(var(--background-opacity) * 22));
   }
   .solved {
@@ -112,7 +114,8 @@
   .source {
     margin-right: 1em;
   }
-  .source:hover {
+  .source:hover,
+  .source:focus {
     text-decoration: underline;
   }
   .solves {

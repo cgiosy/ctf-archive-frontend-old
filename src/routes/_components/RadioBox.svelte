@@ -26,6 +26,7 @@
       transform 0.175s ease-out;
   }
   label:hover,
+  label:focus,
   .selected {
     background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.25));
     border-color: rgba(var(--text-color), calc(var(--background-opacity) * 2));

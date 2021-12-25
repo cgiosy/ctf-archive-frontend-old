@@ -67,6 +67,9 @@
     box-sizing: border-box;
     vertical-align: middle;
   }
+  *:focus {
+    outline: none;
+  }
   body {
     background: rgb(var(--background-color));
     margin: 0;

@@ -61,7 +61,8 @@
     background-color: rgba(var(--text-color), calc(var(--background-opacity) * 0.75));
     pointer-events: none;
   }
-  button:hover {
+  button:hover,
+  button:focus {
     background-color: rgba(var(--text-color), var(--background-opacity));
   }
   button.error > div {

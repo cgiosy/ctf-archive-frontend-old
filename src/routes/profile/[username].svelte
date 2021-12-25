@@ -265,7 +265,8 @@
   .profile-image-button {
     transition: filter 0.125s;
   }
-  .profile-image-button:hover {
+  .profile-image-button:hover,
+  .profile-image-button:focus {
     filter: brightness(0.5);
   }
   .profile-background-button {
