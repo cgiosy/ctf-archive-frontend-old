@@ -5,7 +5,7 @@
 
 <style>
   a {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     align-items: center;
     font-family: Montserrat;

@@ -159,8 +159,10 @@
     border-collapse: collapse;
   }
   .search-logo {
+    display: flex;
     font-size: 3rem;
     margin-bottom: 2rem;
+    justify-content: center;
   }
   .search {
     width: 100%;

@@ -239,8 +239,10 @@
     /* font-size: 0.9325em; */
   }
   .search-logo {
+    display: flex;
     font-size: 3rem;
     margin-bottom: 2rem;
+    justify-content: center;
   }
 
   .problems {
