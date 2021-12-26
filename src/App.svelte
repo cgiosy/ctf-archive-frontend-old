@@ -37,8 +37,8 @@
     queryClient.removeQueries("problems");
   });
 
-  register("en", () => import("./constants/en"));
-  register("ko", () => import("./constants/ko"));
+  register("en", () => import("./constants/en.json"));
+  register("ko", () => import("./constants/ko.json"));
   init({
     fallbackLocale: "ko",
     initialLocale: getLocaleFromNavigator(),

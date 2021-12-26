@@ -3,8 +3,9 @@ import { defineConfig } from "vite";
 import sveltePreprocess from "svelte-preprocess";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import routify from "@roxi/routify/vite-plugin";
+import { XXHash3 } from "xxhash-addon";
 
-export default defineConfig(({ command }) => {
+export default defineConfig(() => {
   const production = process.env.NODE_ENV === "production";
   return {
     json: {
@@ -52,6 +53,16 @@ export default defineConfig(({ command }) => {
           }),
         ],
       }),
+      {
+        name: "font-hash-url",
+        transformIndexHtml(html) {
+          return html.replace(/url\(['"]?(.+?\.woff2?)['"]?\)/g, (mat, path) => {
+            const data = fs.readFileSync(`./public/${path}`);
+            const hash = new XXHash3(data).digest().toString("hex").slice(0, 8);
+            return mat.replace(path, path + "?v=" + hash);
+          });
+        },
+      },
     ],
     rollupdedupe: ["svelte"],
   };
