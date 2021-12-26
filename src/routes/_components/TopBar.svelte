@@ -37,7 +37,7 @@
         <li><a href="/contests">{$_("contest.contest")}</a></li>
         <li><a href="/ranking">{$_("ranking.ranking")}</a></li>
         <li class="discord-link">
-          <a href="https://discord.gg/QhgjPfYy2E"
+          <a href="https://discord.gg/QhgjPfYy2E" aria-label="CTF Archive Discord"
             ><svg viewBox="0 0 71 55"
               ><g clip-path="url(#clip0)"
                 ><path

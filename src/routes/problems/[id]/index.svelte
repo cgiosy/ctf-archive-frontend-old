@@ -154,7 +154,7 @@
   {#if $problem.isSuccess}
     <section>
       <h1>
-        <LevelIcon levels={$problem.data.levels} small={true} />
+        <LevelIcon url={`/problems/${id}`} levels={$problem.data.levels} small={true} />
         <span class="title">{$problem.data.title}</span>
         {#if $problem.data.license}
           <ProblemLicenseLink url={$problem.data.license} float="right" />

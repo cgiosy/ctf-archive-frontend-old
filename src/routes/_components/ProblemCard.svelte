@@ -25,7 +25,7 @@
       "--wallpaper-image": wallpaper && `url('${`/assets/wallpapers/${wallpaper}.jpg`}')`,
     })}
   >
-    <LevelIcon levels={problem.levels} />
+    <LevelIcon url={`/problems/${problem.id}`} levels={problem.levels} />
     <section>
       <h3 class="title">{problem.title}</h3>
       <div class="info">
