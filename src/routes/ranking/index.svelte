@@ -57,23 +57,31 @@
   $: useVars($params), onParamsChanged();
 </script>
 
-<MetaTags
-  title="{$_('ranking.ranking')} | CTF Archive"
-  openGraph={{
-    type: "website",
-    site_name: "CTF Archive",
-    url: location.toString(),
-    title: `${$_("ranking.ranking")} | CTF Archive`,
-    images: [
-      {
-        url: "https://ctf-archive.com/assets/images/logo-800.png",
-        alt: "CTF Archive Logo",
-        width: 800,
-        height: 800,
-      },
-    ],
-  }}
-/>
+{#if $users.isSuccess}
+  <MetaTags
+    title="{$_('ranking.ranking')} | CTF Archive"
+    description={($users.data?.users || [])
+      .map(
+        (user, index) =>
+          `${(page - 1) * pageSize + index + 1}. ${user.username} - ${user.description}`
+      )
+      .join(" | ")}
+    openGraph={{
+      type: "website",
+      site_name: "CTF Archive",
+      url: location.toString(),
+      title: `${$_("ranking.ranking")} | CTF Archive`,
+      images: [
+        {
+          url: "https://ctf-archive.com/assets/images/logo-800.png",
+          alt: "CTF Archive Logo",
+          width: 800,
+          height: 800,
+        },
+      ],
+    }}
+  />
+{/if}
 
 <main>
   <header>

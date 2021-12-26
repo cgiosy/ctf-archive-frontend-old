@@ -137,7 +137,6 @@
       site_name: "CTF Archive",
       url: location.toString(),
       title: $problem.data.title,
-      description: $problem.data.content,
       images: [
         {
           url: "https://ctf-archive.com/assets/images/logo-800.png",

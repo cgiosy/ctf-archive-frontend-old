@@ -85,14 +85,14 @@
 {#if $user.isSuccess}
   <MetaTags
     title="{username} | CTF Archive"
+    description={`${$user.data.username} - ${$user.data.description} | ${$user.data.solves} ${$_(
+      "profile.solves"
+    )} | ${expsSum($user.data.exps)} ${$_("profile.exp")}`}
     openGraph={{
       type: "profile",
       site_name: "CTF Archive",
       url: location.toString(),
       title: username,
-      description: `${$user.data.username} - ${$user.data.description} | ${$user.data.solves} ${$_(
-        "profile.solves"
-      )} | ${expsSum($user.data.exps)} ${$_("profile.exp")}`,
       images: [
         {
           url:

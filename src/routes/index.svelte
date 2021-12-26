@@ -145,6 +145,7 @@
 
 <MetaTags
   title="CTF Archive"
+  description="CTF Archive | CTF Challenges, Writeups, Difficulties, Rankings. Search and Play!"
   openGraph={{
     type: "website",
     site_name: "CTF Archive",
