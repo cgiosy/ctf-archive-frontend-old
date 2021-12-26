@@ -2,12 +2,11 @@ import * as fs from "fs";
 import subsetFont from "subset-font";
 
 const reduceFont = (originalFontPath, reducedFontPath, subset) => {
-  const base = "public/assets/fonts/";
-  const originalFont = fs.readFileSync(base + originalFontPath);
+  const originalFont = fs.readFileSync(originalFontPath);
   subsetFont(originalFont, subset, {
     targetFormat: "woff2",
   }).then((reducedFont) => {
-    fs.writeFileSync(base + reducedFontPath, reducedFont);
+    fs.writeFileSync(reducedFontPath, reducedFont);
   });
 };
 
@@ -18,11 +17,13 @@ for (let i = 32; i <= 126; i++) {
 
 const koChars = fs.readFileSync("./src/constants/ko.json") + printableChars;
 const titleChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789#,. ";
+const inDir = "fonts/";
+const outDir = "public/assets/fonts/";
 
 for (const weight of ["Bold", "ExtraBold", "Light", "Medium", "Regular", "SemiBold"]) {
-  reduceFont(`Pretendard-${weight}.otf`, `Pretendard-${weight}.woff2`, koChars);
+  reduceFont(inDir + `Pretendard-${weight}.otf`, outDir + `Pretendard-${weight}.woff2`, koChars);
 }
 
 for (const weight of ["Black", "Bold", "ExtraBold", "Medium", "Regular", "SemiBold"]) {
-  reduceFont(`Montserrat-${weight}.ttf`, `Montserrat-${weight}.woff2`, titleChars);
+  reduceFont(inDir + `Montserrat-${weight}.ttf`, outDir + `Montserrat-${weight}.woff2`, titleChars);
 }
