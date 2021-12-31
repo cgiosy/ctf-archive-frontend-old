@@ -133,7 +133,7 @@
     list-style: none;
     max-height: 24em;
     overflow: hidden scroll;
-    margin: 0.5em 0;
+    margin: 0.625em 0;
     padding: 0;
     background: rgb(var(--background-color));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
