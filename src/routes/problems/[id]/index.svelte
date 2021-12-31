@@ -6,7 +6,7 @@
   import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
   import "@toast-ui/editor/dist/toastui-editor-viewer.css";
   import { post, put } from "../../../libs/fetcher";
-  import { copyToClipboard } from "../../../libs/utils";
+  import { copyToClipboard, formatTime } from "../../../libs/utils";
   import Link from "../../_components/Link.svelte";
   import ProblemEditLink from "../../_components/ProblemEditLink.svelte";
   import ProblemLicenseLink from "../../_components/ProblemLicenseLink.svelte";
@@ -38,6 +38,7 @@
   let comment: string = "";
   let isInvalidLevels: boolean = true;
   let isModifiedTags: boolean = false;
+  let used: number = 0;
   let viewer: Viewer;
   let viewerElm: HTMLParagraphElement;
 
@@ -120,6 +121,11 @@
       usageStatistics: false,
     });
   }
+  $: if ($status.isSuccess) used = $status.data.used;
+
+  setInterval(() => {
+    used += 1;
+  }, 1000);
 
   /*
   escapeAllow(
@@ -197,34 +203,37 @@
               <div class="address">
                 {$_("server.address")}:
                 <pre>35.212.240.188:{$status.data.port}</pre>
-                <Tooltip text={$_("server.copyServer")}>
-                  <IconButton
-                    onClick={() => copyToClipboard("nc 35.212.240.188 " + $status.data?.port)}
-                    ><svg width="1em" height="1em" viewBox="0 0 24 24"
-                      ><path d="M0 0h24v24H0V0z" fill="none" /><path
-                        d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
-                      /></svg
-                    ></IconButton
-                  >
-                </Tooltip>
-                <Tooltip text={$_("server.openServer")}>
-                  <IconLinkButton
-                    href="http://35.212.240.188:{$status.data.port}"
-                    target="_blank"
-                    rel="noreferer nofollow"
-                    ><svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      enable-background="new 0 0 24 24"
-                      height="24px"
-                      viewBox="0 0 24 24"
-                      width="24px"
-                      ><rect fill="none" height="24" width="24" /><path
-                        d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z"
-                      /></svg
-                    ></IconLinkButton
-                  >
-                </Tooltip>
+                <div>
+                  <Tooltip text={$_("server.copyServer")}>
+                    <IconButton
+                      onClick={() => copyToClipboard("nc 35.212.240.188 " + $status.data?.port)}
+                      ><svg width="1em" height="1em" viewBox="0 0 24 24"
+                        ><path d="M0 0h24v24H0V0z" fill="none" /><path
+                          d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                        /></svg
+                      ></IconButton
+                    >
+                  </Tooltip>
+                  <Tooltip text={$_("server.openServer")}>
+                    <IconLinkButton
+                      href="http://35.212.240.188:{$status.data.port}"
+                      target="_blank"
+                      rel="noreferer nofollow"
+                      ><svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        enable-background="new 0 0 24 24"
+                        height="24px"
+                        viewBox="0 0 24 24"
+                        width="24px"
+                        ><rect fill="none" height="24" width="24" /><path
+                          d="M15,5l-1.41,1.41L18.17,11H2V13h16.17l-4.59,4.59L15,19l7-7L15,5z"
+                        /></svg
+                      ></IconLinkButton
+                    >
+                  </Tooltip>
+                </div>
               </div>
+              <time>{formatTime(used)}</time>
               <BigButton mutation={stopMutation}>{$_("server.stop")}</BigButton>
             {/if}
           {:else}
@@ -351,20 +360,31 @@
   .address {
     text-align: center;
   }
+  .address > div {
+    flex-direction: row;
+    margin: 0;
+  }
+  time {
+    margin-bottom: 1.5em;
+    text-align: center;
+  }
   pre {
     font-size: 1.25em;
     background: rgba(var(--text-color), calc(var(--background-opacity) * 2));
     padding: 0.5em 1.5em;
     border-radius: 0.25em;
-    margin: 0 1em;
+    margin: 0.5em 0;
   }
 
   @media (min-width: 48em) {
-  }
-
-  @media (min-width: 64em) {
     div {
       flex-direction: row;
     }
+    pre {
+      margin: 0 1em;
+    }
+  }
+
+  @media (min-width: 64em) {
   }
 </style>

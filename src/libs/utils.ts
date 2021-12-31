@@ -19,6 +19,14 @@ export const getImageUrl = (uuid: string) =>
 export const emptyImageUrl =
   "data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22/%3E";
 
+const formatTimeUtil = (value: number, suffix: string) => (value ? value + suffix + " " : "");
+export const formatTime = (seconds: number) =>
+  [
+    formatTimeUtil((seconds / 3600 + 1e-9) | 0, "시간"),
+    formatTimeUtil((seconds / 60 + 1e-6) | 0, "분"),
+    formatTimeUtil(seconds % 60 | 0, "초"),
+  ].join("");
+
 const flooredHalf = (x: number, eps: number = 1) => {
   x /= 2;
   return x - Math.abs(x % eps);
