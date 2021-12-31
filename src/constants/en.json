@@ -57,7 +57,9 @@
     "signin": "Sign in",
     "notice": "The server may take a long time to turn on. Please wait for 2 to 3 minutes even if the loading lasts for more than 1 minute or if you can't connecting the server.",
     "start": "Start Server",
-    "stop": "Stop Server"
+    "stop": "Stop Server",
+    "copyServer": "Copy nc command",
+    "openServer": "Open address in a new tab"
   },
   "contest": {
     "contest": "Contests",
