@@ -323,11 +323,6 @@
     margin: 0.75em 0 -0.75em 0;
     padding: 1.25em 0;
     border-top: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
-    word-break: break-all;
-    white-space: pre-wrap;
-  }
-  .description :global(p) {
-    margin: 0;
   }
   .description :global(img) {
     background: white;
