@@ -90,6 +90,6 @@
   textarea:focus + div,
   textarea:not(:placeholder-shown) + div {
     background: rgb(var(--background-color));
-    transform: translateY(-1.375em) scale(0.666);
+    transform: translateY(-1.25em) scale(0.666);
   }
 </style>
