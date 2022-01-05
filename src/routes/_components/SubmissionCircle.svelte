@@ -34,7 +34,10 @@
   };
 
   const onScroll = (e: WheelEvent) => {
-    levels[index] = numberToLevel((Number(levels[index]) || 0) - Math.sign(e.deltaY));
+    if (document.activeElement === inputElm) {
+      levels[index] = numberToLevel((Number(levels[index]) || 0) - Math.sign(e.deltaY));
+      e.preventDefault();
+    }
   };
 
   const selectedLevels = (levels: Levels) =>
@@ -60,7 +63,7 @@
   $: useVars(levels), onChange();
 </script>
 
-<div on:wheel|preventDefault={onScroll}>
+<div on:wheel={onScroll}>
   <input
     type="number"
     min="0"
