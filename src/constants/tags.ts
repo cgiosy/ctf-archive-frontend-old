@@ -1,13 +1,10 @@
 export const tidToTag = [
-  ["XSS", "Cross-Site Scripting"],
-  ["CSRF", "Cross-Site Request Forgery", "XSRF"],
-  ["SQLi", "SQL Injection"],
-  ["Blind SQLi", "Blind SQL injection", "BSQLi"],
-  ["MySQL", "MariaDB"],
-  ["Oracle DB", "Oracle"],
-  ["Side-Channel Attack"],
-  ["Meltdown", "CVE-2017-5754"],
-  ["Spectre", "CVE-2017-5753", "CVE-2017-5715"],
+  ["Pwnable", "Pwn", "포너블", "시스템 해킹"],
+  ["Reversing", "Rev", "리버싱", "역공학"],
+  ["Cryptography", "Crypto", "크립토", "암호학"],
+  ["Web", "웹"],
+  ["Forensic", "Fore", "포렌식"],
+  ["Misc"],
 ] as const;
 
 export const tagToTid: { [tag: string]: number } = {};

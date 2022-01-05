@@ -64,6 +64,7 @@
   const [problem, getProblem, problemKey] = useProblem();
   const [me, getMyInfo, myInfoKey] = useMyInfo();
 
+  const isAdmin = () => signedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin;
   const reloadStatus = () => {
     queryClient.invalidateQueries(statusKey());
   };
@@ -165,7 +166,7 @@
         {#if $problem.data.license}
           <ProblemLicenseLink url={$problem.data.license} float="right" />
         {/if}
-        {#if signedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin}
+        {#if isAdmin()}
           <ProblemEditLink {id} float="right" />
         {/if}
       </h1>
@@ -194,10 +195,12 @@
         {#if $problem.data.types & ProblemType.BuildFileExist}
           {#if $status.isSuccess}
             <Notice>{$_("server.notice")}</Notice>
-            {#if $status.data.id !== id}
+            {#if $status.data.id !== id || $status.data.status === "opening"}
               <TextInput type="number" bind:value={lifetime}>{$_("server.lifetime")}</TextInput>
-              <BigButton mutation={startMutation} disabled={$status.data.remain <= 0}
-                >{$_("server.start")}</BigButton
+              <BigButton
+                mutation={startMutation}
+                disabled={$status.data.remain <= 0}
+                loading={$status.data.status === "opening"}>{$_("server.start")}</BigButton
               >
             {:else}
               <div class="address">
@@ -234,7 +237,9 @@
                 </div>
               </div>
               <time>{formatTime(used)}</time>
-              <BigButton mutation={stopMutation}>{$_("server.stop")}</BigButton>
+              <BigButton mutation={stopMutation} loading={$status.data.status === "closing"}
+                >{$_("server.stop")}</BigButton
+              >
             {/if}
           {:else}
             <Notice>
@@ -279,7 +284,7 @@
         <BigLinkButton href="/signin">{$_("auth.required")}</BigLinkButton>
       {/if}
     </section>
-    {#if $problem.data.types & ProblemType.Solved}
+    {#if $problem.data.types & ProblemType.Solved || isAdmin()}
       <section class="tags">
         <TagSearch bind:tags bind:modified={isModifiedTags} />
         <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>

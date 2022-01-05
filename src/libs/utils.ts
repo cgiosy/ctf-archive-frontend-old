@@ -73,7 +73,7 @@ export const getTagSuggestions = (tag: string): ISuggestion[] => {
     let score = 0x7fffffff;
     for (const newTag of tidToTag[tid]) {
       const dist = tagEditDistance(tag, newTag);
-      if (dist < newTag.length) score = Math.min(score, dist);
+      if (dist <= newTag.length) score = Math.min(score, dist);
     }
     if (score !== 0x7fffffff)
       newSuggestions.push({
