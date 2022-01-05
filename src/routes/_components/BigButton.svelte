@@ -7,6 +7,7 @@
 
   export let mutation: MutationStoreResult<any>;
   export let disabled: boolean = false;
+  export let loading: boolean = false;
   export let hidden: boolean = false;
   export let args: any = undefined;
 
@@ -23,13 +24,13 @@
 <button
   on:click={mutate}
   class={$mutation.status}
-  disabled={disabled || $mutation.isLoading}
+  disabled={disabled || loading || $mutation.isLoading}
   {hidden}
 >
-  {#if $mutation.isLoading === true}
+  {#if loading || $mutation.isLoading}
     <CircleSpinner />
   {:else}
-    {#if $mutation.isError === true}
+    {#if $mutation.isError}
       <ErrorMessage fadeout={true}>{errorMessage($mutation.error)}</ErrorMessage>
     {/if}
     <div><slot /></div>

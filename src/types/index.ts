@@ -81,6 +81,7 @@ export interface IStatus {
   port: number;
   used: number;
   remain: number;
+  status: "closed" | "opening" | "opened" | "closing";
 }
 
 export interface IContest {
