@@ -64,6 +64,7 @@
   const [problem, getProblem, problemKey] = useProblem();
   const [me, getMyInfo, myInfoKey] = useMyInfo();
 
+  const isSolved = () => $problem.isSuccess && $problem.data.types & ProblemType.Solved;
   const isAdmin = () => signedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin;
   const reloadStatus = () => {
     queryClient.invalidateQueries(statusKey());
@@ -171,7 +172,7 @@
         {/if}
       </h1>
       <div class="tags-small">
-        {#if showTags || $problem.data.types & ProblemType.Solved}
+        {#if showTags || isSolved()}
           {#each $problem.data.tags as tid, i (tid)}
             {i ? " | " : ""}
             <Tag {tid} />
@@ -256,8 +257,14 @@
         {/if}
       </section>
     {/if}
+    {#if isSolved() || isAdmin()}
+      <section class="tags">
+        <TagSearch bind:tags bind:modified={isModifiedTags} />
+        <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>
+      </section>
+    {/if}
     <section>
-      {#if !($problem.data.types & ProblemType.Solved)}
+      {#if !isSolved()}
         <TextInput bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
       {/if}
       <div>
@@ -266,7 +273,7 @@
       </div>
       <ColorList />
       {#if $sessionid.data != null}
-        {#if $problem.data.types & ProblemType.Solved}
+        {#if isSolved()}
           <BigButton mutation={editMutation} hidden={isInvalidLevels}
             >{$_("problem.submit")}</BigButton
           >
@@ -284,11 +291,7 @@
         <BigLinkButton href="/signin">{$_("auth.required")}</BigLinkButton>
       {/if}
     </section>
-    {#if $problem.data.types & ProblemType.Solved || isAdmin()}
-      <section class="tags">
-        <TagSearch bind:tags bind:modified={isModifiedTags} />
-        <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>
-      </section>
+    {#if isSolved() || isAdmin()}
       <Submissions {id} />
     {/if}
   {/if}
