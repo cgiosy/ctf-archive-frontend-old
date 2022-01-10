@@ -1,4 +1,5 @@
 <script lang="ts">
+  import SideFading from "./SideFading.svelte";
   import { style as styleUtil, categoryColors } from "../../libs/utils";
   import { ProblemCategory } from "../../types";
 
@@ -13,28 +14,31 @@
   export let style: string | undefined = undefined;
 </script>
 
-<ul {style}>
-  {#each colors as color}
-    <li><i style={styleUtil({ background: color.code })} /> {color.text}</li>
-  {/each}
-</ul>
+<SideFading>
+  <ul {style}>
+    {#each colors as color}
+      <li><i style={styleUtil({ background: color.code })} /> {color.text}</li>
+    {/each}
+  </ul>
+</SideFading>
 
 <style>
   ul {
-    display: block;
     list-style-type: none;
-    /* margin: 1em 0 0 -1em; */
-    margin: 1em;
-    margin-bottom: 2em;
-    padding: 0;
+    white-space: nowrap;
+    width: 100%;
+    height: 100%;
+    padding: 0 0.5em;
+    margin: 0;
     font-size: 0.9375em;
     /* font-size: 0.875em; */
+    overflow: auto hidden;
   }
   li {
     display: inline-block;
-    padding: 0.5em 1em;
+    padding: calc(0.5em + 6px) 0.825em;
     line-height: 0;
-    margin-right: 0.25em;
+    margin: 0;
   }
   i {
     display: inline-block;
