@@ -109,13 +109,8 @@
         {/each}
       </div>
     </div>
-    <ColorList
-      style={style({
-        "margin-top": "1.5em",
-        "margin-bottom": 0,
-        float: "right",
-      })}
-    />
+    <!-- TODO: right -->
+    <ColorList />
   </header>
   <table>
     <tr>
@@ -186,7 +181,13 @@
     display: inline-flex;
     margin-left: auto;
   }
+  table {
+    width: 100%;
+    overflow: auto hidden;
+    white-space: nowrap;
+  }
   tr {
+    min-width: 40em;
     height: 4.25em;
     border-bottom: 1px solid #e0e0e0;
   }
@@ -202,12 +203,12 @@
     font-family: inherit;
   }
 
-  @media (min-width: 64em) {
+  @media (min-width: 48em) {
     .search {
       flex-direction: row;
     }
     .search-bar {
-      max-width: 16em;
+      max-width: 20em;
     }
   }
 </style>

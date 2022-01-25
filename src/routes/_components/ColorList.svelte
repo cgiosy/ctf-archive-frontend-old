@@ -11,11 +11,10 @@
     { code: categoryColors[ProblemCategory.Forensic], text: "Forensic" },
     { code: categoryColors[ProblemCategory.Misc], text: "Misc" },
   ];
-  export let style: string | undefined = undefined;
 </script>
 
 <SideFading>
-  <ul {style}>
+  <ul>
     {#each colors as color}
       <li><i style={styleUtil({ background: color.code })} /> {color.text}</li>
     {/each}
