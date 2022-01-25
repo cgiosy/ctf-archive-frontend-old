@@ -18,8 +18,8 @@
     "serve": "run-s build && find dist -type f -not -name '*.woff2' -not -name '*.jpg' -not -name '*.png' -not -name '*.webp' | xargs brotli && ssh ubuntu@ctf-archive.com rm -rf /ctf/www/* && rsync -rpoghvz --chown=ubuntu:web --chmod=F0640,D750 dist/ ubuntu@ctf-archive.com:/ctf/www/"
   },
   "devDependencies": {
-    "@roxi/routify": "^3.0.0-next.75",
-    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.32",
+    "@roxi/routify": "^3.0.0-next.80",
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.35",
     "@tsconfig/svelte": "^3.0.0",
     "broadcast-channel": "^4.9.0",
     "cross-env": "^7.0.3",
@@ -28,22 +28,22 @@
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.5",
     "prettier": "2.5.1",
-    "prettier-plugin-svelte": "^2.5.1",
+    "prettier-plugin-svelte": "^2.6.0",
     "subset-font": "^1.4.0",
-    "svelte": "^3.44.3",
-    "svelte-check": "^2.2.11",
-    "svelte-preprocess": "^4.10.1",
+    "svelte": "^3.46.2",
+    "svelte-check": "^2.3.0",
+    "svelte-preprocess": "^4.10.2",
     "tslib": "^2.3.1",
-    "typescript": "^4.6.0-dev.20211226",
-    "vite": "^2.7.7",
+    "typescript": "^4.6.0-dev.20220125",
+    "vite": "^2.8.0-beta.3",
     "xxhash-addon": "^1.4.0"
   },
   "dependencies": {
-    "@sveltestack/svelte-query": "^1.5.0",
-    "@toast-ui/editor": "^3.1.1",
+    "@sveltestack/svelte-query": "^1.6.0",
+    "@toast-ui/editor": "^3.1.2",
     "dequal": "^2.0.2",
-    "fflate": "^0.7.2",
+    "fflate": "^0.7.3",
     "svelte-i18n": "^3.3.13",
-    "svelte-meta-tags": "^2.2.1"
+    "svelte-meta-tags": "^2.2.3"
   }
 }

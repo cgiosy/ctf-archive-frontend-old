@@ -5,7 +5,8 @@
   import {
     QueryClient,
     QueryClientProvider,
-    createLocalStoragePersistor,
+    // @ts-ignore
+    createWebStoragePersistor,
     persistQueryClient,
   } from "@sveltestack/svelte-query";
 
@@ -25,7 +26,7 @@
     },
   });
 
-  const localStoragePersistor = createLocalStoragePersistor();
+  const localStoragePersistor = createWebStoragePersistor({ storage: localStorage });
 
   persistQueryClient({
     queryClient,
