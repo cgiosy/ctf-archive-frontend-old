@@ -14,6 +14,7 @@
     user-select: none;
     -webkit-user-drag: none;
     transition: transform 0.15s;
+    will-change: transform;
   }
   a:hover,
   a:focus {

@@ -100,7 +100,7 @@
     max-width: var(--content-max-width);
   }
   .logo-link {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 
   /* Navigation Bar */
