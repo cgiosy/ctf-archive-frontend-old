@@ -25,6 +25,7 @@
     transition: opacity 0.25s, transform 0.175s;
     word-break: keep-all;
     white-space: nowrap;
+    z-index: 2;
   }
   div:hover::after {
     opacity: 1;

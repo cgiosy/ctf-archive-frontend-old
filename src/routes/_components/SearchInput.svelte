@@ -137,7 +137,7 @@
     padding: 0;
     background: rgb(var(--background-color));
     box-shadow: 0 0.125em 0.75em 0 rgba(var(--text-color), calc(var(--background-opacity) * 4));
-    z-index: 1;
+    z-index: 3;
     transition: opacity 0.175s, visibility 0.175s;
   }
   .focused,
