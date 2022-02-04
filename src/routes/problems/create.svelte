@@ -10,6 +10,7 @@
   import BigButton from "../_components/BigButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import FileUpload from "../_components/FileUpload.svelte";
+  import TagSearch from "../_components/TagSearch.svelte";
 
   let title: string = "";
   let source: string = getLocalStorage<string>("lastSource")() ?? "";
@@ -18,6 +19,7 @@
   let group: string = "everyone";
   let editor: Editor;
   let editorElm: HTMLDivElement;
+  let tags: number[] = [];
 
   let problemFile: File | null = null;
   let buildFile: File | null = null;
@@ -49,6 +51,7 @@
             setLastSource(source),
             setLastLicense(license),
 
+            tags.length > 0 && put<{}>(`/problems/${id}/tags`, { tags }),
             problemFile &&
               put<{}>(
                 `/problems/${id}/files`,
@@ -121,6 +124,7 @@
     <TextInput type="text" bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
     <TextInput type="text" bind:value={group}>{$_("problem.group")}</TextInput>
     <div bind:this={editorElm} class="description" />
+    <TagSearch bind:tags />
     <FileUpload bind:file={problemFile} accepts={[".7z"]}>{$_("problem.problemFile")}</FileUpload>
     <FileUpload bind:file={buildFile} accepts={[".7z"]}>{$_("problem.buildFile")}</FileUpload>
     <BigButton mutation={upload}>{$_("problem.upload")}</BigButton>
