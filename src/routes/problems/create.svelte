@@ -5,7 +5,7 @@
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import Editor from "@toast-ui/editor";
   import "@toast-ui/editor/dist/toastui-editor-only.css";
-  import { put } from "../../libs/fetcher";
+  import { post, put } from "../../libs/fetcher";
   import { getLocalStorage, setLocalStorage } from "../../libs/utils";
   import BigButton from "../_components/BigButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
@@ -32,7 +32,7 @@
 
   const upload = useMutation(
     () =>
-      put<{ id: number }>("/problems", {
+      post<{ id: number }>("/problems", {
         title,
         source,
         license,

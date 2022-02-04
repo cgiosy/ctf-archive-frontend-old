@@ -36,7 +36,7 @@
 
   const edit = useMutation(
     () =>
-      post<{}>("/problems/" + id, {
+      put<{}>("/problems/" + id, {
         title,
         source,
         license,

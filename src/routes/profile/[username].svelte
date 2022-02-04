@@ -6,7 +6,7 @@
   import ExpIcon from "../_components/ExpIcon.svelte";
   import ProfileImage from "../_components/ProfileImage.svelte";
   import { emptyImageUrl, expsSum, getImageUrl, style } from "../../libs/utils";
-  import { post } from "../../libs/fetcher";
+  import { put } from "../../libs/fetcher";
   import { useMyInfo, useSessionid, useUser } from "../../queries";
 
   let username: string;
@@ -48,14 +48,14 @@
   };
 
   const uploadProfileImage = useMutation(
-    (file: File) => post<{ id: number }>(`/users/${username}/profile_image`, file),
+    (file: File) => put<{ id: number }>(`/users/${username}/profile_image`, file),
     {
       onSuccess: reloadProfile,
     }
   );
 
   const uploadProfileBackground = useMutation(
-    (file: File) => post<{ id: number }>(`/users/${username}/profile_background`, file),
+    (file: File) => put<{ id: number }>(`/users/${username}/profile_background`, file),
     {
       onSuccess: reloadProfile,
     }

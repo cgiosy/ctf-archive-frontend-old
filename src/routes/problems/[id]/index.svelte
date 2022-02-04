@@ -45,13 +45,13 @@
   const startServer = () => post<{}>(`/problems/${id}/start`, { lifetime: Number(lifetime) });
   const stopServer = () => post<{}>(`/problems/${id}/stop`, {});
   const submit = () =>
-    put<{ correct: boolean; time: string }>(`/problems/${id}/submissions`, {
+    post<{ correct: boolean; time: string }>(`/problems/${id}/submissions`, {
       flag,
       levels: levels.map((level) => Math.min(30, Math.max(0, Number(level) || 0))),
       comment,
     });
   const edit = () =>
-    post<{}>(`/problems/${id}/submissions`, {
+    put<{}>(`/problems/${id}/submissions`, {
       levels: levels.map((level) => Math.min(30, Math.max(0, Number(level) || 0))),
       comment,
     });
