@@ -4,12 +4,18 @@
   import { goto } from "@roxi/routify";
   import Config from "../config";
   import TopBar from "./_components/TopBar.svelte";
-  import { useSessionid } from "../queries";
+  import { themeMode, useSessionid } from "../queries";
   // import Footer from "./_components/Footer.svelte";
 
   let allowed: boolean = false;
   const [sessionid] = useSessionid();
   let signedIn = false;
+
+  themeMode.set(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    console.log(e.matches);
+    themeMode.set(e.matches ? "dark" : "light");
+  });
 
   $: signedIn = !!$sessionid.data;
   $: {

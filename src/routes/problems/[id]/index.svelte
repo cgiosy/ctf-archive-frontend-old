@@ -5,6 +5,8 @@
   import { useMutation, useQueryClient } from "@sveltestack/svelte-query";
   import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
   import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+  import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
+  import { themeMode, useMyInfo, useProblem, useSessionid, useStatus } from "../../../queries";
   import { post, put } from "../../../libs/fetcher";
   import { copyToClipboard, formatTime } from "../../../libs/utils";
   import Link from "../../_components/Link.svelte";
@@ -26,7 +28,6 @@
   import Submissions from "../../_components/Submissions.svelte";
   import { ProblemType, UserAuth } from "../../../types";
   import type { Levels } from "../../../types";
-  import { useMyInfo, useProblem, useSessionid, useStatus } from "../../../queries";
 
   let id: number;
   let lifetime: string = "30";
@@ -121,6 +122,7 @@
       height: "auto",
       initialValue: $problem.data.content,
       usageStatistics: false,
+      theme: $themeMode,
     });
   }
   $: if ($status.isSuccess) used = $status.data.used;

@@ -1,5 +1,6 @@
 import { useQuery } from "@sveltestack/svelte-query";
 import type { QueryFunction, QueryKey, UseQueryOptions } from "@sveltestack/svelte-query";
+import { writable } from "svelte/store";
 import { get } from "../libs/fetcher";
 import { getLocalStorage } from "../libs/utils";
 import type {
@@ -37,6 +38,8 @@ export const use =
       () => queryKey,
     ] as const;
   };
+
+export const themeMode = writable("light");
 
 export const useSessionid = use(
   "sessionid",
