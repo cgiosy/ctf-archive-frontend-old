@@ -54,7 +54,7 @@
             tags.length > 0 && put<{}>(`/problems/${id}/tags`, { tags }),
             problemFile &&
               put<{}>(
-                `/problems/${id}/files`,
+                `/problems/${id}/file`,
                 problemFile
                 /*
               proxyStream<any>(problemFile.stream(), ({ done, value }) => {

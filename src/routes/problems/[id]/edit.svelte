@@ -51,7 +51,7 @@
             queryClient.invalidateQueries(problemKey()),
             problemFile &&
               put<{}>(
-                `/problems/${id}/files`,
+                `/problems/${id}/file`,
                 problemFile
                 /*
               proxyStream<any>(problemFile.stream(), ({ done, value }) => {
