@@ -119,7 +119,11 @@
     <section
       class="first profile-background"
       style={style({
-        "--background": `url('${getImageUrl($user.data.profileBackground) ?? emptyImageUrl}')`,
+        "--background": getImageUrl($user.data.profileBackground)
+          ? `linear-gradient(rgba(0, 0, 0, 0.375), rgba(0, 0, 0, 0.375)), url('${getImageUrl(
+              $user.data.profileBackground
+            )}')`
+          : `linear-gradient(rgba(var(--text-color), calc(var(--background-opacity) * 10)), rgba(var(--text-color), calc(var(--background-opacity) * 10)))`,
       })}
     >
       <div class="wrapper">
@@ -183,11 +187,7 @@
     min-height: calc(100vh - 3rem);
   }
   .profile-background {
-    background-image: linear-gradient(
-        rgba(var(--text-color), calc(var(--background-opacity) * 10)),
-        rgba(var(--text-color), calc(var(--background-opacity) * 10))
-      ),
-      var(--background);
+    background-image: var(--background);
     background-position: 50% 25%;
     background-repeat: no-repeat;
     background-size: cover;
