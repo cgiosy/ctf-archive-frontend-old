@@ -7,7 +7,7 @@
   $: tag = (tidToTag[tid] ?? [""])[0];
 </script>
 
-<a href="/?query={tag}">{tag}</a>
+<a href="/?query=%23%23{tag}">{tag}</a>
 
 <style>
   a {

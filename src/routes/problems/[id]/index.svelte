@@ -65,8 +65,9 @@
   const [problem, getProblem, problemKey] = useProblem();
   const [me, getMyInfo, myInfoKey] = useMyInfo();
 
-  const isSolved = () => $problem.isSuccess && $problem.data.types & ProblemType.Solved;
-  const isAdmin = () => signedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin;
+  let isSolved = false;
+  let isAdmin = false;
+
   const reloadStatus = () => {
     queryClient.invalidateQueries(statusKey());
   };
@@ -99,6 +100,8 @@
   });
   const mergeTags = (newTags: number[]) => (isModifiedTags ? tags : newTags);
 
+  $: isSolved = $problem.isSuccess && ($problem.data.types & ProblemType.Solved) !== 0;
+  $: isAdmin = signedIn && me !== null && $me.isSuccess && $me.data.auth >= UserAuth.Admin;
   $: isInvalidLevels = !(
     levels.every((x) => 0 <= x && x <= 30 && Number.isInteger(x)) && levels.some((x) => x > 0)
   );
@@ -169,12 +172,12 @@
         {#if $problem.data.license}
           <ProblemLicenseLink url={$problem.data.license} float="right" />
         {/if}
-        {#if isAdmin()}
+        {#if isAdmin}
           <ProblemEditLink {id} float="right" />
         {/if}
       </h1>
       <div class="tags-small">
-        {#if showTags || isSolved()}
+        {#if showTags || isSolved}
           {#each $problem.data.tags as tid, i (tid)}
             {i ? " | " : ""}
             <Tag {tid} />
@@ -259,14 +262,14 @@
         {/if}
       </section>
     {/if}
-    {#if isSolved() || isAdmin()}
+    {#if isSolved || isAdmin}
       <section class="tags">
         <TagSearch bind:tags bind:modified={isModifiedTags} />
         <BigButton mutation={editTagsMutation}>{$_("problem.editTags")}</BigButton>
       </section>
     {/if}
     <section>
-      {#if !isSolved()}
+      {#if !isSolved}
         <TextInput bind:value={flag} monospace={true}>{$_("problem.flag")}</TextInput>
       {/if}
       <div>
@@ -275,7 +278,7 @@
       </div>
       <ColorList />
       {#if $sessionid.data != null}
-        {#if isSolved()}
+        {#if isSolved}
           <BigButton mutation={editMutation} hidden={isInvalidLevels}
             >{$_("problem.submit")}</BigButton
           >
@@ -293,7 +296,7 @@
         <BigLinkButton href="/signin">{$_("auth.required")}</BigLinkButton>
       {/if}
     </section>
-    {#if isSolved() || isAdmin()}
+    {#if isSolved || isAdmin}
       <Submissions {id} />
     {/if}
   {/if}
