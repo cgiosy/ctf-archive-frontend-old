@@ -7,6 +7,7 @@
   import "@toast-ui/editor/dist/toastui-editor-only.css";
   import { post, put } from "../../libs/fetcher";
   import { getLocalStorage, setLocalStorage } from "../../libs/utils";
+  import { themeMode } from "../../queries";
   import BigButton from "../_components/BigButton.svelte";
   import TextInput from "../_components/TextInput.svelte";
   import FileUpload from "../_components/FileUpload.svelte";
@@ -94,6 +95,7 @@
       initialEditType: "markdown",
       previewStyle: "tab",
       usageStatistics: false,
+      theme: $themeMode,
     });
   }
 </script>

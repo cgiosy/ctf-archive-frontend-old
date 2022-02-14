@@ -10,7 +10,7 @@
   import BigButton from "../../_components/BigButton.svelte";
   import TextInput from "../../_components/TextInput.svelte";
   import FileUpload from "../../_components/FileUpload.svelte";
-  import { useProblemDetails } from "../../../queries";
+  import { themeMode, useProblemDetails } from "../../../queries";
   import type { IProblemDetails } from "../../../types";
 
   let id: number;
@@ -123,6 +123,7 @@
       initialEditType: "markdown",
       previewStyle: "tab",
       usageStatistics: false,
+      theme: $themeMode,
     });
   }
 </script>
