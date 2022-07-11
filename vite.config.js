@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import sveltePreprocess from "svelte-preprocess";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import routify from "@roxi/routify/vite-plugin";
-import { XXHash3 } from "xxhash-addon";
+import xxh32 from "xxh32";
 import htmlMinifier from "html-minifier";
 
 export default defineConfig(() => {
@@ -59,7 +59,7 @@ export default defineConfig(() => {
         transformIndexHtml: (html) =>
           html.replace(/url\(['"]?(.+?\.woff2?)['"]?\)/g, (mat, path) => {
             const data = fs.readFileSync(`./public/${path}`);
-            const hash = new XXHash3(data).digest().toString("hex").slice(0, 8);
+            const hash = (xxh32(data) >>> 1).toString(36).padStart(6, "_");
             return mat.replace(path, path + "?v=" + hash);
           }),
       },
