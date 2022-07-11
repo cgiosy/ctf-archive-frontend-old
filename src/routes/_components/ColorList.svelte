@@ -16,7 +16,11 @@
 <SideFading>
   <ul>
     {#each colors as color}
-      <li><i style={styleUtil({ background: color.code })} /> {color.text}</li>
+      <li>
+        <a href="/?query=%23%23{color.text}"
+          ><i style={styleUtil({ background: color.code })} /> {color.text}</a
+        >
+      </li>
     {/each}
   </ul>
 </SideFading>
