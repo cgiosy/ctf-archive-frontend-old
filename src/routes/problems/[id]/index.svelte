@@ -318,13 +318,13 @@
     width: 100%;
     max-width: var(--content-max-width);
     padding: 1.5em 2em;
-    border: 1px solid rgba(var(--gray-99), calc(var(--background-opacity) * 3));
+    border: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
     border-radius: 0.75em;
     margin: 1em 0;
-    /* box-shadow: 0 0.0625em 0.5em rgba(var(--gray-99), calc(var(--background-opacity) * 2)); */
+    /* box-shadow: 0 0.0625em 0.5em rgba(var(--text-color), calc(var(--background-opacity) * 2)); */
   }
   svg {
-    fill: rgb(var(--gray-99));
+    fill: rgb(var(--text-color));
   }
   h1 {
     width: 100%;
@@ -349,7 +349,7 @@
   .description {
     margin: 0.75em 0 -0.75em 0;
     padding: 1.25em 0;
-    border-top: 1px solid rgba(var(--gray-99), calc(var(--background-opacity) * 3));
+    border-top: 1px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
   }
   .description :global(img) {
     background: white;
@@ -383,7 +383,7 @@
   }
   pre {
     font-size: 1.25em;
-    background: rgba(var(--gray-99), calc(var(--background-opacity) * 2));
+    background: rgba(var(--text-color), calc(var(--background-opacity) * 2));
     padding: 0.5em 1.5em;
     border-radius: 0.25em;
     margin: 0.5em 0;
