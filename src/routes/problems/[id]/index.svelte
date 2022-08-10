@@ -17,4 +17,17 @@
   ];
 </script>
 
-<Tabs {items} />
+<main>
+  <div>
+    <Tabs {items} />
+  </div>
+</main>
+
+<style>
+  main {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1rem;
+    justify-content: center;
+  }
+</style>
