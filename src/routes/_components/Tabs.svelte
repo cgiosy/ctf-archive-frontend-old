@@ -39,14 +39,13 @@
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom: 3px solid rgba(var(--text-color), calc(var(--background-opacity) * 3));
   }
   li {
     margin-bottom: -1px;
   }
 
   span {
-    border: 1px solid transparent;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
     display: block;

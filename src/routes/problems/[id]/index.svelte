@@ -33,5 +33,6 @@
   }
   .tab-wrapper {
     width: 100%;
+    max-width: var(--content-max-width);
   }
 </style>
