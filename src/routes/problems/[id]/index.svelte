@@ -2,6 +2,7 @@
   import Main from "./main.svelte";
   import Writeup from "./writeup.svelte";
   import Tabs from "../../_components/Tabs.svelte";
+  import { _ } from "svelte-i18n";
 
   let items = [
     {
@@ -18,7 +19,7 @@
 </script>
 
 <main>
-  <div>
+  <div class="tab-wrapper">
     <Tabs {items} />
   </div>
 </main>
@@ -29,5 +30,8 @@
     align-items: center;
     padding: 1rem 1rem;
     justify-content: center;
+  }
+  .tab-wrapper {
+    width: 100%;
   }
 </style>

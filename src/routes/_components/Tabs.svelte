@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
+
   type TabType = {
     label: string;
     value: number;
@@ -27,11 +29,9 @@
 
 <style>
   .box {
-    margin-bottom: 10px;
-    padding: 40px;
-    border: 1px solid #dee2e6;
-    border-radius: 0 0 0.5rem 0.5rem;
-    border-top: 0;
+    align-items: center;
+    display: flex;
+    justify-content: center;
   }
   ul {
     display: flex;
