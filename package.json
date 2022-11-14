@@ -15,7 +15,7 @@
     "start": "run-p watch:ts font dev",
     "build": "run-s check:ts font compile",
     "preview": "vite preview",
-    "serve": "run-s build && find dist -type f -not -name '*.woff2' -not -name '*.jpg' -not -name '*.png' -not -name '*.webp' | xargs brotli && ssh ubuntu@ctf-archive.com rm -rf /ctf/www/* && rsync -rpoghvz --chown=ubuntu:web --chmod=F0640,D750 dist/ ubuntu@ctf-archive.com:/ctf/www/"
+    "serve": "run-s build && find dist -type f -not -name '*.woff2' -not -name '*.jpg' -not -name '*.png' -not -name '*.webp' | xargs brotli && ssh opc@ctf-archive.com 'rm -rf ~/server/data/static/*' && rsync -rpoghvz --chown=opc:opc --chmod=F0644,D755 dist/ opc@ctf-archive.com:~/server/data/static/"
   },
   "devDependencies": {
     "@roxi/routify": "^3.0.0-next.80",

@@ -33,6 +33,9 @@ export default defineConfig(() => {
       // cssCodeSplit: false,
       sourcemap: !production,
       minify: production ? "terser" : "esbuild",
+      rollupOptions: {
+        output: { manualChunks: () => "app" },
+      },
       terserOptions: production
         ? {
             ecma: 2020,
